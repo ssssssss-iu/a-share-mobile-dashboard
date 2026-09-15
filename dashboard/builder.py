@@ -9,6 +9,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from .data import MarketClient, load_json
+from .narrative import build_analysis
 from .scoring import market_summary, phase_at, prefilter, score_candidate
 
 
@@ -57,6 +58,7 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
         "sectors": [],
         "channels": {},
         "candidates": [],
+        "analysis": None,
         "diagnostics": {},
         "sources": [],
         "error": None,
@@ -180,6 +182,7 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                 ],
             }
         )
+        base["analysis"] = build_analysis(base)
         write_json(output, base)
         write_json(history_dir / f"{trade_date}-{now.strftime('%H%M')}.json", base)
         return base
@@ -192,5 +195,6 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
         }
         if previous and previous.get("status") == "SUCCESS":
             base["last_successful"] = {"generated_at": previous.get("generated_at"), "trade_date": previous.get("trade_date")}
+        base["analysis"] = build_analysis(base)
         write_json(output, base)
         return base
