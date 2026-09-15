@@ -1,0 +1,43 @@
+{
+  "strategy_id": "a-share-tail-hot-v2",
+  "strategy_version": "2.1.0",
+  "automation_profile": "static-scoring-candidate-0.1",
+  "automation_status": "trial_not_active_strategy",
+  "timezone": "Asia/Shanghai",
+  "weights": {"A": 20, "B": 15, "C": 15, "D": 20, "E": 10, "G": 20},
+  "levels": {"strong": 80, "watch": 70, "weak": 60},
+  "universe": {
+    "minimum_market_rows": 1000,
+    "minimum_quote_coverage": 0.95,
+    "minimum_amount": 200000000,
+    "minimum_turnover_rate": 0.5,
+    "minimum_daily_change_pct": -1.0,
+    "maximum_daily_change_pct": 9.2,
+    "prefilter_limit": 90,
+    "detail_limit": 36,
+    "candidate_limit": 5
+  },
+  "market": {
+    "risk_on_score": 0.22,
+    "risk_off_score": -0.18,
+    "sector_members_min": 5,
+    "sector_rs_min": 0.5,
+    "sector_breadth_min": 0.60
+  },
+  "scoring": {
+    "a_pass": 12,
+    "b_pass": 9,
+    "c_pass": 9,
+    "d_pass": 12,
+    "g_pass": 12,
+    "volume_ratio_healthy_min": 1.2,
+    "volume_ratio_healthy_max": 2.8,
+    "red_green_body_ratio_pass": 1.5,
+    "tail_return_pass": 0.8,
+    "tail_high_position_pass": 0.80,
+    "hot_turnover_max": 25.0,
+    "hot_amplitude_max": 12.0,
+    "near_limit_ratio": 0.997,
+    "announcement_lookback_days": 10
+  }
+}
