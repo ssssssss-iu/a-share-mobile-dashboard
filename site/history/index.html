@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="A股主板双通道条件化研究看板">
+  <title>A股盘面检查单</title>
+  <link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="masthead">
+    <div class="brand-block">
+      <span class="brand-mark" aria-hidden="true">沪深</span>
+      <div>
+        <p class="eyebrow">A股双通道研究</p>
+        <h1>盘面检查单</h1>
+      </div>
+    </div>
+    <div class="asof" id="asof">正在读取数据…</div>
+  </header>
+
+  <main id="main" aria-live="polite">
+    <section id="status-panel" class="status-panel skeleton" aria-label="市场状态"></section>
+    <section id="checkpoint-panel" class="checkpoint-panel" aria-label="盘面节点"></section>
+    <section id="indices-panel" class="indices-panel" aria-label="主要指数"></section>
+    <section id="sectors-panel" class="sectors-panel" aria-label="强势板块"></section>
+
+    <section class="candidate-section" aria-labelledby="candidate-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">从市场到板块，再到个股</p>
+          <h2 id="candidate-title">候选检查</h2>
+        </div>
+        <span class="count" id="candidate-count">—</span>
+      </div>
+      <div class="filter-bar" id="filter-bar" role="group" aria-label="候选通道">
+        <button type="button" class="filter active" data-filter="all">全部</button>
+        <button type="button" class="filter" data-filter="ordinary">普通隔夜</button>
+        <button type="button" class="filter" data-filter="hot">热点波段</button>
+      </div>
+      <div id="candidate-list" class="candidate-list"></div>
+    </section>
+
+    <section id="method-panel" class="method-panel" aria-label="方法与数据"></section>
+  </main>
+
+  <footer>
+    <p>只在条件满足后跟随；候选可以为 0。页面不连接券商。</p>
+  </footer>
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
