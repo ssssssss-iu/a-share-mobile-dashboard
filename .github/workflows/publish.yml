@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "config/scoring_candidate.json"
+      - ".github/workflows/publish.yml"
   schedule:
     # GitHub cron is UTC. Shanghai is UTC+8 year-round.
     - cron: "25 1 * * 1-5"  # 09:25
@@ -69,6 +70,8 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
