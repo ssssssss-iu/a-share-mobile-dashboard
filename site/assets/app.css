@@ -77,6 +77,17 @@ main { max-width: 1120px; margin: 0 auto; padding: 24px 28px 64px; }
 .sector-pill span { color: var(--muted); font-size: 12px; }
 .confirmed-dot { display: inline-block; width: 7px; height: 7px; margin-right: 5px; border-radius: 50%; background: var(--up); }
 
+.analysis-section { margin-top: 18px; }
+.analysis-mode { padding: 5px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 11px; }
+.analysis-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+.analysis-item { min-width: 0; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+.analysis-item:nth-child(odd) { border-right: 1px solid var(--line); }
+.analysis-item:last-child { grid-column: 1 / -1; border-right: 0; border-bottom: 0; }
+.analysis-item h3 { margin-bottom: 7px; color: var(--blue); font-size: 13px; letter-spacing: .08em; }
+.analysis-item p, .analysis-summary { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.analysis-summary { padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.analysis-warning { border-color: #e1bbb7; color: #725a58; background: #fff4f2; }
+
 .candidate-section { margin-top: 28px; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 15px; }
 h2 { margin-bottom: 0; font-family: "Songti SC", "STSong", serif; font-size: clamp(27px, 5vw, 38px); }
@@ -144,6 +155,9 @@ footer { max-width: 1120px; margin: 0 auto; padding: 0 28px 36px; color: var(--m
   .breadth-block { padding-top: 6px; }
   .checkpoint-panel { overflow-x: auto; grid-template-columns: repeat(5, minmax(78px, 1fr)); }
   .indices-panel { grid-template-columns: repeat(3, minmax(132px, 1fr)); overflow-x: auto; }
+  .analysis-panel { grid-template-columns: 1fr; }
+  .analysis-item, .analysis-item:nth-child(odd), .analysis-item:last-child { grid-column: auto; border-right: 0; }
+  .analysis-item:last-child { border-bottom: 0; }
   .candidate-card { grid-template-columns: 62px 1fr; }
   .score-rail { padding: 14px 6px; }
   .score-value { font-size: 27px; }

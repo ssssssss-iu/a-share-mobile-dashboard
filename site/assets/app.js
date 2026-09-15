@@ -45,8 +45,8 @@ function renderStatus(data) {
 }
 
 function renderCheckpoints(data) {
-  const points = [["09:25","竞价"],["10:30","早盘"],["13:00","午后"],["14:30","尾盘"],["15:05","收盘"]];
-  const codeToTime = {AUCTION:"09:25", MORNING:"10:30", LUNCH:"13:00", AFTERNOON:"13:00", TAIL:"14:30", CLOSED:"15:05"};
+  const points = [["09:25","竞价"],["10:30","早盘"],["13:05","午后"],["14:30","尾盘"],["15:05","收盘"]];
+  const codeToTime = {AUCTION:"09:25", MORNING:"10:30", LUNCH:"13:05", AFTERNOON:"13:05", TAIL:"14:30", CLOSED:"15:05"};
   $("#checkpoint-panel").innerHTML = points.map(([time, label]) => `<div class="checkpoint ${codeToTime[data.phase.code] === time ? "current" : ""}">${time}<small>${label}</small></div>`).join("");
 }
 
@@ -62,6 +62,21 @@ function renderSectors(data) {
   const strong = data.sectors.filter(item => item.strong).slice(0, 8);
   if (!strong.length) { panel.innerHTML = `<div class="sector-pill"><strong>无确认强板块</strong><span>等待下一节点</span></div>`; return; }
   panel.innerHTML = strong.map(item => `<div class="sector-pill"><strong>${item.confirmed ? '<i class="confirmed-dot"></i>' : ""}${escapeHtml(item.sector)}</strong><span>相对强度 ${item.relative_strength > 0 ? "+" : ""}${item.relative_strength.toFixed(2)}｜上涨 ${(item.breadth * 100).toFixed(0)}%</span></div>`).join("");
+}
+
+function renderAnalysis(data) {
+  const panel = $("#analysis-panel");
+  const analysis = data.analysis;
+  $("#analysis-mode").textContent = analysis?.mode || "规则模板";
+  if (!analysis) {
+    panel.innerHTML = `<div class="analysis-summary">本次快照没有盘面分析数据，请等待下一次更新。</div>`;
+    return;
+  }
+  if (!analysis.sections?.length) {
+    panel.innerHTML = `<div class="analysis-summary analysis-warning">${escapeHtml(analysis.summary)}</div>`;
+    return;
+  }
+  panel.innerHTML = analysis.sections.map(item => `<article class="analysis-item"><h3>${escapeHtml(item.label)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("");
 }
 
 function channelBadge(candidate, key, label) {
@@ -118,7 +133,7 @@ function renderMethod(data) {
 function render(data) {
   DATA = data;
   $("#asof").textContent = `${data.phase?.label || "状态未知"}\n${fmtTime(data.generated_at)} 生成`;
-  renderStatus(data); renderCheckpoints(data); renderIndices(data); renderSectors(data); renderCandidates(data); renderMethod(data);
+  renderStatus(data); renderCheckpoints(data); renderIndices(data); renderSectors(data); renderAnalysis(data); renderCandidates(data); renderMethod(data);
 }
 
 document.addEventListener("click", event => {
