@@ -1,3 +1,4 @@
+
 import copy
 import unittest
 from datetime import datetime
@@ -69,6 +70,37 @@ class ScoringTests(unittest.TestCase):
         result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [{"title": "关于股份回购的公告"}], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
         self.assertEqual(result["score"], sum(item["score"] for item in result["modules"]))
         self.assertEqual([item["key"] for item in result["modules"]], ["A", "B", "C", "D", "E", "G"])
+
+    def test_all_announcement_sources_failed_scores_zero_without_blocking_candidate(self):
+        result = score_candidate(
+            quote(),
+            detail(),
+            sector(True),
+            {"regime": "RISK_ON"},
+            config(),
+            "2026-09-15",
+            announcement_error="all sources failed",
+            now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ),
+        )
+        module_e = next(item for item in result["modules"] if item["key"] == "E")
+        self.assertEqual(module_e["score"], 0)
+        self.assertEqual(module_e["state"], "数据不足")
+        self.assertNotEqual(result["level"], "排除")
+
+    def test_unchecked_announcement_is_not_treated_as_verified_empty(self):
+        result = score_candidate(
+            quote(),
+            detail(),
+            sector(True),
+            {"regime": "RISK_ON"},
+            config(),
+            "2026-09-15",
+            announcement_checked=False,
+            now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ),
+        )
+        module_e = next(item for item in result["modules"] if item["key"] == "E")
+        self.assertEqual(module_e["score"], 0)
+        self.assertIn("未进入公告复核范围", module_e["evidence"][0])
 
     def test_failed_modules_never_exceed_40_percent(self):
         risky = quote()
