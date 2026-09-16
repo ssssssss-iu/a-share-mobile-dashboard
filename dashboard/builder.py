@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import json
@@ -157,16 +158,21 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
         first_pass.sort(key=lambda item: (-item["score"], -item["amount"], item["code"]))
 
         announcement_map, announcement_errors = {}, {}
+        announcement_sources, announcement_attempt_errors = {}, {}
         announcement_targets = [item["code"] for item in first_pass[:12]]
         with ThreadPoolExecutor(max_workers=3) as announce_pool:
             futures = {
-                announce_pool.submit(client.announcements, code, now.date(), cfg["scoring"]["announcement_lookback_days"]): code
+                announce_pool.submit(client.announcement_result, code, now.date(), cfg["scoring"]["announcement_lookback_days"]): code
                 for code in announcement_targets
             }
             for future in as_completed(futures):
                 code = futures[future]
                 try:
-                    announcement_map[code] = future.result()
+                    result = future.result()
+                    announcement_map[code] = result["items"]
+                    announcement_sources[code] = result["source"]
+                    if result.get("errors"):
+                        announcement_attempt_errors[code] = result["errors"]
                 except Exception as exc:
                     announcement_errors[code] = safe_error(exc)
 
@@ -185,6 +191,7 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                     trade_date,
                     announcements=announcement_map.get(code),
                     announcement_error=announcement_errors.get(code),
+                    announcement_checked=code in announcement_targets,
                     now=now,
                 )
             )
@@ -230,6 +237,17 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                     "details_succeeded": len(details),
                     "detail_errors": detail_errors[:10],
                     "announcement_targets": len(announcement_targets),
+                    "announcement_successes": len(announcement_map),
+                    "announcement_failures": len(announcement_errors),
+                    "announcement_status": (
+                        "FAILED"
+                        if announcement_targets and not announcement_map
+                        else "PARTIAL"
+                        if announcement_errors
+                        else "SUCCESS"
+                    ),
+                    "announcement_sources": announcement_sources,
+                    "announcement_attempt_errors": announcement_attempt_errors,
                     "announcement_errors": announcement_errors,
                     "shortlist_before_limit": sum(item["score"] >= cfg["levels"]["weak"] for item in final_scores),
                 },
@@ -237,6 +255,8 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                     source,
                     {"source": "腾讯财经前复权日K与分钟线", "source_url": "https://web.ifzq.gtimg.cn/"},
                     {"source": "巨潮资讯正式公告", "source_url": "https://www.cninfo.com.cn/"},
+                    {"source": "深圳证券交易所公告备份", "source_url": "https://www.szse.cn/"},
+                    {"source": "东方财富公告备份", "source_url": "https://np-anotice-stock.eastmoney.com/"},
                 ],
             }
         )
