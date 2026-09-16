@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -27,6 +28,50 @@ def write_json(path: Path, payload: dict):
 
 def safe_error(exc: Exception) -> str:
     return f"{type(exc).__name__}: {str(exc)[:400]}"
+
+
+def latest_successful_snapshot(previous: dict | None, history_dir: Path) -> dict | None:
+    if previous and previous.get("status") == "SUCCESS":
+        return previous
+    for path in sorted(history_dir.glob("*.json"), reverse=True):
+        snapshot = load_json(path)
+        if snapshot and snapshot.get("status") == "SUCCESS":
+            return snapshot
+    return None
+
+
+def previous_close_snapshot(snapshot: dict, now: datetime) -> dict:
+    trade_date = snapshot.get("trade_date")
+    if not trade_date:
+        raise RuntimeError("上一交易日收盘快照缺少交易日期")
+    snapshot_date = date.fromisoformat(trade_date)
+    age = (now.date() - snapshot_date).days
+    if age <= 0 or age > 20:
+        raise RuntimeError(f"上一交易日收盘快照日期异常: {trade_date}")
+
+    result = deepcopy(snapshot)
+    source_generated_at = result.get("generated_at")
+    result["generated_at"] = now.isoformat(timespec="seconds")
+    result["phase"] = phase_at(now)
+    result["data_context"] = {
+        "code": "PREVIOUS_CLOSE",
+        "label": "上一交易日收盘",
+        "trade_date": trade_date,
+        "source_generated_at": source_generated_at,
+        "message": "9:25竞价节点前展示最近一次成功收盘快照，不执行新筛选。",
+    }
+    for key in ("ordinary", "hot"):
+        channel = result.get("channels", {}).get(key)
+        if channel:
+            channel["open"] = False
+            channel["message"] = "9:25前仅展示上一交易日收盘"
+    for candidate in result.get("candidates") or []:
+        for channel in (candidate.get("channels") or {}).values():
+            channel["actionable_now"] = False
+    result.setdefault("diagnostics", {})["previous_close_reused"] = True
+    result["diagnostics"]["source_generated_at"] = source_generated_at
+    result["analysis"] = build_analysis(result)
+    return result
 
 
 def build(output: Path | None = None, history_dir: Path | None = None, now: datetime | None = None) -> dict:
@@ -65,6 +110,13 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
         "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。",
     }
     try:
+        if base["phase"]["code"] == "PREOPEN":
+            prior_close = latest_successful_snapshot(previous, history_dir)
+            if prior_close:
+                result = previous_close_snapshot(prior_close, now)
+                write_json(output, result)
+                return result
+
         client = MarketClient()
         with ThreadPoolExecutor(max_workers=2) as pool:
             market_future = pool.submit(client.market_snapshot)
@@ -147,6 +199,12 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
             {
                 "status": "SUCCESS",
                 "trade_date": trade_date,
+                "data_context": {
+                    "code": "CURRENT_SESSION",
+                    "label": "当日盘面",
+                    "trade_date": trade_date,
+                    "message": "行情日期已通过当日完整性检查。",
+                },
                 "market": summary,
                 "indices": indices,
                 "sectors": sector_bundle["public"],

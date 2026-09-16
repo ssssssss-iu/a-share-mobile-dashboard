@@ -27,8 +27,10 @@ def _market_text(payload):
     market = payload["market"]
     regime = REGIME_LABELS.get(market.get("regime"), "状态未知")
     breadth = (market.get("breadth") or 0) * 100
+    context = payload.get("data_context") or {}
+    prefix = "上一交易日收盘快照" if context.get("code") == "PREVIOUS_CLOSE" else payload["phase"]["label"]
     return (
-        f"{payload['phase']['label']}市场处于{regime}状态。主板上涨{market['advancers']}家、"
+        f"{prefix}显示市场处于{regime}状态。主板上涨{market['advancers']}家、"
         f"下跌{market['decliners']}家，上涨占比{breadth:.1f}%；个股涨跌中位数"
         f"{_pct(market.get('median_pct'), 2)}。涨停{market['limit_up_count']}家、"
         f"跌停{market['limit_down_count']}家，当前统计成交额{_amount(market.get('market_amount'))}。"
@@ -84,6 +86,8 @@ def _candidate_text(payload):
 def _risk_text(payload):
     market = payload["market"]
     notes = []
+    if (payload.get("data_context") or {}).get("code") == "PREVIOUS_CLOSE":
+        notes.append("当前为9:25前的上一交易日收盘快照，所有执行通道保持关闭")
     if market.get("regime") == "RISK_OFF":
         notes.append("市场环境处于防守状态，普通隔夜通道维持关闭")
     if not market.get("continuity_available"):

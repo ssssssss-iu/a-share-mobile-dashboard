@@ -408,6 +408,8 @@ def score_g(q, f, cfg):
 
 def phase_at(now: datetime) -> dict:
     minute = now.hour * 60 + now.minute
+    if minute < 9 * 60 + 25:
+        return {"code": "PREOPEN", "label": "盘前·上一交易日收盘", "ordinary_open": False, "hot_open": False}
     if minute < 9 * 60 + 30:
         return {"code": "AUCTION", "label": "集合竞价", "ordinary_open": False, "hot_open": False}
     if minute <= 11 * 60 + 30:
