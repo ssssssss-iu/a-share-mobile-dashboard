@@ -12,6 +12,8 @@ const stateClass = state => state === "通过" ? "pass" : state === "不通过" 
 
 let DATA = null;
 let FILTER = "all";
+let LOAD_IN_FLIGHT = false;
+const AUTO_REFRESH_MS = 60 * 1000;
 
 function renderStatus(data) {
   const panel = $("#status-panel");
@@ -164,7 +166,25 @@ document.addEventListener("click", event => {
   renderCandidates(DATA);
 });
 
-fetch(`latest.json?t=${Date.now()}`, {cache:"no-store"})
-  .then(response => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
-  .then(render)
-  .catch(error => render({status:"FAILED", generated_at:new Date().toISOString(), phase:{code:"CLOSED",label:"读取失败"}, channels:{}, candidates:[], error:`页面无法读取 latest.json：${error.message}`, strategy:{note:""}, disclaimer:"请检查 GitHub Actions 运行日志。"}));
+async function loadLatest({initial = false} = {}) {
+  if (LOAD_IN_FLIGHT) return;
+  LOAD_IN_FLIGHT = true;
+  try {
+    const response = await fetch(`latest.json?t=${Date.now()}`, {cache:"no-store"});
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const next = await response.json();
+    if (!DATA || next.generated_at !== DATA.generated_at || next.status !== DATA.status) render(next);
+  } catch (error) {
+    if (initial || !DATA) {
+      render({status:"FAILED", generated_at:new Date().toISOString(), phase:{code:"CLOSED",label:"读取失败"}, channels:{}, candidates:[], error:`页面无法读取 latest.json：${error.message}`, strategy:{note:""}, disclaimer:"请检查 GitHub Actions 运行日志。"});
+    }
+  } finally {
+    LOAD_IN_FLIGHT = false;
+  }
+}
+
+loadLatest({initial:true});
+setInterval(loadLatest, AUTO_REFRESH_MS);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) loadLatest(); });
+window.addEventListener("focus", loadLatest);
+window.addEventListener("online", loadLatest);
