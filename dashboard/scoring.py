@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import math
@@ -350,9 +351,11 @@ POSITIVE_WORDS = ("增持", "回购", "中标", "签订", "预增", "扭亏", "�
 NEGATIVE_WORDS = ("减持", "立案", "处罚", "风险提示", "终止", "亏损", "退市", "诉讼", "冻结", "问询函")
 
 
-def score_e(announcements, announcement_error=None):
+def score_e(announcements, announcement_error=None, announcement_checked=True):
     if announcement_error:
-        return _module("E", 0, "数据不足", ["巨潮公告获取失败，不能确认催化"])
+        return _module("E", 0, "数据不足", ["全部公告源获取失败，本模块按0分计入但不暂停候选发布"])
+    if not announcement_checked:
+        return _module("E", 0, "数据不足", ["未进入公告复核范围，本模块不计分"])
     if not announcements:
         return _module("E", 5, "数据不足", ["近10日未检索到可作为催化的正式公告"])
     negative = [item for item in announcements if any(word in item["title"] for word in NEGATIVE_WORDS)]
@@ -423,9 +426,26 @@ def phase_at(now: datetime) -> dict:
     return {"code": "CLOSED", "label": "收盘复盘", "ordinary_open": False, "hot_open": False}
 
 
-def score_candidate(quote, detail, sector, market, cfg, trade_date, announcements=None, announcement_error=None, now=None):
+def score_candidate(
+    quote,
+    detail,
+    sector,
+    market,
+    cfg,
+    trade_date,
+    announcements=None,
+    announcement_error=None,
+    announcement_checked=True,
+    now=None,
+):
     features = technical_features(quote, detail, trade_date)
-    modules = [score_a(quote, features, cfg), score_b(quote, features, cfg), score_c(quote, features, cfg), score_d(sector, cfg), score_e(announcements, announcement_error)]
+    modules = [
+        score_a(quote, features, cfg),
+        score_b(quote, features, cfg),
+        score_c(quote, features, cfg),
+        score_d(sector, cfg),
+        score_e(announcements, announcement_error, announcement_checked),
+    ]
     g, risks = score_g(quote, features, cfg)
     modules.append(g)
     total = sum(item["score"] for item in modules)
