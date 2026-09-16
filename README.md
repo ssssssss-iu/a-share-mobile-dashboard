@@ -27,6 +27,17 @@ python3 -m http.server 8080 --directory site
 
 页面中的盘面分析文字由结构化行情和评分结果按规则模板生成，不调用大模型。数据完整性检查失败时停止生成方向判断，避免把过期行情写成当日结论。
 
+## 可选 AI 盘面解读
+
+看板支持在 GitHub Actions 中调用 OpenAI Responses API。AI 只解释程序已经生成的公开行情、评分、通道和价格条件，不参与评分，不新增候选，也不能改变买点或失效位。未配置密钥或接口调用失败时，页面继续显示原有规则模板。
+
+1. 在 OpenAI API 平台创建 API key。
+2. 进入仓库 `Settings → Secrets and variables → Actions → Secrets`，新增仓库密钥 `OPENAI_API_KEY`。
+3. 可选：在同一页面的 `Variables` 新增 `OPENAI_MODEL`；未设置时使用 `gpt-5.6-luna`。
+4. 进入 `Actions → 更新并发布A股研究看板 → Run workflow` 手动运行一次。
+
+API key 只通过 GitHub Secret 注入工作流，不得写入网页、代码或公开仓库。GitHub Pages 仍是静态托管；模型 API 会按实际用量计费。
+
 ## 公开数据边界
 
 仓库只保存静态看板与公开行情结果。不要把持仓、成本价、交易笔记、SQLite 数据库或任何密钥加入这个公开仓库。
