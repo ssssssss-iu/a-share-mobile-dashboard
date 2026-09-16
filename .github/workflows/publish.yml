@@ -62,6 +62,12 @@ jobs:
       - name: Build current snapshot
         run: python scripts/build_dashboard.py
 
+      - name: Generate optional AI analysis
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+        run: python scripts/enrich_ai.py
+
       - name: Save public snapshot history
         run: |
           git config user.name "github-actions[bot]"
