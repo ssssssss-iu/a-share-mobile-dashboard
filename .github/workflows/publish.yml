@@ -5,7 +5,13 @@ on:
     branches:
       - main
     paths:
+      - "dashboard/**"
+      - "scripts/**"
+      - "site/**"
+      - "tests/**"
       - "config/scoring_candidate.json"
+      - "requirements.txt"
+      - "README.md"
       - ".github/workflows/publish.yml"
   schedule:
     # GitHub cron is UTC. Shanghai is UTC+8 year-round.
