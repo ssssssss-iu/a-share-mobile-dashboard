@@ -1,3 +1,4 @@
+
 from __future__ import annotations
 
 import json
@@ -51,6 +52,26 @@ class MarketClient:
         self.session.headers.update({"User-Agent": UA, "Referer": "https://quote.eastmoney.com/"})
         self._cninfo_lock = threading.Lock()
         self._cninfo_last = 0.0
+        self._cninfo_org_ids = None
+
+    def _request(self, method: str, url: str, retries: int = 2, **kwargs):
+        """Retry transient upstream failures, but fail over immediately on 403."""
+        last_error = None
+        for attempt in range(retries + 1):
+            try:
+                response = self.session.request(method, url, **kwargs)
+                response.raise_for_status()
+                return response
+            except requests.RequestException as exc:
+                last_error = exc
+                status = getattr(getattr(exc, "response", None), "status_code", None)
+                retryable = status == 429 or (status is not None and status >= 500) or isinstance(
+                    exc, (requests.Timeout, requests.ConnectionError)
+                )
+                if status == 403 or not retryable or attempt >= retries:
+                    raise
+                time.sleep(0.6 * (2**attempt))
+        raise last_error
 
     def _market_page(self, page: int) -> dict:
         params = {
@@ -230,9 +251,32 @@ class MarketClient:
                     errors.append({"code": code, "error": f"{type(exc).__name__}: {exc}"})
         return details, errors
 
-    def announcements(self, code: str, end: date, lookback_days: int = 10) -> list[dict]:
-        begin = end - timedelta(days=lookback_days)
-        org = ("gssh0" if str(code).startswith("6") else "gssz0") + str(code).zfill(6)
+    def _cninfo_org_id(self, code: str) -> str:
+        code = str(code).zfill(6)
+        with self._cninfo_lock:
+            if self._cninfo_org_ids is None:
+                response = self._request(
+                    "GET",
+                    "https://www.cninfo.com.cn/new/data/szse_stock.json",
+                    headers={"User-Agent": UA, "Referer": "https://www.cninfo.com.cn/"},
+                    timeout=self.timeout,
+                )
+                stock_list = response.json().get("stockList") or []
+                mapping = {
+                    str(item.get("code") or "").zfill(6): str(item.get("orgId") or "")
+                    for item in stock_list
+                    if item.get("code") and item.get("orgId")
+                }
+                if len(mapping) < 1000:
+                    raise ValueError(f"巨潮股票映射表异常，仅 {len(mapping)} 条")
+                self._cninfo_org_ids = mapping
+            org_id = self._cninfo_org_ids.get(code)
+        if not org_id:
+            raise ValueError(f"巨潮股票映射表缺少 {code}")
+        return org_id
+
+    def _announcements_cninfo(self, code: str, begin: date, end: date) -> list[dict]:
+        org = self._cninfo_org_id(code)
         payload = {
             "stock": f"{code},{org}",
             "tabName": "fulltext",
@@ -252,7 +296,8 @@ class MarketClient:
             delay = 0.45 - (time.monotonic() - self._cninfo_last)
             if delay > 0:
                 time.sleep(delay)
-            response = self.session.post(
+            response = self._request(
+                "POST",
                 "https://www.cninfo.com.cn/new/hisAnnouncement/query",
                 data=payload,
                 headers={
@@ -263,7 +308,6 @@ class MarketClient:
                 timeout=self.timeout,
             )
             self._cninfo_last = time.monotonic()
-        response.raise_for_status()
         data = response.json()
         raw_items = data.get("announcements")
         if raw_items is None and int(data.get("totalAnnouncement") or 0) > 0:
@@ -283,6 +327,112 @@ class MarketClient:
                 }
             )
         return output
+
+    def _announcements_szse(self, code: str, begin: date, end: date) -> list[dict]:
+        response = self._request(
+            "POST",
+            "https://www.szse.cn/api/disc/announcement/annList",
+            json={
+                "channelCode": ["listedNotice_disc"],
+                "pageSize": 50,
+                "pageNum": 1,
+                "stock": [str(code).zfill(6)],
+            },
+            headers={
+                "User-Agent": UA,
+                "Content-Type": "application/json",
+                "Referer": "https://www.szse.cn/disclosure/listed/notice/index.html",
+            },
+            timeout=self.timeout,
+        )
+        data = response.json()
+        raw_items = data.get("data")
+        if raw_items is None:
+            raise ValueError("深交所公告响应缺少 data")
+        output = []
+        for item in raw_items:
+            stamp = str(item.get("publishTime") or "")
+            try:
+                published_date = date.fromisoformat(stamp[:10])
+            except ValueError:
+                continue
+            if not begin <= published_date <= end:
+                continue
+            path = str(item.get("attachPath") or "")
+            output.append(
+                {
+                    "title": str(item.get("title") or "").strip(),
+                    "published_at": stamp.replace(" ", "T") + "+08:00" if stamp else None,
+                    "source": "深圳证券交易所正式公告",
+                    "source_url": "https://disc.static.szse.cn/download" + path if path else "https://www.szse.cn/",
+                }
+            )
+        return output
+
+    def _announcements_eastmoney(self, code: str, begin: date, end: date) -> list[dict]:
+        response = self._request(
+            "GET",
+            "https://np-anotice-stock.eastmoney.com/api/security/ann",
+            params={
+                "sr": -1,
+                "page_size": 50,
+                "page_index": 1,
+                "ann_type": "A",
+                "client_source": "web",
+                "stock_list": str(code).zfill(6),
+                "f_node": 0,
+                "s_node": 0,
+            },
+            headers={"User-Agent": UA, "Referer": "https://data.eastmoney.com/"},
+            timeout=self.timeout,
+        )
+        raw_items = (response.json().get("data") or {}).get("list")
+        if raw_items is None:
+            raise ValueError("东方财富公告响应缺少 data.list")
+        output = []
+        for item in raw_items:
+            stamp = str(item.get("notice_date") or item.get("display_time") or "")
+            try:
+                published_date = date.fromisoformat(stamp[:10])
+            except ValueError:
+                continue
+            if not begin <= published_date <= end:
+                continue
+            art_code = str(item.get("art_code") or "")
+            output.append(
+                {
+                    "title": str(item.get("title_ch") or item.get("title") or "").strip(),
+                    "published_at": stamp[:19].replace(" ", "T") + "+08:00" if stamp else None,
+                    "source": "东方财富公告备份",
+                    "source_url": f"https://pdf.dfcfw.com/pdf/H2_{art_code}_1.pdf" if art_code else "https://data.eastmoney.com/",
+                }
+            )
+        return output
+
+    def announcement_result(self, code: str, end: date, lookback_days: int = 10) -> dict:
+        begin = end - timedelta(days=lookback_days)
+        sources = [("巨潮资讯正式公告", self._announcements_cninfo)]
+        if not str(code).startswith("6"):
+            sources.append(("深圳证券交易所正式公告", self._announcements_szse))
+        sources.append(("东方财富公告备份", self._announcements_eastmoney))
+        errors = []
+        empty_result = None
+        for index, (source_name, fetcher) in enumerate(sources):
+            try:
+                items = fetcher(code, begin, end)
+                result = {"items": items, "source": source_name, "errors": errors}
+                if items or index == 0:
+                    return result
+                empty_result = empty_result or result
+            except Exception as exc:
+                errors.append(f"{source_name}: {type(exc).__name__}: {str(exc)[:180]}")
+        if empty_result:
+            empty_result["errors"] = errors
+            return empty_result
+        raise RuntimeError("；".join(errors))
+
+    def announcements(self, code: str, end: date, lookback_days: int = 10) -> list[dict]:
+        return self.announcement_result(code, end, lookback_days)["items"]
 
 
 def load_json(path):
