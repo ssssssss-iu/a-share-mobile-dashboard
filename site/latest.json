@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "status": "FAILED",
-  "generated_at": "2026-09-16T08:12:12+08:00",
+  "status": "SUCCESS",
+  "generated_at": "2026-09-16T08:17:31+08:00",
   "phase": {
-    "code": "AUCTION",
-    "label": "集合竞价",
+    "code": "PREOPEN",
+    "label": "盘前·上一交易日收盘",
     "ordinary_open": false,
     "hot_open": false
   },
@@ -23,31 +23,1011 @@
     },
     "note": "模块权重来自生效策略；精确阈值是自动化试运行参数，尚未替代生效策略。"
   },
-  "market": null,
-  "indices": [],
-  "sectors": [],
+  "market": {
+    "regime": "RISK_OFF",
+    "environment_score": -0.941,
+    "breadth": 0.1745,
+    "advancers": 525,
+    "decliners": 2483,
+    "flat": 34,
+    "median_pct": -1.59,
+    "limit_up_count": 31,
+    "limit_down_count": 29,
+    "market_amount": 988087135015.259,
+    "market_time": "2026-09-15T16:12:01+08:00",
+    "sector_coverage": 1.0,
+    "continuity_available": true,
+    "strong_sector_count": 4
+  },
+  "indices": [
+    {
+      "code": "000001.SH",
+      "name": "上证指数",
+      "price": 3864.28,
+      "change_pct": -0.54,
+      "market_time": "2026-09-15T16:14:33+08:00"
+    },
+    {
+      "code": "399001.SZ",
+      "name": "深证成指",
+      "price": 13287.97,
+      "change_pct": -0.72,
+      "market_time": "2026-09-15T16:14:54+08:00"
+    },
+    {
+      "code": "000300.SH",
+      "name": "沪深300",
+      "price": 4450.04,
+      "change_pct": -0.67,
+      "market_time": "2026-09-15T16:14:45+08:00"
+    }
+  ],
+  "sectors": [
+    {
+      "sector": "风电设备",
+      "members": 14,
+      "median_pct": 3.255,
+      "breadth": 0.8571428571428571,
+      "amount": 9713846030.93,
+      "limit_up_count": 4,
+      "relative_strength": 4.845,
+      "strong": true,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 3.255,
+      "amount_percentile": 0.7583333333333333
+    },
+    {
+      "sector": "电子化学品Ⅱ",
+      "members": 8,
+      "median_pct": 1.6400000000000001,
+      "breadth": 0.75,
+      "amount": 8763107178.21,
+      "limit_up_count": 1,
+      "relative_strength": 3.2300000000000004,
+      "strong": true,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 1.6400000000000001,
+      "amount_percentile": 0.7416666666666667
+    },
+    {
+      "sector": "半导体",
+      "members": 33,
+      "median_pct": 0.72,
+      "breadth": 0.696969696969697,
+      "amount": 46888074232.35,
+      "limit_up_count": 2,
+      "relative_strength": 2.31,
+      "strong": true,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 0.72,
+      "amount_percentile": 0.9833333333333333
+    },
+    {
+      "sector": "小金属",
+      "members": 22,
+      "median_pct": 0.46,
+      "breadth": 0.5909090909090909,
+      "amount": 25607595022.699997,
+      "limit_up_count": 0,
+      "relative_strength": 2.0500000000000003,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": 0.46,
+      "amount_percentile": 0.9333333333333333
+    },
+    {
+      "sector": "数字媒体",
+      "members": 7,
+      "median_pct": 0.2,
+      "breadth": 0.5714285714285714,
+      "amount": 4538816769.06,
+      "limit_up_count": 0,
+      "relative_strength": 1.79,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": 0.2,
+      "amount_percentile": 0.5333333333333333
+    },
+    {
+      "sector": "航海装备Ⅱ",
+      "members": 5,
+      "median_pct": 0.07,
+      "breadth": 0.6,
+      "amount": 6879356296.0,
+      "limit_up_count": 0,
+      "relative_strength": 1.6600000000000001,
+      "strong": true,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 0.07,
+      "amount_percentile": 0.6666666666666666
+    },
+    {
+      "sector": "电池",
+      "members": 28,
+      "median_pct": -0.115,
+      "breadth": 0.5,
+      "amount": 9729926171.170002,
+      "limit_up_count": 1,
+      "relative_strength": 1.475,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.115,
+      "amount_percentile": 0.7666666666666667
+    },
+    {
+      "sector": "元件",
+      "members": 36,
+      "median_pct": -0.195,
+      "breadth": 0.4722222222222222,
+      "amount": 100228433144.41998,
+      "limit_up_count": 2,
+      "relative_strength": 1.395,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.195,
+      "amount_percentile": 1.0
+    },
+    {
+      "sector": "煤炭开采",
+      "members": 26,
+      "median_pct": -0.45499999999999996,
+      "breadth": 0.46153846153846156,
+      "amount": 9109802713.25,
+      "limit_up_count": 0,
+      "relative_strength": 1.1350000000000002,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.45499999999999996,
+      "amount_percentile": 0.75
+    },
+    {
+      "sector": "焦炭Ⅱ",
+      "members": 7,
+      "median_pct": -0.52,
+      "breadth": 0.2857142857142857,
+      "amount": 2164723711.5,
+      "limit_up_count": 0,
+      "relative_strength": 1.07,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.52,
+      "amount_percentile": 0.35
+    },
+    {
+      "sector": "航空机场",
+      "members": 13,
+      "median_pct": -0.52,
+      "breadth": 0.23076923076923078,
+      "amount": 1759470943.28,
+      "limit_up_count": 0,
+      "relative_strength": 1.07,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.52,
+      "amount_percentile": 0.25833333333333336
+    },
+    {
+      "sector": "小家电",
+      "members": 14,
+      "median_pct": -0.525,
+      "breadth": 0.21428571428571427,
+      "amount": 1092835903.81,
+      "limit_up_count": 0,
+      "relative_strength": 1.065,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.525,
+      "amount_percentile": 0.1
+    },
+    {
+      "sector": "养殖业",
+      "members": 16,
+      "median_pct": -0.595,
+      "breadth": 0.375,
+      "amount": 5225746130.470001,
+      "limit_up_count": 0,
+      "relative_strength": 0.9950000000000001,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.595,
+      "amount_percentile": 0.6166666666666667
+    },
+    {
+      "sector": "自动化设备",
+      "members": 23,
+      "median_pct": -0.67,
+      "breadth": 0.34782608695652173,
+      "amount": 11496097851.539999,
+      "limit_up_count": 2,
+      "relative_strength": 0.92,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.67,
+      "amount_percentile": 0.8166666666666667
+    },
+    {
+      "sector": "黑色家电",
+      "members": 6,
+      "median_pct": -0.68,
+      "breadth": 0.3333333333333333,
+      "amount": 1392167551.86,
+      "limit_up_count": 0,
+      "relative_strength": 0.91,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.68,
+      "amount_percentile": 0.18333333333333332
+    },
+    {
+      "sector": "非金属材料Ⅱ",
+      "members": 5,
+      "median_pct": -0.69,
+      "breadth": 0.4,
+      "amount": 1044841131.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.9000000000000001,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.69,
+      "amount_percentile": 0.09166666666666666
+    },
+    {
+      "sector": "冶钢原料",
+      "members": 9,
+      "median_pct": -0.69,
+      "breadth": 0.2222222222222222,
+      "amount": 1754723962.51,
+      "limit_up_count": 0,
+      "relative_strength": 0.9000000000000001,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.69,
+      "amount_percentile": 0.25
+    },
+    {
+      "sector": "非白酒",
+      "members": 12,
+      "median_pct": -0.6950000000000001,
+      "breadth": 0.25,
+      "amount": 1576098430.8500001,
+      "limit_up_count": 1,
+      "relative_strength": 0.895,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.6950000000000001,
+      "amount_percentile": 0.21666666666666667
+    },
+    {
+      "sector": "航天装备Ⅱ",
+      "members": 5,
+      "median_pct": -0.71,
+      "breadth": 0.2,
+      "amount": 1701433299.82,
+      "limit_up_count": 0,
+      "relative_strength": 0.8800000000000001,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.71,
+      "amount_percentile": 0.23333333333333334
+    },
+    {
+      "sector": "航运港口",
+      "members": 34,
+      "median_pct": -0.72,
+      "breadth": 0.23529411764705882,
+      "amount": 12567879982.3,
+      "limit_up_count": 0,
+      "relative_strength": 0.8700000000000001,
+      "strong": false,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": -0.72,
+      "amount_percentile": 0.8416666666666667
+    }
+  ],
   "channels": {
     "ordinary": {
       "name": "普通隔夜",
       "open": false,
       "qualified_count": 0,
-      "message": "数据失败，停止筛选"
+      "message": "9:25前仅展示上一交易日收盘"
     },
     "hot": {
       "name": "热点波段",
       "open": false,
       "qualified_count": 0,
-      "message": "数据失败，停止筛选"
+      "message": "9:25前仅展示上一交易日收盘"
     }
   },
-  "candidates": [],
+  "candidates": [
+    {
+      "code": "600360",
+      "name": "华微电子",
+      "sector": "半导体",
+      "price": 10.81,
+      "change_pct": 5.98,
+      "amount": 1242947329.0,
+      "turnover_rate": 12.23,
+      "market_time": "2026-09-15T16:11:55+08:00",
+      "score": 82,
+      "level": "强条件候选",
+      "modules": [
+        {
+          "key": "A",
+          "label": "当日量价",
+          "score": 16,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "当日涨跌 +5.98%",
+            "收盘位于日内区间 81%",
+            "量比(对近5日) 2.30",
+            "近20日阳/阴实体比 1.18，60日涨停 1 次",
+            "未接近20日前高"
+          ]
+        },
+        {
+          "key": "B",
+          "label": "尾盘动能",
+          "score": 15,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "最近30根分钟线 +0.84%｜收在区间 80%",
+            "末5分钟量能比 3.05",
+            "现价 高于日内近似VWAP"
+          ]
+        },
+        {
+          "key": "C",
+          "label": "隔夜质量",
+          "score": 13,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "日内振幅 8.82%｜跳空 1.08%",
+            "成交额 12.4亿｜上影占比 19%"
+          ]
+        },
+        {
+          "key": "D",
+          "label": "板块持续",
+          "score": 17,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "板块中位涨幅 +0.72%｜相对全市场 +2.31pct",
+            "上涨占比 70%｜涨停 2｜样本 33",
+            "当前与上一有效快照均为强板块"
+          ]
+        },
+        {
+          "key": "E",
+          "label": "公告催化",
+          "score": 5,
+          "max": 10,
+          "state": "数据不足",
+          "evidence": [
+            "近10日未检索到可作为催化的正式公告"
+          ]
+        },
+        {
+          "key": "G",
+          "label": "反转风险",
+          "score": 16,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "换手 12.23%｜振幅 8.82%｜上影 19%",
+            "未见主要反转风险"
+          ]
+        }
+      ],
+      "risks": [],
+      "channels": {
+        "ordinary": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "尾盘确认，次日早盘按条件退出"
+        },
+        "hot": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "计划2–5个交易日，退潮或失效提前退出"
+        }
+      },
+      "plan": {
+        "feasible": false,
+        "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+        "hold_above": 10.59,
+        "breakout": 11.28,
+        "no_chase_above": 11.03,
+        "invalid_below": 10.55
+      },
+      "features": {
+        "return_5d": 10.53,
+        "volume_ratio": 2.3,
+        "red_green_body_ratio": 1.18,
+        "limit_up_history_60d": 1,
+        "breakout": false
+      },
+      "announcements": [],
+      "rank": 1
+    },
+    {
+      "code": "603316",
+      "name": "诚邦股份",
+      "sector": "半导体",
+      "price": 15.68,
+      "change_pct": 5.09,
+      "amount": 597778459.0,
+      "turnover_rate": 14.62,
+      "market_time": "2026-09-15T16:11:35+08:00",
+      "score": 78,
+      "level": "条件观察",
+      "modules": [
+        {
+          "key": "A",
+          "label": "当日量价",
+          "score": 18,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "当日涨跌 +5.09%",
+            "收盘位于日内区间 79%",
+            "量比(对近5日) 1.48",
+            "近20日阳/阴实体比 1.57，60日涨停 2 次",
+            "接近20日前高"
+          ]
+        },
+        {
+          "key": "B",
+          "label": "尾盘动能",
+          "score": 9,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "最近30根分钟线 +0.19%｜收在区间 73%",
+            "末5分钟量能比 5.29",
+            "现价 高于日内近似VWAP"
+          ]
+        },
+        {
+          "key": "C",
+          "label": "隔夜质量",
+          "score": 13,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "日内振幅 9.23%｜跳空 1.47%",
+            "成交额 6.0亿｜上影占比 21%"
+          ]
+        },
+        {
+          "key": "D",
+          "label": "板块持续",
+          "score": 17,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "板块中位涨幅 +0.72%｜相对全市场 +2.31pct",
+            "上涨占比 70%｜涨停 2｜样本 33",
+            "当前与上一有效快照均为强板块"
+          ]
+        },
+        {
+          "key": "E",
+          "label": "公告催化",
+          "score": 5,
+          "max": 10,
+          "state": "数据不足",
+          "evidence": [
+            "近10日未检索到可作为催化的正式公告"
+          ]
+        },
+        {
+          "key": "G",
+          "label": "反转风险",
+          "score": 16,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "换手 14.62%｜振幅 9.23%｜上影 21%",
+            "未见主要反转风险"
+          ]
+        }
+      ],
+      "risks": [],
+      "channels": {
+        "ordinary": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "尾盘确认，次日早盘按条件退出"
+        },
+        "hot": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "计划2–5个交易日，退潮或失效提前退出"
+        }
+      },
+      "plan": {
+        "feasible": true,
+        "message": "存在可观察的触发区间",
+        "hold_above": 15.49,
+        "breakout": 15.98,
+        "no_chase_above": 15.99,
+        "invalid_below": 15.3
+      },
+      "features": {
+        "return_5d": 7.25,
+        "volume_ratio": 1.48,
+        "red_green_body_ratio": 1.57,
+        "limit_up_history_60d": 2,
+        "breakout": false
+      },
+      "announcements": [],
+      "rank": 2
+    },
+    {
+      "code": "002409",
+      "name": "雅克科技",
+      "sector": "半导体",
+      "price": 133.17,
+      "change_pct": 3.62,
+      "amount": 2092814641.97,
+      "turnover_rate": 4.95,
+      "market_time": "2026-09-15T15:34:33+08:00",
+      "score": 72,
+      "level": "条件观察",
+      "modules": [
+        {
+          "key": "A",
+          "label": "当日量价",
+          "score": 12,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "当日涨跌 +3.62%",
+            "收盘位于日内区间 73%",
+            "量比(对近5日) 0.94",
+            "近20日阳/阴实体比 1.04，60日涨停 5 次",
+            "未接近20日前高"
+          ]
+        },
+        {
+          "key": "B",
+          "label": "尾盘动能",
+          "score": 9,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "最近30根分钟线 +0.01%｜收在区间 63%",
+            "末5分钟量能比 2.71",
+            "现价 高于日内近似VWAP"
+          ]
+        },
+        {
+          "key": "C",
+          "label": "隔夜质量",
+          "score": 11,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "日内振幅 6.41%｜跳空 0.99%",
+            "成交额 20.9亿｜上影占比 27%"
+          ]
+        },
+        {
+          "key": "D",
+          "label": "板块持续",
+          "score": 17,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "板块中位涨幅 +0.72%｜相对全市场 +2.31pct",
+            "上涨占比 70%｜涨停 2｜样本 33",
+            "当前与上一有效快照均为强板块"
+          ]
+        },
+        {
+          "key": "E",
+          "label": "公告催化",
+          "score": 5,
+          "max": 10,
+          "state": "数据不足",
+          "evidence": [
+            "近10日未检索到可作为催化的正式公告"
+          ]
+        },
+        {
+          "key": "G",
+          "label": "反转风险",
+          "score": 18,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "换手 4.95%｜振幅 6.41%｜上影 27%",
+            "未见主要反转风险"
+          ]
+        }
+      ],
+      "risks": [],
+      "channels": {
+        "ordinary": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "尾盘确认，次日早盘按条件退出"
+        },
+        "hot": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "计划2–5个交易日，退潮或失效提前退出"
+        }
+      },
+      "plan": {
+        "feasible": false,
+        "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+        "hold_above": 132.63,
+        "breakout": 163.2,
+        "no_chase_above": 135.83,
+        "invalid_below": 129.48
+      },
+      "features": {
+        "return_5d": 0.79,
+        "volume_ratio": 0.94,
+        "red_green_body_ratio": 1.04,
+        "limit_up_history_60d": 5,
+        "breakout": false
+      },
+      "announcements": [],
+      "rank": 3
+    },
+    {
+      "code": "000657",
+      "name": "中钨高新",
+      "sector": "小金属",
+      "price": 62.23,
+      "change_pct": 5.17,
+      "amount": 6129100362.69,
+      "turnover_rate": 6.79,
+      "market_time": "2026-09-15T15:34:18+08:00",
+      "score": 67,
+      "level": "弱观察",
+      "modules": [
+        {
+          "key": "A",
+          "label": "当日量价",
+          "score": 12,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "当日涨跌 +5.17%",
+            "收盘位于日内区间 56%",
+            "量比(对近5日) 2.36",
+            "近20日阳/阴实体比 1.11，60日涨停 1 次",
+            "未接近20日前高"
+          ]
+        },
+        {
+          "key": "B",
+          "label": "尾盘动能",
+          "score": 13,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "最近30根分钟线 +0.47%｜收在区间 100%",
+            "末5分钟量能比 3.31",
+            "现价 高于日内近似VWAP"
+          ]
+        },
+        {
+          "key": "C",
+          "label": "隔夜质量",
+          "score": 9,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "日内振幅 4.94%｜跳空 2.38%",
+            "成交额 61.3亿｜上影占比 44%"
+          ]
+        },
+        {
+          "key": "D",
+          "label": "板块持续",
+          "score": 9,
+          "max": 20,
+          "state": "数据不足",
+          "evidence": [
+            "板块中位涨幅 +0.46%｜相对全市场 +2.05pct",
+            "上涨占比 59%｜涨停 0｜样本 22",
+            "缺少上一有效快照的连续强势确认"
+          ]
+        },
+        {
+          "key": "E",
+          "label": "公告催化",
+          "score": 6,
+          "max": 10,
+          "state": "通过",
+          "evidence": [
+            "正式公告：关于部分限制性股票回购注销完成的公告"
+          ]
+        },
+        {
+          "key": "G",
+          "label": "反转风险",
+          "score": 18,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "换手 6.79%｜振幅 4.94%｜上影 44%",
+            "未见主要反转风险"
+          ]
+        }
+      ],
+      "risks": [],
+      "channels": {
+        "ordinary": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "尾盘确认，次日早盘按条件退出"
+        },
+        "hot": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "计划2–5个交易日，退潮或失效提前退出"
+        }
+      },
+      "plan": {
+        "feasible": false,
+        "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+        "hold_above": 62.1,
+        "breakout": 75.51,
+        "no_chase_above": 63.47,
+        "invalid_below": 60.44
+      },
+      "features": {
+        "return_5d": 3.96,
+        "volume_ratio": 2.36,
+        "red_green_body_ratio": 1.11,
+        "limit_up_history_60d": 1,
+        "breakout": false
+      },
+      "announcements": [
+        {
+          "title": "关于部分限制性股票回购注销完成的公告",
+          "published_at": "2026-09-12T00:00+08:00",
+          "source": "巨潮资讯正式公告",
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-09-12/1225560694.PDF"
+        }
+      ],
+      "rank": 4
+    },
+    {
+      "code": "600228",
+      "name": "返利科技",
+      "sector": "数字媒体",
+      "price": 11.11,
+      "change_pct": 6.21,
+      "amount": 526563968.0,
+      "turnover_rate": 11.6,
+      "market_time": "2026-09-15T16:11:36+08:00",
+      "score": 67,
+      "level": "弱观察",
+      "modules": [
+        {
+          "key": "A",
+          "label": "当日量价",
+          "score": 18,
+          "max": 20,
+          "state": "通过",
+          "evidence": [
+            "当日涨跌 +6.21%",
+            "收盘位于日内区间 78%",
+            "量比(对近5日) 2.17",
+            "近20日阳/阴实体比 1.20，60日涨停 8 次",
+            "突破20日前高"
+          ]
+        },
+        {
+          "key": "B",
+          "label": "尾盘动能",
+          "score": 13,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "最近30根分钟线 +0.18%｜收在区间 81%",
+            "末5分钟量能比 2.25",
+            "现价 高于日内近似VWAP"
+          ]
+        },
+        {
+          "key": "C",
+          "label": "隔夜质量",
+          "score": 15,
+          "max": 15,
+          "state": "通过",
+          "evidence": [
+            "日内振幅 6.82%｜跳空 2.87%",
+            "成交额 5.3亿｜上影占比 22%"
+          ]
+        },
+        {
+          "key": "D",
+          "label": "板块持续",
+          "score": 8,
+          "max": 20,
+          "state": "数据不足",
+          "evidence": [
+            "板块中位涨幅 +0.20%｜相对全市场 +1.79pct",
+            "上涨占比 57%｜涨停 0｜样本 7",
+            "缺少上一有效快照的连续强势确认"
+          ]
+        },
+        {
+          "key": "E",
+          "label": "公告催化",
+          "score": 5,
+          "max": 10,
+          "state": "数据不足",
+          "evidence": [
+            "已核验 3 条正式公告，未识别明确正向催化"
+          ]
+        },
+        {
+          "key": "G",
+          "label": "反转风险",
+          "score": 8,
+          "max": 20,
+          "state": "不通过",
+          "evidence": [
+            "换手 11.60%｜振幅 6.82%｜上影 22%",
+            "明显偏离MA5"
+          ]
+        }
+      ],
+      "risks": [
+        "明显偏离MA5"
+      ],
+      "channels": {
+        "ordinary": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "尾盘确认，次日早盘按条件退出"
+        },
+        "hot": {
+          "qualified": false,
+          "actionable_now": false,
+          "holding": "计划2–5个交易日，退潮或失效提前退出"
+        }
+      },
+      "plan": {
+        "feasible": true,
+        "message": "存在可观察的触发区间",
+        "hold_above": 10.9,
+        "breakout": 11.28,
+        "no_chase_above": 11.33,
+        "invalid_below": 10.8
+      },
+      "features": {
+        "return_5d": 10.44,
+        "volume_ratio": 2.17,
+        "red_green_body_ratio": 1.2,
+        "limit_up_history_60d": 8,
+        "breakout": true
+      },
+      "announcements": [
+        {
+          "title": "返利网数字科技股份有限公司第十届董事会第十七次会议决议公告",
+          "published_at": "2026-09-08T00:00+08:00",
+          "source": "巨潮资讯正式公告",
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-09-08/1225551984.PDF"
+        },
+        {
+          "title": "返利网数字科技股份有限公司关于调整使用自有资金购买理财产品投资品种的公告",
+          "published_at": "2026-09-08T00:00+08:00",
+          "source": "巨潮资讯正式公告",
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-09-08/1225551981.PDF"
+        },
+        {
+          "title": "返利网数字科技股份有限公司关于对外投资私募基金的进展(减资)公告",
+          "published_at": "2026-09-08T00:00+08:00",
+          "source": "巨潮资讯正式公告",
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-09-08/1225551979.PDF"
+        }
+      ],
+      "rank": 5
+    }
+  ],
+  "diagnostics": {
+    "market_rows": 3116,
+    "prefilter": {
+      "input": 3116,
+      "invalid_quote": 74,
+      "liquidity": 2171,
+      "price_move": 495,
+      "passed": 376
+    },
+    "details_requested": 36,
+    "details_succeeded": 36,
+    "detail_errors": [],
+    "announcement_targets": 12,
+    "announcement_errors": {},
+    "shortlist_before_limit": 8,
+    "previous_close_reused": true,
+    "source_generated_at": "2026-09-15T23:20:27+08:00"
+  },
+  "sources": [
+    {
+      "source": "东方财富沪深A股行情",
+      "source_url": "https://push2.eastmoney.com/api/qt/clist/get",
+      "declared_rows": 5559,
+      "received_rows": 5559,
+      "mainboard_rows": 3116,
+      "coverage": 1.0
+    },
+    {
+      "source": "腾讯财经前复权日K与分钟线",
+      "source_url": "https://web.ifzq.gtimg.cn/"
+    },
+    {
+      "source": "巨潮资讯正式公告",
+      "source_url": "https://www.cninfo.com.cn/"
+    }
+  ],
+  "error": null,
+  "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。",
+  "trade_date": "2026-09-15",
+  "data_context": {
+    "code": "PREVIOUS_CLOSE",
+    "label": "上一交易日收盘",
+    "trade_date": "2026-09-15",
+    "source_generated_at": "2026-09-15T23:20:27+08:00",
+    "message": "9:25竞价节点前展示最近一次成功收盘快照，不执行新筛选。"
+  },
   "analysis": {
     "mode": "规则模板",
-    "summary": "本次行情更新未通过完整性检查：RuntimeError: 行情日期 2026-09-15 与当前日期 2026-09-16 不一致。系统已经停止筛选，没有沿用旧候选，也不生成盘面方向判断。",
-    "sections": []
-  },
-  "diagnostics": {},
-  "sources": [],
-  "error": "RuntimeError: 行情日期 2026-09-15 与当前日期 2026-09-16 不一致",
-  "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。"
+    "summary": "上一交易日收盘快照显示市场处于偏防守状态。主板上涨525家、下跌2483家，上涨占比17.4%；个股涨跌中位数-1.59%。涨停31家、跌停29家，当前统计成交额9881亿元。 连续性已经确认的强势方向为风电设备（相对强度+4.84个百分点、上涨占比86%）、电子化学品Ⅱ（相对强度+3.23个百分点、上涨占比75%）、半导体（相对强度+2.31个百分点、上涨占比70%）。优先观察其中有辨识度且评分通过的核心个股。",
+    "sections": [
+      {
+        "label": "市场环境",
+        "text": "上一交易日收盘快照显示市场处于偏防守状态。主板上涨525家、下跌2483家，上涨占比17.4%；个股涨跌中位数-1.59%。涨停31家、跌停29家，当前统计成交额9881亿元。"
+      },
+      {
+        "label": "资金方向",
+        "text": "连续性已经确认的强势方向为风电设备（相对强度+4.84个百分点、上涨占比86%）、电子化学品Ⅱ（相对强度+3.23个百分点、上涨占比75%）、半导体（相对强度+2.31个百分点、上涨占比70%）。优先观察其中有辨识度且评分通过的核心个股。"
+      },
+      {
+        "label": "策略状态",
+        "text": "普通隔夜通道关闭，合格候选0只：9:25前仅展示上一交易日收盘。热点波段通道关闭，合格候选0只：9:25前仅展示上一交易日收盘。"
+      },
+      {
+        "label": "候选解读",
+        "text": "当前有5只股票进入候选池，评分居前的是华微电子（600360）82分。已通过模块：A、B、C、D、G。仍需确认模块：E。其突破确认价与不追价区间不匹配，当前不具备可执行跟随区间。"
+      },
+      {
+        "label": "风险提示",
+        "text": "当前为9:25前的上一交易日收盘快照，所有执行通道保持关闭；市场环境处于防守状态，普通隔夜通道维持关闭。候选是条件化研究结果，不代表确定性收益。"
+      }
+    ]
+  }
 }
