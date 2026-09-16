@@ -82,6 +82,18 @@ function renderAnalysis(data) {
   panel.innerHTML = analysis.sections.map(item => `<article class="analysis-item"><h3>${escapeHtml(item.label)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("");
 }
 
+function renderAI(data) {
+  const section = $("#ai-section");
+  const analysis = data.ai_analysis;
+  if (!analysis || analysis.status !== "SUCCESS" || !analysis.text) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+  $("#ai-mode").textContent = `${analysis.provider || "AI"} · ${analysis.model || "模型"}`;
+  $("#ai-panel").innerHTML = `<p class="ai-copy">${escapeHtml(analysis.text)}</p><p class="ai-disclaimer">${escapeHtml(analysis.disclaimer || "AI解读不参与评分。")}</p>`;
+}
+
 function channelBadge(candidate, key, label) {
   const channel = candidate.channels[key];
   const cls = channel.actionable_now ? "ready" : channel.qualified ? "wait" : "closed";
@@ -130,7 +142,9 @@ function renderMethod(data) {
   const sources = (data.sources || []).map(source => `<li><a href="${escapeHtml(source.source_url)}" rel="noreferrer">${escapeHtml(source.source)}</a></li>`).join("");
   const ordinary = data.channels?.ordinary;
   const hot = data.channels?.hot;
-  $("#method-panel").innerHTML = `<strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
+  const ai = data.ai_analysis;
+  const aiStatus = ai?.status === "SUCCESS" ? `${escapeHtml(ai.provider)} ${escapeHtml(ai.model)} 已生成` : ai?.status === "FAILED" ? "调用失败，已保留规则模板" : "未启用，使用规则模板";
+  $("#method-panel").innerHTML = `<strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
 }
 
 function render(data) {
@@ -139,7 +153,7 @@ function render(data) {
   const label = context?.label || data.phase?.label || "状态未知";
   const tradeDate = context?.trade_date ? ` · ${context.trade_date}` : "";
   $("#asof").textContent = `${label}${tradeDate}\n${fmtTime(data.generated_at)} 生成`;
-  renderStatus(data); renderCheckpoints(data); renderIndices(data); renderSectors(data); renderAnalysis(data); renderCandidates(data); renderMethod(data);
+  renderStatus(data); renderCheckpoints(data); renderIndices(data); renderSectors(data); renderAnalysis(data); renderAI(data); renderCandidates(data); renderMethod(data);
 }
 
 document.addEventListener("click", event => {
