@@ -29,9 +29,12 @@ function renderStatus(data) {
     NEUTRAL:"资金分歧较大，优先等待板块连续性和个股确认，减少临盘猜测。",
     RISK_OFF:"普通隔夜通道关闭。热点通道也必须有连续强板块与个股结构确认。"
   };
+  const previousClose = data.data_context?.code === "PREVIOUS_CLOSE";
+  const snapshotNote = previousClose ? `<p class="snapshot-note"><strong>上一交易日收盘 · ${escapeHtml(data.trade_date || "日期未知")}</strong><br>${escapeHtml(data.data_context.message)}</p>` : "";
   panel.className = "status-panel";
   panel.innerHTML = `
     <div>
+      ${snapshotNote}
       <p class="eyebrow">市场环境闸门</p>
       <div class="regime-label ${classes[market.regime]}">${labels[market.regime]}</div>
       <p class="regime-note">${notes[market.regime]} 全市场涨跌中位数 ${fmtPct(market.median_pct)}，成交额 ${fmtAmount(market.market_amount)}。</p>
@@ -46,7 +49,7 @@ function renderStatus(data) {
 
 function renderCheckpoints(data) {
   const points = [["09:25","竞价"],["10:30","早盘"],["13:05","午后"],["14:30","尾盘"],["15:05","收盘"]];
-  const codeToTime = {AUCTION:"09:25", MORNING:"10:30", LUNCH:"13:05", AFTERNOON:"13:05", TAIL:"14:30", CLOSED:"15:05"};
+  const codeToTime = {PREOPEN:"09:25", AUCTION:"09:25", MORNING:"10:30", LUNCH:"13:05", AFTERNOON:"13:05", TAIL:"14:30", CLOSED:"15:05"};
   $("#checkpoint-panel").innerHTML = points.map(([time, label]) => `<div class="checkpoint ${codeToTime[data.phase.code] === time ? "current" : ""}">${time}<small>${label}</small></div>`).join("");
 }
 
@@ -132,7 +135,10 @@ function renderMethod(data) {
 
 function render(data) {
   DATA = data;
-  $("#asof").textContent = `${data.phase?.label || "状态未知"}\n${fmtTime(data.generated_at)} 生成`;
+  const context = data.data_context;
+  const label = context?.label || data.phase?.label || "状态未知";
+  const tradeDate = context?.trade_date ? ` · ${context.trade_date}` : "";
+  $("#asof").textContent = `${label}${tradeDate}\n${fmtTime(data.generated_at)} 生成`;
   renderStatus(data); renderCheckpoints(data); renderIndices(data); renderSectors(data); renderAnalysis(data); renderCandidates(data); renderMethod(data);
 }
 
