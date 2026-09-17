@@ -1,6 +1,13 @@
 name = "a-share-dashboard-scheduler"
 main = "src/index.mjs"
 compatibility_date = "2026-09-16"
+preview_urls = false
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
 
 [triggers]
 crons = [
@@ -10,3 +17,4 @@ crons = [
   "5,20,35,50 5-6 * * MON-FRI",
   "5 7 * * MON-FRI"
 ]
+
