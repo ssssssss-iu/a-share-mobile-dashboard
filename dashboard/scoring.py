@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import math
@@ -284,7 +283,10 @@ def score_a(q, f, cfg):
     return _module("A", score, "通过" if score >= cfg["scoring"]["a_pass"] else "不通过", evidence)
 
 
-def score_b(q, f, cfg):
+def score_b(q, f, cfg, now=None):
+    phase = phase_at(now or datetime.now(TZ))
+    if phase["code"] not in ("TAIL", "CLOSED"):
+        return _module("B", 0, "数据不足", ["14:20前不评估尾盘动能，等待尾盘窗口确认"])
     tail = f.get("tail") if f.get("complete") else None
     if not tail:
         return _module("B", 8, "数据不足", ["当前时点没有至少10根当日分钟线，尾盘确认不可用"])
@@ -438,10 +440,11 @@ def score_candidate(
     announcement_checked=True,
     now=None,
 ):
+    evaluation_time = now or datetime.now(TZ)
     features = technical_features(quote, detail, trade_date)
     modules = [
         score_a(quote, features, cfg),
-        score_b(quote, features, cfg),
+        score_b(quote, features, cfg, evaluation_time),
         score_c(quote, features, cfg),
         score_d(sector, cfg),
         score_e(announcements, announcement_error, announcement_checked),
@@ -458,7 +461,7 @@ def score_candidate(
     else:
         level = "排除"
     module_map = {item["key"]: item for item in modules}
-    phase = phase_at(now or datetime.now(TZ))
+    phase = phase_at(evaluation_time)
     support = max(features.get("ma5") or 0, (features.get("intraday_vwap_approx") or 0))
     high = quote.get("high") or quote["price"]
     atr = features.get("atr20") or quote["price"] * 0.02

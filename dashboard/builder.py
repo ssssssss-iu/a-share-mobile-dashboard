@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import json
@@ -12,6 +11,7 @@ from zoneinfo import ZoneInfo
 
 from .data import MarketClient, load_json
 from .narrative import build_analysis
+from .schedule import should_write_close_history
 from .scoring import market_summary, phase_at, prefilter, score_candidate
 
 
@@ -66,9 +66,10 @@ def previous_close_snapshot(snapshot: dict, now: datetime) -> dict:
         if channel:
             channel["open"] = False
             channel["message"] = "9:25前仅展示上一交易日收盘"
-    for candidate in result.get("candidates") or []:
-        for channel in (candidate.get("channels") or {}).values():
-            channel["actionable_now"] = False
+    for collection in ("rankings", "candidates"):
+        for candidate in result.get(collection) or []:
+            for channel in (candidate.get("channels") or {}).values():
+                channel["actionable_now"] = False
     result.setdefault("diagnostics", {})["previous_close_reused"] = True
     result["diagnostics"]["source_generated_at"] = source_generated_at
     result["analysis"] = build_analysis(result)
@@ -103,6 +104,7 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
         "indices": [],
         "sectors": [],
         "channels": {},
+        "rankings": [],
         "candidates": [],
         "analysis": None,
         "diagnostics": {},
@@ -196,9 +198,13 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                 )
             )
         final_scores.sort(key=lambda item: (-item["score"], -item["amount"], item["code"]))
-        candidates = [item for item in final_scores if item["score"] >= cfg["levels"]["weak"]][: cfg["universe"]["candidate_limit"]]
-        for rank, item in enumerate(candidates, 1):
+        for rank, item in enumerate(final_scores, 1):
             item["rank"] = rank
+            item["in_candidate_pool"] = item["score"] >= cfg["levels"]["weak"]
+        rankings = deepcopy(final_scores[: cfg["universe"].get("ranking_limit", 5)])
+        candidates = deepcopy(
+            [item for item in final_scores if item["in_candidate_pool"]][: cfg["universe"]["candidate_limit"]]
+        )
 
         ordinary_qualified = sum(item["channels"]["ordinary"]["qualified"] for item in candidates)
         hot_qualified = sum(item["channels"]["hot"]["qualified"] for item in candidates)
@@ -229,6 +235,7 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                         "message": "当前不在盘中执行窗口" if not base["phase"]["hot_open"] else "仅评估连续强板块中的核心",
                     },
                 },
+                "rankings": rankings,
                 "candidates": candidates,
                 "diagnostics": {
                     "market_rows": len(rows),
@@ -250,6 +257,7 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                     "announcement_attempt_errors": announcement_attempt_errors,
                     "announcement_errors": announcement_errors,
                     "shortlist_before_limit": sum(item["score"] >= cfg["levels"]["weak"] for item in final_scores),
+                    "ranking_count": len(rankings),
                 },
                 "sources": [
                     source,
@@ -262,7 +270,8 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
         )
         base["analysis"] = build_analysis(base)
         write_json(output, base)
-        write_json(history_dir / f"{trade_date}-{now.strftime('%H%M')}.json", base)
+        if should_write_close_history(now):
+            write_json(history_dir / f"{trade_date}-close.json", base)
         return base
     except Exception as exc:
         base["status"] = "FAILED"

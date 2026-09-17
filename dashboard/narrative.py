@@ -66,12 +66,16 @@ def _strategy_text(payload):
 
 def _candidate_text(payload):
     candidates = payload.get("candidates") or []
-    if not candidates:
-        return "当前没有股票达到60分候选线。保持空候选，等待市场、板块、个股和买点重新共振。"
-    top = candidates[0]
+    rankings = payload.get("rankings") or candidates
+    if not rankings:
+        return "本次没有形成有效评分榜。保持空候选，等待市场、板块、个股和买点重新共振。"
+    top = rankings[0]
     passed = [item["key"] for item in top.get("modules", []) if item.get("state") == "通过"]
     blocked = [item["key"] for item in top.get("modules", []) if item.get("state") != "通过"]
-    text = f"当前有{len(candidates)}只股票进入候选池，评分居前的是{top['name']}（{top['code']}）{top['score']}分。"
+    text = (
+        f"本次展示评分前{len(rankings)}只，其中{len(candidates)}只达到60分候选线。"
+        f"评分居前的是{top['name']}（{top['code']}）{top['score']}分。"
+    )
     if passed:
         text += f"已通过模块：{'、'.join(passed)}。"
     if blocked:

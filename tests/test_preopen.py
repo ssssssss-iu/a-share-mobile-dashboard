@@ -28,6 +28,11 @@ def closed_snapshot():
             "ordinary": {"name": "普通隔夜", "open": False, "qualified_count": 1, "message": "收盘"},
             "hot": {"name": "热点波段", "open": False, "qualified_count": 1, "message": "收盘"},
         },
+        "rankings": [{
+            "name": "示例股份", "code": "600001", "score": 80,
+            "modules": [], "plan": {"feasible": True},
+            "channels": {"ordinary": {"actionable_now": True}, "hot": {"actionable_now": True}},
+        }],
         "candidates": [{
             "name": "示例股份", "code": "600001", "score": 80,
             "modules": [], "plan": {"feasible": True},
@@ -53,6 +58,7 @@ class PreopenTests(unittest.TestCase):
         self.assertFalse(result["channels"]["ordinary"]["open"])
         self.assertFalse(result["channels"]["hot"]["open"])
         self.assertFalse(result["candidates"][0]["channels"]["ordinary"]["actionable_now"])
+        self.assertFalse(result["rankings"][0]["channels"]["hot"]["actionable_now"])
         self.assertIn("上一交易日收盘快照", result["analysis"]["summary"])
 
     def test_history_recovers_when_latest_snapshot_failed(self):

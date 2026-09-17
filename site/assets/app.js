@@ -14,6 +14,7 @@ let DATA = null;
 let FILTER = "all";
 let LOAD_IN_FLIGHT = false;
 const AUTO_REFRESH_MS = 60 * 1000;
+const UPDATE_POINTS = ["09:25","09:40","09:55","10:10","10:25","10:40","10:55","11:10","11:25","13:05","13:20","13:35","13:50","14:05","14:20","14:35","14:50","15:05"];
 
 function renderStatus(data) {
   const panel = $("#status-panel");
@@ -50,9 +51,20 @@ function renderStatus(data) {
 }
 
 function renderCheckpoints(data) {
-  const points = [["09:25","竞价"],["10:30","早盘"],["13:05","午后"],["14:30","尾盘"],["15:05","收盘"]];
-  const codeToTime = {PREOPEN:"09:25", AUCTION:"09:25", MORNING:"10:30", LUNCH:"13:05", AFTERNOON:"13:05", TAIL:"14:30", CLOSED:"15:05"};
-  $("#checkpoint-panel").innerHTML = points.map(([time, label]) => `<div class="checkpoint ${codeToTime[data.phase.code] === time ? "current" : ""}">${time}<small>${label}</small></div>`).join("");
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {weekday:"short", hour:"2-digit", minute:"2-digit", hour12:false, timeZone:"Asia/Shanghai"}).formatToParts(new Date()).map(part => [part.type, part.value]));
+  const nowMinute = Number(parts.hour) * 60 + Number(parts.minute);
+  const next = UPDATE_POINTS.find(time => {
+    const [hour, minute] = time.split(":").map(Number);
+    return hour * 60 + minute > nowMinute;
+  });
+  const workday = !["Sat", "Sun"].includes(parts.weekday);
+  const nextLabel = workday && next ? `今天 ${next}` : "下一工作日 09:25";
+  const points = [
+    [fmtTime(data.generated_at), "上次生成"],
+    ["每15分钟", "上午09:25起 · 下午13:05起"],
+    [nextLabel, "下次计划"],
+  ];
+  $("#checkpoint-panel").innerHTML = points.map(([value, label], index) => `<div class="checkpoint ${index === 2 ? "current" : ""}">${escapeHtml(value)}<small>${escapeHtml(label)}</small></div>`).join("");
 }
 
 function renderIndices(data) {
@@ -108,6 +120,8 @@ function candidateCard(item) {
   const evidence = item.modules.map(module => `<div class="evidence-item"><strong>${module.key} ${escapeHtml(module.label)} · ${module.state} · ${module.score}/${module.max}</strong><p>${module.evidence.map(escapeHtml).join("；")}</p></div>`).join("");
   const risks = item.risks?.length ? `<span class="badge closed">风险：${escapeHtml(item.risks.join("、"))}</span>` : "";
   const planState = item.plan.feasible ? "" : `<span class="badge wait">买点未确认</span>`;
+  const inCandidatePool = item.in_candidate_pool ?? Number(item.score) >= 60;
+  const poolBadge = inCandidatePool ? `<span class="badge ready">已进入候选池</span>` : `<span class="badge closed">未达到候选线</span>`;
   return `<article class="candidate-card" data-ordinary="${item.channels.ordinary.qualified}" data-hot="${item.channels.hot.qualified}">
     <div class="score-rail"><span class="score-value">${item.score}</span><span class="score-max">/ 100</span></div>
     <div class="candidate-body">
@@ -115,7 +129,7 @@ function candidateCard(item) {
         <div><h3 class="stock-name">${escapeHtml(item.name)}</h3><div class="stock-meta">${item.code} · ${escapeHtml(item.sector)} · #${item.rank}</div></div>
         <div class="price">${item.price.toFixed(2)}<br><span class="${pctClass(item.change_pct)}">${fmtPct(item.change_pct)}</span></div>
       </div>
-      <div class="channel-row">${channelBadge(item,"ordinary","普通隔夜")}${channelBadge(item,"hot","热点波段")}<span class="badge">${escapeHtml(item.level)}</span>${planState}${risks}</div>
+      <div class="channel-row">${poolBadge}${channelBadge(item,"ordinary","普通隔夜")}${channelBadge(item,"hot","热点波段")}<span class="badge">${escapeHtml(item.level)}</span>${planState}${risks}</div>
       <div class="module-grid" aria-label="六模块评分">${modules}</div>
       <div class="trade-plan">
         <div class="plan-cell"><span>承接参考</span><strong>${item.plan.hold_above?.toFixed(2) ?? "—"}</strong></div>
@@ -135,9 +149,11 @@ function renderCandidates(data) {
     list.innerHTML = `<div class="empty"><h3>停止筛选</h3><p>核心行情失败时不发布候选，也不使用旧结果补位。</p></div>`;
     return;
   }
-  const items = (data.candidates || []).filter(item => FILTER === "all" || item.channels[FILTER]?.qualified);
-  $("#candidate-count").textContent = `${items.length} 只`;
-  list.innerHTML = items.length ? items.map(candidateCard).join("") : `<div class="empty"><h3>当前没有合格候选</h3><p>错过不是亏损。等市场、板块、个股和买点重新形成共振。</p></div>`;
+  const rankings = data.rankings || data.candidates || [];
+  const items = rankings.filter(item => FILTER === "all" || item.channels[FILTER]?.qualified);
+  const candidateCount = (data.candidates || []).length;
+  $("#candidate-count").textContent = FILTER === "all" ? `${items.length} 只 · 候选 ${candidateCount} 只` : `${items.length} 只`;
+  list.innerHTML = items.length ? items.map(candidateCard).join("") : `<div class="empty"><h3>${FILTER === "all" ? "本次没有有效评分" : "该通道没有合格股票"}</h3><p>评分榜只用于比较强弱；未达到条件时保持空候选。</p></div>`;
 }
 
 function renderMethod(data) {
@@ -146,7 +162,7 @@ function renderMethod(data) {
   const hot = data.channels?.hot;
   const ai = data.ai_analysis;
   const aiStatus = ai?.status === "SUCCESS" ? `${escapeHtml(ai.provider)} ${escapeHtml(ai.model)} 已生成` : ai?.status === "FAILED" ? "调用失败，已保留规则模板" : "未启用，使用规则模板";
-  $("#method-panel").innerHTML = `<strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
+  $("#method-panel").innerHTML = `<strong>榜单边界：</strong>每次展示评分前5只；只有达到60分的股票才进入严格候选池，评分榜不等于推荐。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
 }
 
 function render(data) {
@@ -174,9 +190,10 @@ async function loadLatest({initial = false} = {}) {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const next = await response.json();
     if (!DATA || next.generated_at !== DATA.generated_at || next.status !== DATA.status) render(next);
+    else renderCheckpoints(next);
   } catch (error) {
     if (initial || !DATA) {
-      render({status:"FAILED", generated_at:new Date().toISOString(), phase:{code:"CLOSED",label:"读取失败"}, channels:{}, candidates:[], error:`页面无法读取 latest.json：${error.message}`, strategy:{note:""}, disclaimer:"请检查 GitHub Actions 运行日志。"});
+      render({status:"FAILED", generated_at:new Date().toISOString(), phase:{code:"CLOSED",label:"读取失败"}, channels:{}, rankings:[], candidates:[], error:`页面无法读取 latest.json：${error.message}`, strategy:{note:""}, disclaimer:"请检查 GitHub Actions 运行日志。"});
     }
   } finally {
     LOAD_IN_FLIGHT = false;

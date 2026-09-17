@@ -1,4 +1,3 @@
-
 import copy
 import unittest
 from datetime import datetime
@@ -70,6 +69,19 @@ class ScoringTests(unittest.TestCase):
         result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [{"title": "关于股份回购的公告"}], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
         self.assertEqual(result["score"], sum(item["score"] for item in result["modules"]))
         self.assertEqual([item["key"] for item in result["modules"]], ["A", "B", "C", "D", "E", "G"])
+
+    def test_tail_momentum_is_not_scored_before_1420(self):
+        result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 19, tzinfo=TZ))
+        module_b = next(item for item in result["modules"] if item["key"] == "B")
+        self.assertEqual(module_b["score"], 0)
+        self.assertEqual(module_b["state"], "数据不足")
+        self.assertIn("14:20前", module_b["evidence"][0])
+
+    def test_tail_momentum_can_be_scored_at_1420(self):
+        result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 20, tzinfo=TZ))
+        module_b = next(item for item in result["modules"] if item["key"] == "B")
+        self.assertGreater(module_b["score"], 0)
+        self.assertNotIn("14:20前", module_b["evidence"][0])
 
     def test_all_announcement_sources_failed_scores_zero_without_blocking_candidate(self):
         result = score_candidate(
