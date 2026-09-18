@@ -45,9 +45,10 @@ def symbol(code: str) -> str:
 
 
 class MarketClient:
-    def __init__(self, timeout: int = 15, workers: int = 6):
+    def __init__(self, timeout: int = 15, workers: int = 6, minimum_quote_coverage: float = 0.90):
         self.timeout = timeout
         self.workers = workers
+        self.minimum_quote_coverage = minimum_quote_coverage
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": UA, "Referer": "https://quote.eastmoney.com/"})
         self._cninfo_lock = threading.Lock()
@@ -136,8 +137,11 @@ class MarketClient:
                 "market_time": datetime.fromtimestamp(stamp, TZ).isoformat(timespec="seconds") if stamp else None,
             }
         coverage = len(by_code) / total if total else 0
-        if errors or coverage < 0.95:
-            raise RuntimeError(f"全市场行情不完整: {len(by_code)}/{total}, 失败页 {len(errors)}")
+        if coverage < self.minimum_quote_coverage:
+            raise RuntimeError(
+                f"全市场行情不完整: {len(by_code)}/{total} ({coverage:.1%}), "
+                f"低于 {self.minimum_quote_coverage:.0%} 门槛, 失败页 {len(errors)}"
+            )
         output = [row for row in by_code.values() if mainboard(row["code"], row["name"])]
         return output, {
             "source": "东方财富沪深A股行情",
@@ -146,6 +150,8 @@ class MarketClient:
             "received_rows": len(by_code),
             "mainboard_rows": len(output),
             "coverage": coverage,
+            "minimum_coverage": self.minimum_quote_coverage,
+            "failed_pages": len(errors),
         }
 
     def index_quotes(self) -> list[dict]:
