@@ -120,7 +120,9 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
                 write_json(output, result)
                 return result
 
-        client = MarketClient()
+        client = MarketClient(
+            minimum_quote_coverage=float(cfg["universe"].get("minimum_quote_coverage", 0.90))
+        )
         with ThreadPoolExecutor(max_workers=2) as pool:
             market_future = pool.submit(client.market_snapshot)
             index_future = pool.submit(client.index_quotes)
