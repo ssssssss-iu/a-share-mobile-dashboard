@@ -68,13 +68,20 @@ def _run(request: dict) -> dict:
         if not symbols:
             raise RuntimeError("no symbols supplied")
         snapshots = {}
-        chunk_size = max(1, int(request.get("snapshot_chunk_size") or 50))
         snapshot_fields = ["Now", "LastClose", "Open", "Max", "Min", "Volume", "Amount", "Average"]
-        for offset in range(0, len(symbols), chunk_size):
-            chunk = symbols[offset:offset + chunk_size]
-            value = tqs.get_market_snapshot_batch(chunk, snapshot_fields, return_df=False)
-            if isinstance(value, dict):
-                snapshots.update(value)
+        batch_snapshot = hasattr(tqs, "get_market_snapshot_batch")
+        if batch_snapshot:
+            chunk_size = max(1, int(request.get("snapshot_chunk_size") or 50))
+            for offset in range(0, len(symbols), chunk_size):
+                chunk = symbols[offset:offset + chunk_size]
+                value = tqs.get_market_snapshot_batch(chunk, snapshot_fields, return_df=False)
+                if isinstance(value, dict):
+                    snapshots.update(value)
+        else:
+            for symbol in symbols:
+                value = tqs.get_market_snapshot(symbol, snapshot_fields)
+                if isinstance(value, dict) and value:
+                    snapshots[symbol] = value
 
         action = request.get("action", "validate")
         daily, minutes, auction = {}, {}, {}
@@ -98,7 +105,8 @@ def _run(request: dict) -> dict:
             )
             daily = _records_from_market_data(daily_raw, detail_symbols)
             minutes = _records_from_market_data(minute_raw, detail_symbols)
-            if request.get("include_auction"):
+            auction_supported = hasattr(tqs, "get_call_auction_batch")
+            if request.get("include_auction") and auction_supported:
                 value = tqs.get_call_auction_batch(
                     detail_symbols,
                     ["Time", "Price", "Volume", "LeaveQty", "InOutFlag", "TotalNum"],
@@ -113,6 +121,10 @@ def _run(request: dict) -> dict:
         "daily": daily,
         "minutes": minutes,
         "auction": auction,
+        "capabilities": {
+            "batch_snapshot": batch_snapshot,
+            "call_auction": hasattr(tqs, "get_call_auction_batch"),
+        },
     }
 
 
@@ -124,8 +136,12 @@ def main() -> int:
         sys.stdout.write("\n")
         return 0
     except Exception as exc:
-        print(f"TdxAiData bridge failed: {type(exc).__name__}: {str(exc)[:300]}", file=sys.stderr)
-        json.dump({"status": "FAILED", "error_type": type(exc).__name__}, sys.stdout)
+        token = os.getenv("TDX_AI_DATA_TOKEN", "")
+        message = str(exc)[:300]
+        if token:
+            message = message.replace(token, "***")
+        print(f"TdxAiData bridge failed: {type(exc).__name__}: {message}", file=sys.stderr)
+        json.dump({"status": "FAILED", "error_type": type(exc).__name__, "error_message": message}, sys.stdout)
         sys.stdout.write("\n")
         return 1
 

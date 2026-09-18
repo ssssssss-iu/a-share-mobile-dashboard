@@ -150,6 +150,7 @@ class TdxAiDataSource:
             "checked_codes": len(payload.get("snapshots") or {}),
             "message": "数据服务连接成功，等待交易日影子对照" if status == "CONNECTED" else "连接失败，继续使用原数据源",
             "error_type": payload.get("error_type"),
+            "error_message": payload.get("error_message"),
         }
 
     def validate(self, codes: list[str], trade_date: date | str, quotes: dict, details: dict, phase_code: str) -> dict:
@@ -178,6 +179,7 @@ class TdxAiDataSource:
                 "status": "FAILED",
                 "message": "TdxAiData验证失败，当前评分继续使用原数据源",
                 "error_type": payload.get("error_type"),
+                "error_message": payload.get("error_message"),
             }
         result = summarize_validation(
             payload,
