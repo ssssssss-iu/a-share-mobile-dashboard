@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0",
   "status": "SUCCESS",
-  "generated_at": "2026-09-18T14:50:34+08:00",
+  "generated_at": "2026-09-18T15:02:32+08:00",
   "phase": {
-    "code": "TAIL",
-    "label": "尾盘窗口",
-    "ordinary_open": true,
-    "hot_open": true
+    "code": "CLOSED",
+    "label": "收盘复盘",
+    "ordinary_open": false,
+    "hot_open": false
   },
   "strategy": {
     "id": "a-share-tail-hot-v2",
@@ -25,178 +25,164 @@
   },
   "market": {
     "regime": "RISK_ON",
-    "environment_score": 1.38,
-    "breadth": 0.7232,
-    "advancers": 2127,
-    "decliners": 814,
-    "flat": 103,
-    "median_pct": 0.7,
+    "environment_score": 1.399,
+    "breadth": 0.7277,
+    "advancers": 2135,
+    "decliners": 799,
+    "flat": 110,
+    "median_pct": 0.73,
     "limit_up_count": 75,
     "limit_down_count": 0,
-    "market_amount": 1126037777125.54,
-    "market_time": "2026-09-18T14:51:15+08:00",
+    "market_amount": 1199047365056.6787,
+    "market_time": "2026-09-18T15:02:45+08:00",
     "sector_coverage": 1.0,
     "continuity_available": true,
-    "strong_sector_count": 26
+    "strong_sector_count": 25
   },
   "indices": [
     {
       "code": "000001.SH",
       "name": "上证指数",
-      "price": 3913.81,
-      "change_pct": 0.99,
-      "market_time": "2026-09-18T14:50:33+08:00"
+      "price": 3911.87,
+      "change_pct": 0.94,
+      "market_time": "2026-09-18T15:02:00+08:00"
     },
     {
       "code": "399001.SZ",
       "name": "深证成指",
-      "price": 13640.07,
+      "price": 13640.87,
       "change_pct": 1.72,
-      "market_time": "2026-09-18T14:50:30+08:00"
+      "market_time": "2026-09-18T15:02:27+08:00"
     },
     {
       "code": "000300.SH",
       "name": "沪深300",
-      "price": 4510.17,
-      "change_pct": 1.12,
-      "market_time": "2026-09-18T14:50:33+08:00"
+      "price": 4507.39,
+      "change_pct": 1.06,
+      "market_time": "2026-09-18T15:02:00+08:00"
     }
   ],
   "sectors": [
     {
       "sector": "半导体",
       "members": 33,
-      "median_pct": 3.2,
-      "breadth": 0.9393939393939394,
-      "amount": 87076498309.06001,
+      "median_pct": 3.16,
+      "breadth": 0.9696969696969697,
+      "amount": 91680100470.20001,
       "limit_up_count": 4,
-      "relative_strength": 2.5,
+      "relative_strength": 2.43,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 3.08,
+      "previous_median_pct": 3.2,
       "amount_percentile": 0.9916666666666667
     },
     {
       "sector": "航天装备Ⅱ",
       "members": 5,
-      "median_pct": 2.72,
+      "median_pct": 2.89,
       "breadth": 1.0,
-      "amount": 3846377134.52,
+      "amount": 4127116016.5099998,
       "limit_up_count": 0,
-      "relative_strength": 2.0200000000000005,
+      "relative_strength": 2.16,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 2.55,
+      "previous_median_pct": 2.72,
       "amount_percentile": 0.475
     },
     {
       "sector": "光伏设备",
       "members": 24,
-      "median_pct": 2.295,
+      "median_pct": 2.41,
       "breadth": 0.9583333333333334,
-      "amount": 6804036899.91,
+      "amount": 7358951942.070001,
       "limit_up_count": 1,
-      "relative_strength": 1.595,
+      "relative_strength": 1.6800000000000002,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 2.17,
+      "previous_median_pct": 2.295,
       "amount_percentile": 0.6583333333333333
     },
     {
       "sector": "其他电子Ⅱ",
       "members": 14,
-      "median_pct": 2.125,
+      "median_pct": 2.2800000000000002,
       "breadth": 1.0,
-      "amount": 6970781483.8,
+      "amount": 7465409032.17,
       "limit_up_count": 1,
-      "relative_strength": 1.425,
+      "relative_strength": 1.5500000000000003,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 2.085,
+      "previous_median_pct": 2.125,
       "amount_percentile": 0.6666666666666666
-    },
-    {
-      "sector": "房地产开发",
-      "members": 73,
-      "median_pct": 2.11,
-      "breadth": 0.9041095890410958,
-      "amount": 13621680867.11,
-      "limit_up_count": 3,
-      "relative_strength": 1.41,
-      "strong": true,
-      "previous_strong": true,
-      "confirmed": true,
-      "previous_median_pct": 1.85,
-      "amount_percentile": 0.8083333333333333
     },
     {
       "sector": "个护用品",
       "members": 9,
-      "median_pct": 2.03,
+      "median_pct": 2.18,
       "breadth": 0.8888888888888888,
-      "amount": 1335460848.68,
+      "amount": 1420354820.52,
       "limit_up_count": 0,
-      "relative_strength": 1.3299999999999998,
+      "relative_strength": 1.4500000000000002,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
       "previous_median_pct": 2.03,
-      "amount_percentile": 0.14166666666666666
-    },
-    {
-      "sector": "金属新材料",
-      "members": 13,
-      "median_pct": 1.91,
-      "breadth": 0.8461538461538461,
-      "amount": 4705931474.44,
-      "limit_up_count": 0,
-      "relative_strength": 1.21,
-      "strong": true,
-      "previous_strong": true,
-      "confirmed": true,
-      "previous_median_pct": 1.88,
-      "amount_percentile": 0.5333333333333333
+      "amount_percentile": 0.13333333333333333
     },
     {
       "sector": "其他电源设备Ⅱ",
       "members": 15,
-      "median_pct": 1.89,
+      "median_pct": 2.09,
       "breadth": 0.8666666666666667,
-      "amount": 8656223584.95,
+      "amount": 9167080599.17,
       "limit_up_count": 0,
-      "relative_strength": 1.19,
+      "relative_strength": 1.3599999999999999,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 1.83,
+      "previous_median_pct": 1.89,
       "amount_percentile": 0.7333333333333333
     },
     {
-      "sector": "装修装饰Ⅱ",
-      "members": 15,
-      "median_pct": 1.88,
-      "breadth": 0.8,
-      "amount": 2664089889.6800003,
-      "limit_up_count": 1,
-      "relative_strength": 1.18,
+      "sector": "房地产开发",
+      "members": 73,
+      "median_pct": 2.01,
+      "breadth": 0.9041095890410958,
+      "amount": 14476155014.120005,
+      "limit_up_count": 3,
+      "relative_strength": 1.2799999999999998,
       "strong": true,
-      "previous_strong": false,
-      "confirmed": false,
-      "previous_median_pct": null,
-      "amount_percentile": 0.35
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 2.11,
+      "amount_percentile": 0.8083333333333333
+    },
+    {
+      "sector": "金属新材料",
+      "members": 13,
+      "median_pct": 2.0,
+      "breadth": 0.8461538461538461,
+      "amount": 4976886499.530001,
+      "limit_up_count": 0,
+      "relative_strength": 1.27,
+      "strong": true,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 1.91,
+      "amount_percentile": 0.5333333333333333
     },
     {
       "sector": "房地产服务",
       "members": 11,
-      "median_pct": 1.83,
+      "median_pct": 1.85,
       "breadth": 0.7272727272727273,
-      "amount": 2354595165.5099998,
+      "amount": 2439975631.23,
       "limit_up_count": 1,
-      "relative_strength": 1.1300000000000001,
+      "relative_strength": 1.12,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
@@ -206,156 +192,170 @@
     {
       "sector": "电子化学品Ⅱ",
       "members": 8,
-      "median_pct": 1.6800000000000002,
+      "median_pct": 1.7600000000000002,
       "breadth": 0.75,
-      "amount": 8599364506.619999,
+      "amount": 9083574628.599998,
       "limit_up_count": 0,
-      "relative_strength": 0.9800000000000002,
+      "relative_strength": 1.0300000000000002,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
       "previous_median_pct": 1.6800000000000002,
-      "amount_percentile": 0.725
+      "amount_percentile": 0.7166666666666667
     },
     {
       "sector": "医疗服务",
       "members": 18,
-      "median_pct": 1.66,
-      "breadth": 0.7777777777777778,
-      "amount": 16286559918.81,
+      "median_pct": 1.7449999999999999,
+      "breadth": 0.7222222222222222,
+      "amount": 17152692407.56,
       "limit_up_count": 2,
-      "relative_strength": 0.96,
+      "relative_strength": 1.015,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 1.5150000000000001,
-      "amount_percentile": 0.8583333333333333
+      "previous_median_pct": 1.66,
+      "amount_percentile": 0.8666666666666667
+    },
+    {
+      "sector": "装修装饰Ⅱ",
+      "members": 15,
+      "median_pct": 1.71,
+      "breadth": 0.8,
+      "amount": 2858266627.95,
+      "limit_up_count": 1,
+      "relative_strength": 0.98,
+      "strong": true,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 1.88,
+      "amount_percentile": 0.35
+    },
+    {
+      "sector": "地面兵装Ⅱ",
+      "members": 7,
+      "median_pct": 1.58,
+      "breadth": 0.8571428571428571,
+      "amount": 4023713914.59,
+      "limit_up_count": 0,
+      "relative_strength": 0.8500000000000001,
+      "strong": true,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 1.32,
+      "amount_percentile": 0.4583333333333333
     },
     {
       "sector": "电网设备",
       "members": 78,
-      "median_pct": 1.475,
-      "breadth": 0.8846153846153846,
-      "amount": 27920728702.350002,
-      "limit_up_count": 5,
-      "relative_strength": 0.7750000000000001,
+      "median_pct": 1.52,
+      "breadth": 0.8974358974358975,
+      "amount": 29685045647.410004,
+      "limit_up_count": 6,
+      "relative_strength": 0.79,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 1.355,
+      "previous_median_pct": 1.475,
       "amount_percentile": 0.925
+    },
+    {
+      "sector": "家电零部件Ⅱ",
+      "members": 20,
+      "median_pct": 1.5,
+      "breadth": 0.85,
+      "amount": 5169451937.7,
+      "limit_up_count": 0,
+      "relative_strength": 0.77,
+      "strong": true,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": null,
+      "amount_percentile": 0.5583333333333333
     },
     {
       "sector": "小金属",
       "members": 22,
-      "median_pct": 1.4649999999999999,
-      "breadth": 0.8636363636363636,
-      "amount": 19094791639.489998,
+      "median_pct": 1.47,
+      "breadth": 0.9090909090909091,
+      "amount": 20736923365.48,
       "limit_up_count": 0,
-      "relative_strength": 0.7649999999999999,
+      "relative_strength": 0.74,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 1.4500000000000002,
+      "previous_median_pct": 1.4649999999999999,
       "amount_percentile": 0.8916666666666667
     },
     {
       "sector": "军工电子Ⅱ",
       "members": 21,
-      "median_pct": 1.45,
-      "breadth": 0.9523809523809523,
-      "amount": 8412165923.95,
+      "median_pct": 1.46,
+      "breadth": 1.0,
+      "amount": 8924099565.56,
       "limit_up_count": 0,
-      "relative_strength": 0.75,
+      "relative_strength": 0.73,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
-      "previous_median_pct": 1.53,
+      "previous_median_pct": 1.45,
       "amount_percentile": 0.7083333333333334
     },
     {
       "sector": "非金属材料Ⅱ",
       "members": 5,
-      "median_pct": 1.37,
+      "median_pct": 1.45,
       "breadth": 1.0,
-      "amount": 1107693787.0,
+      "amount": 1188041176.92,
       "limit_up_count": 0,
-      "relative_strength": 0.6700000000000002,
+      "relative_strength": 0.72,
       "strong": true,
-      "previous_strong": false,
-      "confirmed": false,
-      "previous_median_pct": null,
+      "previous_strong": true,
+      "confirmed": true,
+      "previous_median_pct": 1.37,
       "amount_percentile": 0.08333333333333333
-    },
-    {
-      "sector": "一般零售",
-      "members": 56,
-      "median_pct": 1.32,
-      "breadth": 0.75,
-      "amount": 10290178116.589998,
-      "limit_up_count": 3,
-      "relative_strength": 0.6200000000000001,
-      "strong": true,
-      "previous_strong": true,
-      "confirmed": true,
-      "previous_median_pct": 1.2850000000000001,
-      "amount_percentile": 0.7833333333333333
-    },
-    {
-      "sector": "地面兵装Ⅱ",
-      "members": 7,
-      "median_pct": 1.32,
-      "breadth": 0.7142857142857143,
-      "amount": 3777362442.59,
-      "limit_up_count": 0,
-      "relative_strength": 0.6200000000000001,
-      "strong": true,
-      "previous_strong": true,
-      "confirmed": true,
-      "previous_median_pct": 1.39,
-      "amount_percentile": 0.4666666666666667
-    },
-    {
-      "sector": "光学光电子",
-      "members": 43,
-      "median_pct": 1.29,
-      "breadth": 0.8604651162790697,
-      "amount": 31707217460.43,
-      "limit_up_count": 2,
-      "relative_strength": 0.5900000000000001,
-      "strong": true,
-      "previous_strong": false,
-      "confirmed": false,
-      "previous_median_pct": null,
-      "amount_percentile": 0.9583333333333334
     },
     {
       "sector": "保险Ⅱ",
       "members": 5,
-      "median_pct": 1.29,
-      "breadth": 0.8,
-      "amount": 6257851764.0,
+      "median_pct": 1.31,
+      "breadth": 1.0,
+      "amount": 6693202996.0,
       "limit_up_count": 0,
-      "relative_strength": 0.5900000000000001,
+      "relative_strength": 0.5800000000000001,
       "strong": true,
       "previous_strong": true,
       "confirmed": true,
       "previous_median_pct": 1.29,
-      "amount_percentile": 0.625
+      "amount_percentile": 0.6166666666666667
+    },
+    {
+      "sector": "航海装备Ⅱ",
+      "members": 5,
+      "median_pct": 1.31,
+      "breadth": 0.8,
+      "amount": 8144554820.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.5800000000000001,
+      "strong": true,
+      "previous_strong": false,
+      "confirmed": false,
+      "previous_median_pct": null,
+      "amount_percentile": 0.6916666666666667
     }
   ],
   "channels": {
     "ordinary": {
       "name": "普通隔夜",
-      "open": true,
+      "open": false,
       "qualified_count": 0,
-      "message": "等待个股条件共振"
+      "message": "仅在尾盘窗口执行"
     },
     "hot": {
       "name": "热点波段",
-      "open": true,
+      "open": false,
       "qualified_count": 0,
-      "message": "仅评估连续强板块中的核心"
+      "message": "当前不在盘中执行窗口"
     }
   },
   "rankings": [
@@ -363,11 +363,11 @@
       "code": "003026",
       "name": "中晶科技",
       "sector": "半导体",
-      "price": 36.97,
-      "change_pct": -0.08,
-      "amount": 2119951382.18,
-      "turnover_rate": 37.68,
-      "market_time": "2026-09-18T14:51:03+08:00",
+      "price": 37.2,
+      "change_pct": 0.54,
+      "amount": 2225844621.9,
+      "turnover_rate": 39.65,
+      "market_time": "2026-09-18T15:02:09+08:00",
       "score": 34,
       "level": "排除",
       "modules": [
@@ -408,8 +408,8 @@
           "max": 20,
           "state": "通过",
           "evidence": [
-            "板块中位涨幅 +3.20%｜相对全市场 +2.50pct",
-            "上涨占比 94%｜涨停 4｜样本 33",
+            "板块中位涨幅 +3.16%｜相对全市场 +2.43pct",
+            "上涨占比 97%｜涨停 4｜样本 33",
             "当前与上一有效快照均为强板块"
           ]
         },
@@ -454,8 +454,8 @@
         "message": "突破确认价高于不追价，当前没有可执行跟随区间",
         "hold_above": 0.0,
         "breakout": 40.71,
-        "no_chase_above": 37.71,
-        "invalid_below": 36.59
+        "no_chase_above": 37.94,
+        "invalid_below": 36.82
       },
       "features": {
         "return_5d": null,
@@ -491,11 +491,11 @@
       "code": "603986",
       "name": "兆易创新",
       "sector": "半导体",
-      "price": 387.47,
-      "change_pct": 4.76,
-      "amount": 14904848032.0,
-      "turnover_rate": 5.78,
-      "market_time": "2026-09-18T14:50:53+08:00",
+      "price": 388.18,
+      "change_pct": 4.95,
+      "amount": 15787688481.0,
+      "turnover_rate": 6.12,
+      "market_time": "2026-09-18T15:02:32+08:00",
       "score": 33,
       "level": "排除",
       "modules": [
@@ -536,8 +536,8 @@
           "max": 20,
           "state": "通过",
           "evidence": [
-            "板块中位涨幅 +3.20%｜相对全市场 +2.50pct",
-            "上涨占比 94%｜涨停 4｜样本 33",
+            "板块中位涨幅 +3.16%｜相对全市场 +2.43pct",
+            "上涨占比 97%｜涨停 4｜样本 33",
             "当前与上一有效快照均为强板块"
           ]
         },
@@ -582,8 +582,8 @@
         "message": "存在可观察的触发区间",
         "hold_above": 0.0,
         "breakout": 390.67,
-        "no_chase_above": 395.22,
-        "invalid_below": 383.59
+        "no_chase_above": 395.94,
+        "invalid_below": 384.29
       },
       "features": {
         "return_5d": null,
@@ -619,11 +619,11 @@
       "code": "002156",
       "name": "通富微电",
       "sector": "半导体",
-      "price": 61.28,
-      "change_pct": 5.09,
-      "amount": 6832512419.81,
-      "turnover_rate": 7.41,
-      "market_time": "2026-09-18T14:49:18+08:00",
+      "price": 61.38,
+      "change_pct": 5.26,
+      "amount": 7245757813.1,
+      "turnover_rate": 7.85,
+      "market_time": "2026-09-18T15:01:12+08:00",
       "score": 33,
       "level": "排除",
       "modules": [
@@ -664,8 +664,8 @@
           "max": 20,
           "state": "通过",
           "evidence": [
-            "板块中位涨幅 +3.20%｜相对全市场 +2.50pct",
-            "上涨占比 94%｜涨停 4｜样本 33",
+            "板块中位涨幅 +3.16%｜相对全市场 +2.43pct",
+            "上涨占比 97%｜涨停 4｜样本 33",
             "当前与上一有效快照均为强板块"
           ]
         },
@@ -710,8 +710,8 @@
         "message": "存在可观察的触发区间",
         "hold_above": 0.0,
         "breakout": 62.24,
-        "no_chase_above": 62.51,
-        "invalid_below": 60.66
+        "no_chase_above": 62.61,
+        "invalid_below": 60.76
       },
       "features": {
         "return_5d": null,
@@ -747,11 +747,11 @@
       "code": "002371",
       "name": "北方华创",
       "sector": "半导体",
-      "price": 687.66,
-      "change_pct": 3.33,
-      "amount": 6304296010.94,
-      "turnover_rate": 1.28,
-      "market_time": "2026-09-18T14:51:09+08:00",
+      "price": 686.51,
+      "change_pct": 3.16,
+      "amount": 6630755824.9,
+      "turnover_rate": 1.34,
+      "market_time": "2026-09-18T15:01:51+08:00",
       "score": 33,
       "level": "排除",
       "modules": [
@@ -792,8 +792,8 @@
           "max": 20,
           "state": "通过",
           "evidence": [
-            "板块中位涨幅 +3.20%｜相对全市场 +2.50pct",
-            "上涨占比 94%｜涨停 4｜样本 33",
+            "板块中位涨幅 +3.16%｜相对全市场 +2.43pct",
+            "上涨占比 97%｜涨停 4｜样本 33",
             "当前与上一有效快照均为强板块"
           ]
         },
@@ -838,8 +838,8 @@
         "message": "存在可观察的触发区间",
         "hold_above": 0.0,
         "breakout": 694.41,
-        "no_chase_above": 701.41,
-        "invalid_below": 680.77
+        "no_chase_above": 700.24,
+        "invalid_below": 679.63
       },
       "features": {
         "return_5d": null,
@@ -856,11 +856,11 @@
       "code": "600641",
       "name": "先导基电",
       "sector": "半导体",
-      "price": 37.28,
-      "change_pct": 1.3,
-      "amount": 3884130426.0,
-      "turnover_rate": 11.15,
-      "market_time": "2026-09-18T14:50:57+08:00",
+      "price": 37.3,
+      "change_pct": 1.36,
+      "amount": 4019437832.0,
+      "turnover_rate": 11.54,
+      "market_time": "2026-09-18T15:02:36+08:00",
       "score": 33,
       "level": "排除",
       "modules": [
@@ -901,8 +901,8 @@
           "max": 20,
           "state": "通过",
           "evidence": [
-            "板块中位涨幅 +3.20%｜相对全市场 +2.50pct",
-            "上涨占比 94%｜涨停 4｜样本 33",
+            "板块中位涨幅 +3.16%｜相对全市场 +2.43pct",
+            "上涨占比 97%｜涨停 4｜样本 33",
             "当前与上一有效快照均为强板块"
           ]
         },
@@ -947,8 +947,8 @@
         "message": "突破确认价高于不追价，当前没有可执行跟随区间",
         "hold_above": 0.0,
         "breakout": 38.26,
-        "no_chase_above": 38.03,
-        "invalid_below": 36.9
+        "no_chase_above": 38.05,
+        "invalid_below": 36.92
       },
       "features": {
         "return_5d": null,
@@ -984,19 +984,19 @@
   "candidates": [],
   "analysis": {
     "mode": "规则模板",
-    "summary": "尾盘窗口显示市场处于偏进攻状态。主板上涨2127家、下跌814家，上涨占比72.3%；个股涨跌中位数+0.70%。涨停75家、跌停0家，当前统计成交额1.13万亿元。 连续性已经确认的强势方向为半导体（相对强度+2.50个百分点、上涨占比94%）、航天装备Ⅱ（相对强度+2.02个百分点、上涨占比100%）、光伏设备（相对强度+1.59个百分点、上涨占比96%）。优先观察其中有辨识度且评分通过的核心个股。",
+    "summary": "收盘复盘显示市场处于偏进攻状态。主板上涨2135家、下跌799家，上涨占比72.8%；个股涨跌中位数+0.73%。涨停75家、跌停0家，当前统计成交额1.20万亿元。 连续性已经确认的强势方向为半导体（相对强度+2.43个百分点、上涨占比97%）、航天装备Ⅱ（相对强度+2.16个百分点、上涨占比100%）、光伏设备（相对强度+1.68个百分点、上涨占比96%）。优先观察其中有辨识度且评分通过的核心个股。",
     "sections": [
       {
         "label": "市场环境",
-        "text": "尾盘窗口显示市场处于偏进攻状态。主板上涨2127家、下跌814家，上涨占比72.3%；个股涨跌中位数+0.70%。涨停75家、跌停0家，当前统计成交额1.13万亿元。"
+        "text": "收盘复盘显示市场处于偏进攻状态。主板上涨2135家、下跌799家，上涨占比72.8%；个股涨跌中位数+0.73%。涨停75家、跌停0家，当前统计成交额1.20万亿元。"
       },
       {
         "label": "资金方向",
-        "text": "连续性已经确认的强势方向为半导体（相对强度+2.50个百分点、上涨占比94%）、航天装备Ⅱ（相对强度+2.02个百分点、上涨占比100%）、光伏设备（相对强度+1.59个百分点、上涨占比96%）。优先观察其中有辨识度且评分通过的核心个股。"
+        "text": "连续性已经确认的强势方向为半导体（相对强度+2.43个百分点、上涨占比97%）、航天装备Ⅱ（相对强度+2.16个百分点、上涨占比100%）、光伏设备（相对强度+1.68个百分点、上涨占比96%）。优先观察其中有辨识度且评分通过的核心个股。"
       },
       {
         "label": "策略状态",
-        "text": "普通隔夜通道开启，合格候选0只：等待个股条件共振。热点波段通道开启，合格候选0只：仅评估连续强板块中的核心。"
+        "text": "普通隔夜通道关闭，合格候选0只：仅在尾盘窗口执行。热点波段通道关闭，合格候选0只：当前不在盘中执行窗口。"
       },
       {
         "label": "候选解读",
@@ -1013,9 +1013,9 @@
     "prefilter": {
       "input": 3116,
       "invalid_quote": 72,
-      "liquidity": 2077,
-      "price_move": 160,
-      "passed": 807
+      "liquidity": 2024,
+      "price_move": 169,
+      "passed": 851
     },
     "details_requested": 36,
     "details_succeeded": 36,
@@ -1030,12 +1030,12 @@
       "600206": "东方财富公告备份",
       "001309": "深圳证券交易所正式公告",
       "002156": "深圳证券交易所正式公告",
-      "002371": "深圳证券交易所正式公告",
       "600641": "东方财富公告备份",
+      "002371": "深圳证券交易所正式公告",
       "002409": "深圳证券交易所正式公告",
-      "600460": "东方财富公告备份",
       "003026": "深圳证券交易所正式公告",
       "603893": "东方财富公告备份",
+      "600460": "东方财富公告备份",
       "605358": "东方财富公告备份"
     },
     "announcement_attempt_errors": {
@@ -1054,22 +1054,22 @@
       "002156": [
         "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
       ],
-      "002371": [
-        "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
-      ],
       "600641": [
         "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
       ],
-      "002409": [
+      "002371": [
         "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
       ],
-      "600460": [
+      "002409": [
         "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
       ],
       "003026": [
         "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
       ],
       "603893": [
+        "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
+      ],
+      "600460": [
         "巨潮资讯正式公告: HTTPError: 403 Client Error: Forbidden for url: https://www.cninfo.com.cn/new/data/szse_stock.json"
       ],
       "605358": [
@@ -1119,7 +1119,7 @@
     "status": "SKIPPED",
     "provider": "OpenAI",
     "model": "gpt-5.6-luna",
-    "generated_at": "2026-09-18T14:51:38+08:00",
+    "generated_at": "2026-09-18T15:02:57+08:00",
     "reason": "未配置OPENAI_API_KEY，继续使用规则模板。"
   }
 }
