@@ -76,6 +76,15 @@ class ScoringTests(unittest.TestCase):
         self.assertEqual(module_b["score"], 0)
         self.assertEqual(module_b["state"], "数据不足")
         self.assertIn("14:20前", module_b["evidence"][0])
+        self.assertTrue(result["channels"]["hot"]["qualified"])
+        self.assertEqual(result["channels"]["hot"]["required_modules"], ["A", "D", "G"])
+
+    def test_data_confidence_is_separate_from_trade_score(self):
+        checked = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        unchecked = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], announcement_checked=False, now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertEqual(checked["score"] - unchecked["score"], 5)
+        self.assertGreater(checked["data_confidence"]["score"], unchecked["data_confidence"]["score"])
+        self.assertEqual(checked["data_confidence"]["max"], 100)
 
     def test_tail_momentum_can_be_scored_at_1420(self):
         result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 20, tzinfo=TZ))

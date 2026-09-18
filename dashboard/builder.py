@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 from .data import MarketClient, load_json
 from .intraday_history import record_intraday_snapshot
 from .narrative import build_analysis
+from .research_history import record_research_snapshot
 from .schedule import should_write_close_history
 from .scoring import market_summary, phase_at, prefilter, score_candidate
 
@@ -42,7 +43,13 @@ def latest_successful_snapshot(previous: dict | None, history_dir: Path) -> dict
     return None
 
 
-def previous_close_snapshot(snapshot: dict, now: datetime) -> dict:
+def previous_close_snapshot(
+    snapshot: dict,
+    now: datetime,
+    context_code: str = "PREVIOUS_CLOSE",
+    context_label: str = "上一交易日收盘",
+    context_message: str = "9:25竞价节点前展示最近一次成功收盘快照，不执行新筛选。",
+) -> dict:
     trade_date = snapshot.get("trade_date")
     if not trade_date:
         raise RuntimeError("上一交易日收盘快照缺少交易日期")
@@ -56,21 +63,24 @@ def previous_close_snapshot(snapshot: dict, now: datetime) -> dict:
     result["generated_at"] = now.isoformat(timespec="seconds")
     result["phase"] = phase_at(now)
     result["data_context"] = {
-        "code": "PREVIOUS_CLOSE",
-        "label": "上一交易日收盘",
+        "code": context_code,
+        "label": context_label,
         "trade_date": trade_date,
         "source_generated_at": source_generated_at,
-        "message": "9:25竞价节点前展示最近一次成功收盘快照，不执行新筛选。",
+        "message": context_message,
     }
     for key in ("ordinary", "hot"):
         channel = result.get("channels", {}).get(key)
         if channel:
             channel["open"] = False
-            channel["message"] = "9:25前仅展示上一交易日收盘"
-    for collection in ("rankings", "candidates"):
+            channel["message"] = "当前仅展示最近交易日收盘，不执行新筛选"
+    for collection in ("rankings", "score_pool", "candidates"):
         for candidate in result.get(collection) or []:
             for channel in (candidate.get("channels") or {}).values():
                 channel["actionable_now"] = False
+    layers = result.setdefault("layers", {})
+    layers["ordinary_actionable_count"] = 0
+    layers["hot_actionable_count"] = 0
     result.setdefault("diagnostics", {})["previous_close_reused"] = True
     result["diagnostics"]["source_generated_at"] = source_generated_at
     result["analysis"] = build_analysis(result)
@@ -82,12 +92,14 @@ def build(
     history_dir: Path | None = None,
     now: datetime | None = None,
     intraday_dir: Path | None = None,
+    research_dir: Path | None = None,
     trigger: str | None = None,
     scheduled_time: str | None = None,
 ) -> dict:
     output = output or ROOT / "site/latest.json"
     history_dir = history_dir or ROOT / "site/history"
     intraday_dir = intraday_dir or output.parent / "intraday"
+    research_dir = research_dir or output.parent / "research"
     cfg = load_json(ROOT / "config/scoring_candidate.json")
     if not cfg:
         raise RuntimeError("评分配置无法读取")
@@ -106,8 +118,9 @@ def build(
             "version": cfg["strategy_version"],
             "automation_profile": cfg["automation_profile"],
             "automation_status": cfg["automation_status"],
+            "parameter_set_id": cfg.get("parameter_set_id"),
             "weights": cfg["weights"],
-            "note": "模块权重来自生效策略；精确阈值是自动化试运行参数，尚未替代生效策略。",
+            "note": "模块权重来自生效策略；通道资格已按必过模块独立判定，精确数值阈值继续作为前向验证参数。",
         },
         "market": None,
         "indices": [],
@@ -122,6 +135,18 @@ def build(
         "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。",
     }
     try:
+        if now.weekday() >= 5:
+            prior_close = latest_successful_snapshot(previous, history_dir)
+            if prior_close:
+                result = previous_close_snapshot(
+                    prior_close,
+                    now,
+                    context_code="NON_TRADING_DAY",
+                    context_label="非交易日·上一交易日收盘",
+                    context_message="周末展示最近一次成功收盘快照，全部执行通道保持关闭。",
+                )
+                write_json(output, result)
+                return result
         if base["phase"]["code"] == "PREOPEN":
             prior_close = latest_successful_snapshot(previous, history_dir)
             if prior_close:
@@ -205,20 +230,25 @@ def build(
                     announcements=announcement_map.get(code),
                     announcement_error=announcement_errors.get(code),
                     announcement_checked=code in announcement_targets,
+                    announcement_source=announcement_sources.get(code),
                     now=now,
                 )
             )
         final_scores.sort(key=lambda item: (-item["score"], -item["amount"], item["code"]))
         for rank, item in enumerate(final_scores, 1):
             item["rank"] = rank
-            item["in_candidate_pool"] = item["score"] >= cfg["levels"]["weak"]
+            item["in_score_pool"] = item["score"] >= cfg["levels"]["weak"]
+            item["in_candidate_pool"] = item["in_score_pool"]  # compatibility with older snapshots
         rankings = deepcopy(final_scores[: cfg["universe"].get("ranking_limit", 5)])
-        candidates = deepcopy(
-            [item for item in final_scores if item["in_candidate_pool"]][: cfg["universe"]["candidate_limit"]]
+        score_pool = deepcopy(
+            [item for item in final_scores if item["in_score_pool"]][: cfg["universe"]["candidate_limit"]]
         )
+        candidates = deepcopy(score_pool)  # compatibility for older page clients
 
-        ordinary_qualified = sum(item["channels"]["ordinary"]["qualified"] for item in candidates)
-        hot_qualified = sum(item["channels"]["hot"]["qualified"] for item in candidates)
+        ordinary_qualified = sum(item["channels"]["ordinary"]["qualified"] for item in final_scores)
+        hot_qualified = sum(item["channels"]["hot"]["qualified"] for item in final_scores)
+        ordinary_actionable = sum(item["channels"]["ordinary"]["actionable_now"] for item in final_scores)
+        hot_actionable = sum(item["channels"]["hot"]["actionable_now"] for item in final_scores)
         base.update(
             {
                 "status": "SUCCESS",
@@ -247,7 +277,22 @@ def build(
                     },
                 },
                 "rankings": rankings,
+                "score_pool": score_pool,
                 "candidates": candidates,
+                "layers": {
+                    "ranked_count": len(rankings),
+                    "score_pool_count": sum(item["in_score_pool"] for item in final_scores),
+                    "ordinary_qualified_count": ordinary_qualified,
+                    "hot_qualified_count": hot_qualified,
+                    "ordinary_actionable_count": ordinary_actionable,
+                    "hot_actionable_count": hot_actionable,
+                    "definitions": {
+                        "ranking": "完整评分中的总分前五",
+                        "score_pool": "总分达到60分的观察池",
+                        "qualified": "对应通道必过模块、风险和买点结构均通过",
+                        "actionable": "通道合格且当前处于执行窗口",
+                    },
+                },
                 "diagnostics": {
                     "market_rows": len(rows),
                     "prefilter": funnel,
@@ -269,6 +314,7 @@ def build(
                     "announcement_errors": announcement_errors,
                     "shortlist_before_limit": sum(item["score"] >= cfg["levels"]["weak"] for item in final_scores),
                     "ranking_count": len(rankings),
+                    "fully_scored_count": len(final_scores),
                 },
                 "sources": [
                     source,
@@ -291,6 +337,23 @@ def build(
         except Exception as history_exc:
             base["diagnostics"]["intraday_history_saved"] = False
             base["diagnostics"]["intraday_history_error"] = safe_error(history_exc)
+        try:
+            research_result = record_research_snapshot(
+                base,
+                final_scores,
+                rows,
+                research_dir,
+                now,
+                trigger=trigger or os.getenv("DASHBOARD_TRIGGER", "manual"),
+                scheduled_time=scheduled_time or os.getenv("DASHBOARD_SCHEDULED_TIME"),
+                keep_days=int(cfg.get("research", {}).get("keep_days", 30)),
+            )
+            base["diagnostics"]["research_snapshot_saved"] = research_result["saved"]
+            base["diagnostics"]["research_outcome_files_updated"] = research_result["updated_files"]
+            base["diagnostics"]["research_snapshot_path"] = research_result.get("path")
+        except Exception as research_exc:
+            base["diagnostics"]["research_snapshot_saved"] = False
+            base["diagnostics"]["research_history_error"] = safe_error(research_exc)
         write_json(output, base)
         if should_write_close_history(now):
             write_json(history_dir / f"{trade_date}-close.json", base)

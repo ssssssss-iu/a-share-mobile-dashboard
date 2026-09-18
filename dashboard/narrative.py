@@ -65,15 +65,15 @@ def _strategy_text(payload):
 
 
 def _candidate_text(payload):
-    candidates = payload.get("candidates") or []
-    rankings = payload.get("rankings") or candidates
+    score_pool = payload.get("score_pool") or payload.get("candidates") or []
+    rankings = payload.get("rankings") or score_pool
     if not rankings:
         return "本次没有形成有效评分榜。保持空候选，等待市场、板块、个股和买点重新共振。"
     top = rankings[0]
     passed = [item["key"] for item in top.get("modules", []) if item.get("state") == "通过"]
     blocked = [item["key"] for item in top.get("modules", []) if item.get("state") != "通过"]
     text = (
-        f"本次展示评分前{len(rankings)}只，其中{len(candidates)}只达到60分候选线。"
+        f"本次展示评分前{len(rankings)}只，完整评分中有{(payload.get('layers') or {}).get('score_pool_count', len(score_pool))}只达到60分观察线。"
         f"评分居前的是{top['name']}（{top['code']}）{top['score']}分。"
     )
     if passed:
@@ -90,8 +90,11 @@ def _candidate_text(payload):
 def _risk_text(payload):
     market = payload["market"]
     notes = []
-    if (payload.get("data_context") or {}).get("code") == "PREVIOUS_CLOSE":
+    context_code = (payload.get("data_context") or {}).get("code")
+    if context_code == "PREVIOUS_CLOSE":
         notes.append("当前为9:25前的上一交易日收盘快照，所有执行通道保持关闭")
+    elif context_code == "NON_TRADING_DAY":
+        notes.append("当前为非交易日的最近收盘快照，所有执行通道保持关闭")
     if market.get("regime") == "RISK_OFF":
         notes.append("市场环境处于防守状态，普通隔夜通道维持关闭")
     if not market.get("continuity_available"):
@@ -100,7 +103,7 @@ def _risk_text(payload):
         notes.append("部分个股明细获取失败，相关股票未进入完整评分")
     if not notes:
         notes.append("当前未触发系统级数据降级，但个股仍须满足板块、量价、买点和风险模块")
-    return "；".join(notes) + "。候选是条件化研究结果，不代表确定性收益。"
+    return "；".join(notes) + "。评分榜、观察池、通道合格与当前可执行含义不同，均不代表确定性收益。"
 
 
 def build_analysis(payload):

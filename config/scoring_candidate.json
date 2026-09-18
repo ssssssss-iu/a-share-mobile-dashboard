@@ -1,7 +1,8 @@
 {
   "strategy_id": "a-share-tail-hot-v2",
-  "strategy_version": "2.1.0",
-  "automation_profile": "static-scoring-candidate-0.2",
+  "strategy_version": "2.2.0",
+  "automation_profile": "static-scoring-candidate-0.3",
+  "parameter_set_id": "rules-20260918-p1",
   "automation_status": "trial_not_active_strategy",
   "timezone": "Asia/Shanghai",
   "weights": {"A": 20, "B": 15, "C": 15, "D": 20, "E": 10, "G": 20},
@@ -31,6 +32,7 @@
     "c_pass": 9,
     "d_pass": 12,
     "g_pass": 12,
+    "channel_qualify_pct": 60,
     "volume_ratio_healthy_min": 1.2,
     "volume_ratio_healthy_max": 2.8,
     "red_green_body_ratio_pass": 1.5,
@@ -40,5 +42,9 @@
     "hot_amplitude_max": 12.0,
     "near_limit_ratio": 0.997,
     "announcement_lookback_days": 10
+  },
+  "research": {
+    "keep_days": 30,
+    "labels": ["forward_30m", "same_close", "next_open", "next_1000", "next_close", "day3_close", "day5_close", "mfe_5d", "mae_5d"]
   }
 }

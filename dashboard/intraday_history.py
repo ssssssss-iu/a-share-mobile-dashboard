@@ -8,7 +8,7 @@ from .data import load_json
 from .schedule import intraday_slot
 
 
-HISTORY_SCHEMA_VERSION = "1.0"
+HISTORY_SCHEMA_VERSION = "1.1"
 
 
 def _market_source(snapshot: dict) -> dict:
@@ -90,6 +90,8 @@ def _compact_ranking(item: dict, previous: dict | None, first_seen: dict | None,
         "change_pct": item.get("change_pct"),
         "market_time": item.get("market_time"),
         "in_candidate_pool": bool(item.get("in_candidate_pool")),
+        "in_score_pool": bool(item.get("in_score_pool", item.get("in_candidate_pool"))),
+        "data_confidence": deepcopy(item.get("data_confidence") or {}),
         "modules": modules,
         "plan": deepcopy(item.get("plan") or {}),
         "channels": deepcopy(item.get("channels") or {}),

@@ -15,8 +15,9 @@ def main():
     parser.add_argument("--output", type=Path, default=ROOT / "site/latest.json")
     parser.add_argument("--history-dir", type=Path, default=ROOT / "site/history")
     parser.add_argument("--intraday-dir", type=Path, default=ROOT / "site/intraday")
+    parser.add_argument("--research-dir", type=Path, default=ROOT / "site/research")
     args = parser.parse_args()
-    result = build(args.output, args.history_dir, intraday_dir=args.intraday_dir)
+    result = build(args.output, args.history_dir, intraday_dir=args.intraday_dir, research_dir=args.research_dir)
     print(json.dumps({"status": result["status"], "generated_at": result["generated_at"], "candidates": len(result["candidates"]), "error": result.get("error")}, ensure_ascii=False))
 
 

@@ -35,7 +35,7 @@ function renderStatus(data) {
     NEUTRAL:"资金分歧较大，优先等待板块连续性和个股确认，减少临盘猜测。",
     RISK_OFF:"普通隔夜通道关闭。热点通道也必须有连续强板块与个股结构确认。"
   };
-  const previousClose = data.data_context?.code === "PREVIOUS_CLOSE";
+  const previousClose = ["PREVIOUS_CLOSE", "NON_TRADING_DAY"].includes(data.data_context?.code);
   const snapshotNote = previousClose ? `<p class="snapshot-note"><strong>上一交易日收盘 · ${escapeHtml(data.trade_date || "日期未知")}</strong><br>${escapeHtml(data.data_context.message)}</p>` : "";
   panel.className = "status-panel";
   panel.innerHTML = `
@@ -214,7 +214,9 @@ function channelBadge(candidate, key, label) {
   const channel = candidate.channels[key];
   const cls = channel.actionable_now ? "ready" : channel.qualified ? "wait" : "closed";
   const state = channel.actionable_now ? "条件就绪" : channel.qualified ? "等待窗口" : "未通过";
-  return `<span class="badge ${cls}">${label} · ${state}</span>`;
+  const score = Number.isFinite(channel.normalized_score) ? ` · ${channel.normalized_score.toFixed(0)}` : "";
+  const reason = channel.reasons?.length ? ` title="${escapeHtml(channel.reasons.join("；"))}"` : "";
+  return `<span class="badge ${cls}"${reason}>${label} · ${state}${score}</span>`;
 }
 
 function candidateCard(item) {
@@ -222,8 +224,12 @@ function candidateCard(item) {
   const evidence = item.modules.map(module => `<div class="evidence-item"><strong>${module.key} ${escapeHtml(module.label)} · ${module.state} · ${module.score}/${module.max}</strong><p>${module.evidence.map(escapeHtml).join("；")}</p></div>`).join("");
   const risks = item.risks?.length ? `<span class="badge closed">风险：${escapeHtml(item.risks.join("、"))}</span>` : "";
   const planState = item.plan.feasible ? "" : `<span class="badge wait">买点未确认</span>`;
-  const inCandidatePool = item.in_candidate_pool ?? Number(item.score) >= 60;
-  const poolBadge = inCandidatePool ? `<span class="badge ready">已进入候选池</span>` : `<span class="badge closed">未达到候选线</span>`;
+  const inScorePool = item.in_score_pool ?? item.in_candidate_pool ?? Number(item.score) >= 60;
+  const poolBadge = inScorePool ? `<span class="badge ready">评分观察池</span>` : `<span class="badge closed">未进入观察池</span>`;
+  const confidence = item.data_confidence || {};
+  const confidenceClass = confidence.level === "高" ? "ready" : confidence.level === "中" ? "wait" : "closed";
+  const confidenceBadge = Number.isFinite(confidence.score) ? `<span class="badge ${confidenceClass}">数据可信度 ${confidence.score}/100</span>` : "";
+  const confidenceEvidence = confidence.components?.length ? `<div class="evidence-item"><strong>数据可信度 · ${confidence.level} · ${confidence.score}/100</strong><p>${confidence.components.map(part => `${escapeHtml(part.label)} ${part.score}/${part.max}（${escapeHtml(part.detail)}）`).join("；")}</p></div>` : "";
   return `<article class="candidate-card" data-ordinary="${item.channels.ordinary.qualified}" data-hot="${item.channels.hot.qualified}">
     <div class="score-rail"><span class="score-value">${item.score}</span><span class="score-max">/ 100</span></div>
     <div class="candidate-body">
@@ -231,7 +237,7 @@ function candidateCard(item) {
         <div><h3 class="stock-name">${escapeHtml(item.name)}</h3><div class="stock-meta">${item.code} · ${escapeHtml(item.sector)} · #${item.rank}</div></div>
         <div class="price">${item.price.toFixed(2)}<br><span class="${pctClass(item.change_pct)}">${fmtPct(item.change_pct)}</span></div>
       </div>
-      <div class="channel-row">${poolBadge}${channelBadge(item,"ordinary","普通隔夜")}${channelBadge(item,"hot","热点波段")}<span class="badge">${escapeHtml(item.level)}</span>${planState}${risks}</div>
+      <div class="channel-row">${poolBadge}${channelBadge(item,"ordinary","普通隔夜")}${channelBadge(item,"hot","热点波段")}${confidenceBadge}<span class="badge">${escapeHtml(item.level)}</span>${planState}${risks}</div>
       <div class="module-grid" aria-label="六模块评分">${modules}</div>
       <div class="trade-plan">
         <div class="plan-cell"><span>承接参考</span><strong>${item.plan.hold_above?.toFixed(2) ?? "—"}</strong></div>
@@ -239,7 +245,7 @@ function candidateCard(item) {
         <div class="plan-cell"><span>不追高</span><strong>${item.plan.no_chase_above?.toFixed(2) ?? "—"}</strong></div>
         <div class="plan-cell"><span>失效参考</span><strong>${item.plan.invalid_below?.toFixed(2) ?? "—"}</strong></div>
       </div>
-      <details class="evidence"><summary>查看逐项证据与数据边界</summary><div class="evidence-list"><div class="evidence-item"><strong>买点结构</strong><p>${escapeHtml(item.plan.message)}</p></div>${evidence}</div></details>
+      <details class="evidence"><summary>查看逐项证据与数据边界</summary><div class="evidence-list"><div class="evidence-item"><strong>买点结构</strong><p>${escapeHtml(item.plan.message)}</p></div>${confidenceEvidence}${evidence}</div></details>
     </div>
   </article>`;
 }
@@ -253,8 +259,10 @@ function renderCandidates(data) {
   }
   const rankings = data.rankings || data.candidates || [];
   const items = rankings.filter(item => FILTER === "all" || item.channels[FILTER]?.qualified);
-  const candidateCount = (data.candidates || []).length;
-  $("#candidate-count").textContent = FILTER === "all" ? `${items.length} 只 · 候选 ${candidateCount} 只` : `${items.length} 只`;
+  const layers = data.layers || {};
+  const scorePoolCount = Number.isFinite(layers.score_pool_count) ? layers.score_pool_count : (data.score_pool || data.candidates || []).length;
+  const qualifiedCount = Number(layers.ordinary_qualified_count || 0) + Number(layers.hot_qualified_count || 0);
+  $("#candidate-count").textContent = FILTER === "all" ? `${items.length} 只 · 观察池 ${scorePoolCount} · 通道合格 ${qualifiedCount}` : `${items.length} 只`;
   list.innerHTML = items.length ? items.map(candidateCard).join("") : `<div class="empty"><h3>${FILTER === "all" ? "本次没有有效评分" : "该通道没有合格股票"}</h3><p>评分榜只用于比较强弱；未达到条件时保持空候选。</p></div>`;
 }
 
@@ -264,7 +272,8 @@ function renderMethod(data) {
   const hot = data.channels?.hot;
   const ai = data.ai_analysis;
   const aiStatus = ai?.status === "SUCCESS" ? `${escapeHtml(ai.provider)} ${escapeHtml(ai.model)} 已生成` : ai?.status === "FAILED" ? "调用失败，已保留规则模板" : "未启用，使用规则模板";
-  $("#method-panel").innerHTML = `<strong>榜单边界：</strong>每次展示评分前5只；只有达到60分的股票才进入严格候选池，评分榜不等于推荐。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
+  const layers = data.layers || {};
+  $("#method-panel").innerHTML = `<strong>四层边界：</strong>评分榜是完整评分前5；观察池是总分达到60分；通道合格要求对应必过模块、风险和买点结构通过；当前可执行还要求处于执行窗口。四层结果分别展示，评分榜不等于推荐。<br><strong>本次统计：</strong>观察池 ${layers.score_pool_count ?? "—"}只；普通隔夜合格 ${layers.ordinary_qualified_count ?? ordinary?.qualified_count ?? 0}只；热点波段合格 ${layers.hot_qualified_count ?? hot?.qualified_count ?? 0}只；当前可执行 ${Number(layers.ordinary_actionable_count || 0) + Number(layers.hot_actionable_count || 0)}个通道机会。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
 }
 
 function render(data) {

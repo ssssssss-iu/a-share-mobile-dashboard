@@ -61,6 +61,20 @@ class PreopenTests(unittest.TestCase):
         self.assertFalse(result["rankings"][0]["channels"]["hot"]["actionable_now"])
         self.assertIn("上一交易日收盘快照", result["analysis"]["summary"])
 
+    def test_non_trading_day_context_disables_execution(self):
+        result = previous_close_snapshot(
+            closed_snapshot(),
+            datetime(2026, 9, 19, 10, 0, tzinfo=TZ),
+            context_code="NON_TRADING_DAY",
+            context_label="非交易日·上一交易日收盘",
+            context_message="周末展示最近一次成功收盘快照，全部执行通道保持关闭。",
+        )
+        self.assertEqual(result["data_context"]["code"], "NON_TRADING_DAY")
+        self.assertFalse(result["rankings"][0]["channels"]["ordinary"]["actionable_now"])
+        self.assertEqual(result["layers"]["ordinary_actionable_count"], 0)
+        self.assertEqual(result["layers"]["hot_actionable_count"], 0)
+        self.assertIn("非交易日", result["analysis"]["sections"][-1]["text"])
+
     def test_history_recovers_when_latest_snapshot_failed(self):
         with tempfile.TemporaryDirectory() as directory:
             history = Path(directory)

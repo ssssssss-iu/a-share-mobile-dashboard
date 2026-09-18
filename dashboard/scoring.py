@@ -89,6 +89,7 @@ def market_summary(rows: list[dict], previous: dict | None, cfg: dict) -> tuple[
             pass
     for sector, item in current_sectors.items():
         prior = previous_map.get(sector) if continuity_available else None
+        item["continuity_available"] = continuity_available
         item["previous_strong"] = bool(prior and prior.get("strong"))
         item["confirmed"] = bool(item["strong"] and item["previous_strong"])
         item["previous_median_pct"] = prior.get("median_pct") if prior else None
@@ -242,6 +243,7 @@ def technical_features(quote: dict, detail: dict, trade_date: str) -> dict:
         "amplitude_pct": pct(high, low),
         "gap_pct": pct(open_price, quote.get("previous_close")),
         "intraday_vwap_approx": intraday_vwap,
+        "minute_count": len(today_minutes),
         "tail": tail_metrics,
     }
 
@@ -270,7 +272,9 @@ def score_a(q, f, cfg):
     evidence.append(f"收盘位于日内区间 {strength:.0%}")
     vr = f.get("volume_ratio")
     if vr is not None:
-        score += 4 if 1.2 <= vr <= 2.8 else 2 if 0.9 <= vr <= 3.5 else 0
+        healthy_min = cfg["scoring"]["volume_ratio_healthy_min"]
+        healthy_max = cfg["scoring"]["volume_ratio_healthy_max"]
+        score += 4 if healthy_min <= vr <= healthy_max else 2 if 0.9 <= vr <= 3.5 else 0
         evidence.append(f"量比(对近5日) {vr:.2f}")
     rg = f["red_green_body_ratio"]
     score += 4 if rg >= cfg["scoring"]["red_green_body_ratio_pass"] else 2 if rg >= 1 else 0
@@ -428,6 +432,66 @@ def phase_at(now: datetime) -> dict:
     return {"code": "CLOSED", "label": "收盘复盘", "ordinary_open": False, "hot_open": False}
 
 
+def data_confidence(q, f, sector, announcement_error, announcement_checked, announcement_source=None) -> dict:
+    """Score source completeness separately from the trading score."""
+    components = []
+
+    def add(key, label, score, maximum, detail):
+        components.append({"key": key, "label": label, "score": score, "max": maximum, "detail": detail})
+
+    quote_ok = bool(q.get("market_time") and number(q.get("price")) is not None)
+    add("quote", "行情时间与报价", 15 if quote_ok else 0, 15, "可核验" if quote_ok else "缺少时间戳或报价")
+
+    daily_ok = bool(f.get("complete"))
+    add("daily", "当日日K", 25 if daily_ok else 0, 25, "日期一致且不少于21根" if daily_ok else f.get("reason", "日K不完整"))
+
+    minute_count = int(f.get("minute_count") or 0)
+    minute_score = 20 if minute_count >= 30 else 12 if minute_count >= 10 else 0
+    add("minute", "当日分钟线", minute_score, 20, f"可用{minute_count}根")
+
+    sector_score = 0
+    sector_detail = "缺少板块归属"
+    if sector:
+        sector_score = 10
+        sector_detail = "板块归属可用"
+        if sector.get("continuity_available"):
+            sector_score = 20
+            sector_detail = "板块归属与上一快照均可用"
+    add("sector", "板块数据", sector_score, 20, sector_detail)
+
+    if not announcement_checked:
+        announcement_score, announcement_detail = 0, "未进入公告复核范围"
+    elif announcement_error:
+        announcement_score, announcement_detail = 0, "公告源全部失败"
+    elif announcement_source and "备份" in announcement_source:
+        announcement_score, announcement_detail = 15, f"已由{announcement_source}核验"
+    else:
+        announcement_score, announcement_detail = 20, f"已由{announcement_source or '公告源'}核验"
+    add("announcement", "公告数据", announcement_score, 20, announcement_detail)
+
+    score = sum(item["score"] for item in components)
+    level = "高" if score >= 90 else "中" if score >= 70 else "低"
+    issues = [item["detail"] for item in components if item["score"] < item["max"]]
+    return {"score": score, "max": 100, "level": level, "components": components, "issues": issues}
+
+
+def _channel_result(keys, module_map, hard_ok, extra_gate, phase_open, qualify_pct, reasons):
+    score = sum(module_map[key]["score"] for key in keys)
+    maximum = sum(module_map[key]["max"] for key in keys)
+    normalized = round(score / maximum * 100, 1) if maximum else 0
+    modules_pass = all(module_map[key]["state"] == "通过" for key in keys)
+    qualified = bool(hard_ok and extra_gate and modules_pass and normalized >= qualify_pct)
+    return {
+        "qualified": qualified,
+        "actionable_now": bool(qualified and phase_open),
+        "score": score,
+        "max": maximum,
+        "normalized_score": normalized,
+        "required_modules": list(keys),
+        "reasons": reasons if not qualified else [],
+    }
+
+
 def score_candidate(
     quote,
     detail,
@@ -438,6 +502,7 @@ def score_candidate(
     announcements=None,
     announcement_error=None,
     announcement_checked=True,
+    announcement_source=None,
     now=None,
 ):
     evaluation_time = now or datetime.now(TZ)
@@ -470,10 +535,38 @@ def score_candidate(
     no_chase = min((quote.get("previous_close") or quote["price"]) * 1.10 - 0.02, quote["price"] * 1.02)
     plan_feasible = trigger <= no_chase and invalid < trigger
     hard_ok = features.get("complete") and not risks and plan_feasible
-    ordinary_gate = market["regime"] != "RISK_OFF" and all(module_map[key]["state"] == "通过" for key in ("A", "B", "C", "G"))
-    hot_gate = all(module_map[key]["state"] == "通过" for key in ("A", "D", "G"))
-    ordinary_qualified = bool(hard_ok and total >= 80 and ordinary_gate)
-    hot_qualified = bool(hard_ok and total >= 80 and hot_gate)
+    qualify_pct = cfg["scoring"].get("channel_qualify_pct", 60)
+    common_reasons = []
+    if not features.get("complete"):
+        common_reasons.append("技术数据不完整")
+    if risks:
+        common_reasons.append("触发反转风险")
+    if not plan_feasible:
+        common_reasons.append("买点区间不可执行")
+    ordinary_reasons = list(common_reasons)
+    if market["regime"] == "RISK_OFF":
+        ordinary_reasons.append("市场环境为防守")
+    ordinary_failed = [key for key in ("A", "B", "C", "G") if module_map[key]["state"] != "通过"]
+    if ordinary_failed:
+        ordinary_reasons.append("必过模块未通过：" + "、".join(ordinary_failed))
+    hot_reasons = list(common_reasons)
+    hot_failed = [key for key in ("A", "D", "G") if module_map[key]["state"] != "通过"]
+    if hot_failed:
+        hot_reasons.append("必过模块未通过：" + "、".join(hot_failed))
+
+    ordinary = _channel_result(
+        ("A", "B", "C", "G"), module_map, hard_ok, market["regime"] != "RISK_OFF",
+        phase["ordinary_open"], qualify_pct, ordinary_reasons,
+    )
+    ordinary["holding"] = "尾盘确认，次日早盘按条件退出"
+    hot = _channel_result(
+        ("A", "D", "G"), module_map, hard_ok, True,
+        phase["hot_open"], qualify_pct, hot_reasons,
+    )
+    hot["holding"] = "计划2–5个交易日，退潮或失效提前退出"
+    confidence = data_confidence(
+        quote, features, sector, announcement_error, announcement_checked, announcement_source
+    )
     return {
         "code": quote["code"],
         "name": quote["name"],
@@ -487,10 +580,8 @@ def score_candidate(
         "level": level,
         "modules": modules,
         "risks": risks,
-        "channels": {
-            "ordinary": {"qualified": ordinary_qualified, "actionable_now": ordinary_qualified and phase["ordinary_open"], "holding": "尾盘确认，次日早盘按条件退出"},
-            "hot": {"qualified": hot_qualified, "actionable_now": hot_qualified and phase["hot_open"], "holding": "计划2–5个交易日，退潮或失效提前退出"},
-        },
+        "data_confidence": confidence,
+        "channels": {"ordinary": ordinary, "hot": hot},
         "plan": {
             "feasible": plan_feasible,
             "message": "存在可观察的触发区间" if plan_feasible else "突破确认价高于不追价，当前没有可执行跟随区间",
