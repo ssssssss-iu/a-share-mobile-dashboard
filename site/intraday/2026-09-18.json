@@ -1,0 +1,436 @@
+{
+  "schema_version": "1.0",
+  "trade_date": "2026-09-18",
+  "snapshots": [
+    {
+      "slot": {
+        "key": "manual-204751",
+        "label": "手动 20:47:51",
+        "planned_time": null,
+        "kind": "manual",
+        "source": "push"
+      },
+      "generated_at": "2026-09-18T20:47:51+08:00",
+      "market_time": "2026-09-18T16:11:58+08:00",
+      "strategy": {
+        "id": "a-share-tail-hot-v2",
+        "version": "2.1.0",
+        "automation_profile": "static-scoring-candidate-0.2"
+      },
+      "data_quality": {
+        "name": "东方财富沪深A股行情",
+        "coverage": 1.0,
+        "minimum_coverage": 0.9,
+        "failed_pages": 0
+      },
+      "rankings": [
+        {
+          "code": "002077",
+          "name": "大港股份",
+          "sector": "半导体",
+          "rank": 1,
+          "score": 93,
+          "price": 14.5,
+          "change_pct": 4.92,
+          "market_time": "2026-09-18T15:34:30+08:00",
+          "in_candidate_pool": true,
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 15,
+              "max": 15,
+              "state": "通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 15,
+              "max": 15,
+              "state": "通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 18,
+              "max": 20,
+              "state": "通过"
+            }
+          },
+          "plan": {
+            "feasible": true,
+            "message": "存在可观察的触发区间",
+            "hold_above": 14.34,
+            "breakout": 14.57,
+            "no_chase_above": 14.79,
+            "invalid_below": 14.25
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": true,
+              "actionable_now": false,
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": true,
+              "actionable_now": false,
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "手动 20:47:51",
+            "generated_at": "2026-09-18T20:47:51+08:00",
+            "price": 14.5
+          },
+          "change": {
+            "type": "FIRST_ENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "当日首次进入前五"
+          }
+        },
+        {
+          "code": "603986",
+          "name": "兆易创新",
+          "sector": "半导体",
+          "rank": 2,
+          "score": 89,
+          "price": 388.18,
+          "change_pct": 4.95,
+          "market_time": "2026-09-18T16:11:53+08:00",
+          "in_candidate_pool": true,
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 16,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 13,
+              "max": 15,
+              "state": "通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 15,
+              "max": 15,
+              "state": "通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 384.64,
+            "breakout": 412.01,
+            "no_chase_above": 395.94,
+            "invalid_below": 379.81
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "手动 20:47:51",
+            "generated_at": "2026-09-18T20:47:51+08:00",
+            "price": 388.18
+          },
+          "change": {
+            "type": "FIRST_ENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "当日首次进入前五"
+          }
+        },
+        {
+          "code": "002213",
+          "name": "大为股份",
+          "sector": "半导体",
+          "rank": 3,
+          "score": 87,
+          "price": 29.38,
+          "change_pct": 3.2,
+          "market_time": "2026-09-18T15:34:06+08:00",
+          "in_candidate_pool": true,
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 18,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 9,
+              "max": 15,
+              "state": "通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 15,
+              "max": 15,
+              "state": "通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 29.27,
+            "breakout": 33.29,
+            "no_chase_above": 29.97,
+            "invalid_below": 28.65
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "手动 20:47:51",
+            "generated_at": "2026-09-18T20:47:51+08:00",
+            "price": 29.38
+          },
+          "change": {
+            "type": "FIRST_ENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "当日首次进入前五"
+          }
+        },
+        {
+          "code": "605358",
+          "name": "立昂微",
+          "sector": "半导体",
+          "rank": 4,
+          "score": 84,
+          "price": 46.5,
+          "change_pct": 2.72,
+          "market_time": "2026-09-18T16:11:58+08:00",
+          "in_candidate_pool": true,
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 18,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 6,
+              "max": 15,
+              "state": "不通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 15,
+              "max": 15,
+              "state": "通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            }
+          },
+          "plan": {
+            "feasible": true,
+            "message": "存在可观察的触发区间",
+            "hold_above": 46.04,
+            "breakout": 46.73,
+            "no_chase_above": 47.43,
+            "invalid_below": 45.5
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": true,
+              "actionable_now": false,
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "手动 20:47:51",
+            "generated_at": "2026-09-18T20:47:51+08:00",
+            "price": 46.5
+          },
+          "change": {
+            "type": "FIRST_ENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "当日首次进入前五"
+          }
+        },
+        {
+          "code": "002156",
+          "name": "通富微电",
+          "sector": "半导体",
+          "rank": 5,
+          "score": 81,
+          "price": 61.38,
+          "change_pct": 5.26,
+          "market_time": "2026-09-18T15:34:12+08:00",
+          "in_candidate_pool": true,
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 14,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 13,
+              "max": 15,
+              "state": "通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 11,
+              "max": 15,
+              "state": "通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 18,
+              "max": 20,
+              "state": "通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 60.81,
+            "breakout": 65.93,
+            "no_chase_above": 62.61,
+            "invalid_below": 60.07
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "手动 20:47:51",
+            "generated_at": "2026-09-18T20:47:51+08:00",
+            "price": 61.38
+          },
+          "change": {
+            "type": "FIRST_ENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "当日首次进入前五"
+          }
+        }
+      ],
+      "exited": []
+    }
+  ]
+}
