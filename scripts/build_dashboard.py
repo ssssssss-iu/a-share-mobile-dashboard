@@ -14,8 +14,9 @@ def main():
     parser = argparse.ArgumentParser(description="生成A股静态研究看板数据")
     parser.add_argument("--output", type=Path, default=ROOT / "site/latest.json")
     parser.add_argument("--history-dir", type=Path, default=ROOT / "site/history")
+    parser.add_argument("--intraday-dir", type=Path, default=ROOT / "site/intraday")
     args = parser.parse_args()
-    result = build(args.output, args.history_dir)
+    result = build(args.output, args.history_dir, intraday_dir=args.intraday_dir)
     print(json.dumps({"status": result["status"], "generated_at": result["generated_at"], "candidates": len(result["candidates"]), "error": result.get("error")}, ensure_ascii=False))
 
 

@@ -10,6 +10,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from .data import MarketClient, load_json
+from .intraday_history import record_intraday_snapshot
 from .narrative import build_analysis
 from .schedule import should_write_close_history
 from .scoring import market_summary, phase_at, prefilter, score_candidate
@@ -76,9 +77,17 @@ def previous_close_snapshot(snapshot: dict, now: datetime) -> dict:
     return result
 
 
-def build(output: Path | None = None, history_dir: Path | None = None, now: datetime | None = None) -> dict:
+def build(
+    output: Path | None = None,
+    history_dir: Path | None = None,
+    now: datetime | None = None,
+    intraday_dir: Path | None = None,
+    trigger: str | None = None,
+    scheduled_time: str | None = None,
+) -> dict:
     output = output or ROOT / "site/latest.json"
     history_dir = history_dir or ROOT / "site/history"
+    intraday_dir = intraday_dir or output.parent / "intraday"
     cfg = load_json(ROOT / "config/scoring_candidate.json")
     if not cfg:
         raise RuntimeError("评分配置无法读取")
@@ -271,6 +280,17 @@ def build(output: Path | None = None, history_dir: Path | None = None, now: date
             }
         )
         base["analysis"] = build_analysis(base)
+        try:
+            base["diagnostics"]["intraday_history_saved"] = record_intraday_snapshot(
+                base,
+                intraday_dir,
+                now,
+                trigger=trigger or os.getenv("DASHBOARD_TRIGGER", "manual"),
+                scheduled_time=scheduled_time or os.getenv("DASHBOARD_SCHEDULED_TIME"),
+            )
+        except Exception as history_exc:
+            base["diagnostics"]["intraday_history_saved"] = False
+            base["diagnostics"]["intraday_history_error"] = safe_error(history_exc)
         write_json(output, base)
         if should_write_close_history(now):
             write_json(history_dir / f"{trade_date}-close.json", base)

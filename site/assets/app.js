@@ -13,6 +13,9 @@ const stateClass = state => state === "通过" ? "pass" : state === "不通过" 
 let DATA = null;
 let FILTER = "all";
 let LOAD_IN_FLIGHT = false;
+let HISTORY_INDEX = [];
+let HISTORY_DAY = null;
+let HISTORY_SLOT = null;
 const AUTO_REFRESH_MS = 60 * 1000;
 const UPDATE_POINTS = ["09:25","09:40","09:55","10:10","10:25","10:40","10:55","11:10","11:25","13:05","13:20","13:35","13:50","14:05","14:20","14:35","14:50","15:05"];
 
@@ -79,6 +82,105 @@ function renderSectors(data) {
   const strong = data.sectors.filter(item => item.strong).slice(0, 8);
   if (!strong.length) { panel.innerHTML = `<div class="sector-pill"><strong>无确认强板块</strong><span>等待下一节点</span></div>`; return; }
   panel.innerHTML = strong.map(item => `<div class="sector-pill"><strong>${item.confirmed ? '<i class="confirmed-dot"></i>' : ""}${escapeHtml(item.sector)}</strong><span>相对强度 ${item.relative_strength > 0 ? "+" : ""}${item.relative_strength.toFixed(2)}｜上涨 ${(item.breadth * 100).toFixed(0)}%</span></div>`).join("");
+}
+
+function signed(value, suffix = "") {
+  if (!Number.isFinite(value)) return "—";
+  return `${value > 0 ? "+" : ""}${value}${suffix}`;
+}
+
+function historyChange(item) {
+  const change = item.change || {};
+  const labels = {FIRST_ENTRY:"首次入榜", REENTRY:"再次入榜", UP:"排名上升", DOWN:"排名下降", SAME:"排名不变"};
+  const cls = change.type === "UP" || change.type === "FIRST_ENTRY" ? "positive" : change.type === "DOWN" ? "negative" : "neutral";
+  return `<span class="history-change ${cls}">${escapeHtml(labels[change.type] || "变化未知")}</span>`;
+}
+
+function historyRankingRow(item) {
+  const moduleDeltas = (item.change?.module_deltas || []).map(module => `<span class="history-module-delta">${escapeHtml(module.key)} ${signed(module.delta)}</span>`).join("");
+  const firstSeen = item.first_seen ? `首次 ${escapeHtml(item.first_seen.slot)} · ${Number(item.first_seen.price).toFixed(2)}` : "首次时间未知";
+  return `<article class="history-rank-row">
+    <div class="history-rank-number">${item.rank}</div>
+    <div class="history-stock">
+      <strong>${escapeHtml(item.name)}</strong>
+      <span>${escapeHtml(item.code)} · ${escapeHtml(item.sector || "板块未知")}</span>
+      <small>${firstSeen}</small>
+    </div>
+    <div class="history-quote"><strong>${Number(item.score).toFixed(0)}分</strong><span>${Number(item.price).toFixed(2)} · <i class="${pctClass(item.change_pct)}">${fmtPct(item.change_pct)}</i></span></div>
+    <div class="history-delta">${historyChange(item)}<p>${escapeHtml(item.change?.summary || "暂无上一节点可比较")}</p>${moduleDeltas ? `<div>${moduleDeltas}</div>` : ""}</div>
+    <div class="history-plan"><span>确认 ${item.plan?.breakout?.toFixed(2) ?? "—"}</span><span>不追 ${item.plan?.no_chase_above?.toFixed(2) ?? "—"}</span><span>失效 ${item.plan?.invalid_below?.toFixed(2) ?? "—"}</span></div>
+  </article>`;
+}
+
+function renderHistorySnapshot(snapshot) {
+  const detail = $("#history-detail");
+  if (!detail || !snapshot) return;
+  const quality = snapshot.data_quality || {};
+  const coverage = Number.isFinite(quality.coverage) ? `${(quality.coverage * 100).toFixed(1)}%` : "未知";
+  const exited = snapshot.exited?.length ? `<p class="history-exited">本节点退出前五：${snapshot.exited.map(item => `${escapeHtml(item.name)}（原第${item.previous_rank}）`).join("、")}</p>` : "";
+  detail.innerHTML = `
+    <div class="history-meta">
+      <span>${escapeHtml(snapshot.slot.label)} 节点</span>
+      <span>${fmtTime(snapshot.generated_at)} 实际生成</span>
+      <span>行情覆盖 ${coverage}</span>
+      <span>${snapshot.slot.kind === "manual" ? "手动记录" : snapshot.slot.source === "backup" ? "备援成功" : "主任务成功"}</span>
+    </div>
+    <div class="history-rankings">${(snapshot.rankings || []).map(historyRankingRow).join("")}</div>
+    ${exited}`;
+}
+
+function selectHistorySlot(key) {
+  if (!HISTORY_DAY) return;
+  HISTORY_SLOT = key;
+  document.querySelectorAll("[data-history-slot]").forEach(button => button.classList.toggle("active", button.dataset.historySlot === key));
+  renderHistorySnapshot(HISTORY_DAY.snapshots.find(item => item.slot.key === key));
+}
+
+function renderHistoryDay(day) {
+  const panel = $("#history-panel");
+  if (!day?.snapshots?.length) {
+    panel.innerHTML = `<div class="history-empty">这个交易日没有成功的盘中榜单记录。</div>`;
+    return;
+  }
+  HISTORY_DAY = day;
+  const latest = day.snapshots[day.snapshots.length - 1];
+  panel.innerHTML = `<div class="history-tape" role="tablist" aria-label="盘中更新节点">${day.snapshots.map(item => `<button type="button" role="tab" class="history-slot" data-history-slot="${escapeHtml(item.slot.key)}"><span>${escapeHtml(item.slot.label)}</span><small>${item.slot.kind === "manual" ? "手动" : item.slot.source === "backup" ? "备援" : "主任务"}</small></button>`).join("")}</div><div id="history-detail" class="history-detail"></div>`;
+  selectHistorySlot(latest.slot.key);
+}
+
+async function loadHistoryDay(tradeDate) {
+  const panel = $("#history-panel");
+  panel.innerHTML = `<div class="history-empty">正在读取 ${escapeHtml(tradeDate)} 的盘中记录…</div>`;
+  try {
+    const response = await fetch(`intraday/${encodeURIComponent(tradeDate)}.json?t=${Date.now()}`, {cache:"no-store"});
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    renderHistoryDay(await response.json());
+  } catch (error) {
+    panel.innerHTML = `<div class="history-empty">该交易日的历史文件暂时无法读取。</div>`;
+  }
+}
+
+async function loadHistoryIndex(preferredDate) {
+  const select = $("#history-date");
+  try {
+    const response = await fetch(`intraday/index.json?t=${Date.now()}`, {cache:"no-store"});
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    HISTORY_INDEX = payload.dates || [];
+  } catch (error) {
+    HISTORY_INDEX = [];
+  }
+  if (!HISTORY_INDEX.length) {
+    select.innerHTML = `<option>尚无记录</option>`;
+    select.disabled = true;
+    $("#history-panel").innerHTML = `<div class="history-empty">历史记录从本功能上线后的第一次成功更新开始积累。</div>`;
+    return;
+  }
+  select.disabled = false;
+  select.innerHTML = HISTORY_INDEX.map(item => `<option value="${escapeHtml(item.date)}">${escapeHtml(item.date)} · ${item.snapshot_count}个节点</option>`).join("");
+  const selected = HISTORY_INDEX.some(item => item.date === preferredDate) ? preferredDate : HISTORY_INDEX[0].date;
+  select.value = selected;
+  await loadHistoryDay(selected);
 }
 
 function renderAnalysis(data) {
@@ -175,12 +277,19 @@ function render(data) {
 }
 
 document.addEventListener("click", event => {
+  const historyButton = event.target.closest("[data-history-slot]");
+  if (historyButton) {
+    selectHistorySlot(historyButton.dataset.historySlot);
+    return;
+  }
   const button = event.target.closest("[data-filter]");
   if (!button) return;
   FILTER = button.dataset.filter;
   document.querySelectorAll(".filter").forEach(item => item.classList.toggle("active", item === button));
   renderCandidates(DATA);
 });
+
+$("#history-date").addEventListener("change", event => loadHistoryDay(event.target.value));
 
 async function loadLatest({initial = false} = {}) {
   if (LOAD_IN_FLIGHT) return;
@@ -189,7 +298,10 @@ async function loadLatest({initial = false} = {}) {
     const response = await fetch(`latest.json?t=${Date.now()}`, {cache:"no-store"});
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const next = await response.json();
-    if (!DATA || next.generated_at !== DATA.generated_at || next.status !== DATA.status) render(next);
+    if (!DATA || next.generated_at !== DATA.generated_at || next.status !== DATA.status) {
+      render(next);
+      await loadHistoryIndex(next.trade_date);
+    }
     else renderCheckpoints(next);
   } catch (error) {
     if (initial || !DATA) {
