@@ -15,6 +15,7 @@ from .narrative import build_analysis
 from .research_history import record_research_snapshot
 from .schedule import should_write_close_history
 from .scoring import market_summary, phase_at, prefilter, score_candidate
+from .tdxaidata_provider import TdxAiDataSource, source_record
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,6 +32,16 @@ def write_json(path: Path, payload: dict):
 
 def safe_error(exc: Exception) -> str:
     return f"{type(exc).__name__}: {str(exc)[:400]}"
+
+
+def attach_tdxaidata_status(snapshot: dict, status: dict) -> None:
+    snapshot.setdefault("diagnostics", {})["tdxaidata"] = status
+    sources = [
+        item for item in snapshot.get("sources") or []
+        if not str(item.get("source") or "").startswith("通达信TdxAiData")
+    ]
+    sources.append(source_record(status))
+    snapshot["sources"] = sources
 
 
 def latest_successful_snapshot(previous: dict | None, history_dir: Path) -> dict | None:
@@ -103,6 +114,7 @@ def build(
     cfg = load_json(ROOT / "config/scoring_candidate.json")
     if not cfg:
         raise RuntimeError("评分配置无法读取")
+    tdx_source = TdxAiDataSource(cfg.get("data_sources", {}).get("tdxaidata", {}))
     tz = ZoneInfo(cfg.get("timezone", "Asia/Shanghai"))
     now = now or datetime.now(tz)
     if now.tzinfo is None:
@@ -145,12 +157,14 @@ def build(
                     context_label="非交易日·上一交易日收盘",
                     context_message="周末展示最近一次成功收盘快照，全部执行通道保持关闭。",
                 )
+                attach_tdxaidata_status(result, tdx_source.smoke())
                 write_json(output, result)
                 return result
         if base["phase"]["code"] == "PREOPEN":
             prior_close = latest_successful_snapshot(previous, history_dir)
             if prior_close:
                 result = previous_close_snapshot(prior_close, now)
+                attach_tdxaidata_status(result, tdx_source.smoke())
                 write_json(output, result)
                 return result
 
@@ -244,6 +258,13 @@ def build(
             [item for item in final_scores if item["in_score_pool"]][: cfg["universe"]["candidate_limit"]]
         )
         candidates = deepcopy(score_pool)  # compatibility for older page clients
+        tdx_status = tdx_source.validate(
+            [item["code"] for item in final_scores],
+            trade_date,
+            quote_by_code,
+            details,
+            base["phase"]["code"],
+        )
 
         ordinary_qualified = sum(item["channels"]["ordinary"]["qualified"] for item in final_scores)
         hot_qualified = sum(item["channels"]["hot"]["qualified"] for item in final_scores)
@@ -315,9 +336,11 @@ def build(
                     "shortlist_before_limit": sum(item["score"] >= cfg["levels"]["weak"] for item in final_scores),
                     "ranking_count": len(rankings),
                     "fully_scored_count": len(final_scores),
+                    "tdxaidata": tdx_status,
                 },
                 "sources": [
                     source,
+                    source_record(tdx_status),
                     {"source": "腾讯财经前复权日K与分钟线", "source_url": "https://web.ifzq.gtimg.cn/"},
                     {"source": "巨潮资讯正式公告", "source_url": "https://www.cninfo.com.cn/"},
                     {"source": "深圳证券交易所公告备份", "source_url": "https://www.szse.cn/"},

@@ -46,5 +46,17 @@
   "research": {
     "keep_days": 30,
     "labels": ["forward_30m", "same_close", "next_open", "next_1000", "next_close", "day3_close", "day5_close", "mfe_5d", "mae_5d"]
+  },
+  "data_sources": {
+    "tdxaidata": {
+      "enabled": true,
+      "mode": "shadow",
+      "shadow_days": 5,
+      "shadow_limit": 5,
+      "smoke_timeout_seconds": 60,
+      "daily_count": 90,
+      "minute_count": 320,
+      "maximum_price_diff_pct": 0.30
+    }
   }
 }

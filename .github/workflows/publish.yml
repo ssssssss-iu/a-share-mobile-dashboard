@@ -75,11 +75,18 @@ jobs:
         if: github.event_name == 'push' && steps.freshness.outputs.should_refresh != 'false'
         run: python -m unittest discover -s tests -v
 
+      - name: Check optional TdxAiData source
+        if: steps.freshness.outputs.should_refresh != 'false'
+        env:
+          TDX_AI_DATA_TOKEN: ${{ secrets.TDX_AI_DATA_TOKEN }}
+        run: python scripts/check_tdxaidata.py
+
       - name: Build current snapshot
         if: steps.freshness.outputs.should_refresh != 'false'
         env:
           DASHBOARD_TRIGGER: ${{ github.event_name == 'workflow_dispatch' && inputs.scheduler || github.event_name }}
           DASHBOARD_SCHEDULED_TIME: ${{ inputs.scheduled_time || '' }}
+          TDX_AI_DATA_TOKEN: ${{ secrets.TDX_AI_DATA_TOKEN }}
         run: python scripts/build_dashboard.py
 
       - name: Generate optional AI analysis

@@ -245,6 +245,7 @@ def record_research_snapshot(
             "generated_at": generated_at,
             "market": deepcopy(snapshot.get("market") or {}),
             "strategy": deepcopy(snapshot.get("strategy") or {}),
+            "data_source_validation": deepcopy((snapshot.get("diagnostics") or {}).get("tdxaidata") or {}),
             "score_pool_codes": [item.get("code") for item in full_scores if item.get("in_score_pool")],
             "qualified_codes": {
                 "ordinary": [item.get("code") for item in full_scores if item.get("channels", {}).get("ordinary", {}).get("qualified")],
