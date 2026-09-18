@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "status": "SUCCESS",
-  "generated_at": "2026-09-19T07:14:44+08:00",
+  "generated_at": "2026-09-19T07:45:43+08:00",
   "phase": {
     "code": "PREOPEN",
     "label": "盘前·上一交易日收盘",
@@ -2371,8 +2371,17 @@
     "ranking_count": 5,
     "fully_scored_count": 36,
     "previous_close_reused": true,
-    "source_generated_at": "2026-09-19T06:52:45+08:00",
-    "research_recording_status": "READY_FROM_NEXT_TRADING_SNAPSHOT"
+    "source_generated_at": "2026-09-19T07:14:44+08:00",
+    "research_recording_status": "READY_FROM_NEXT_TRADING_SNAPSHOT",
+    "tdxaidata": {
+      "enabled": true,
+      "mode": "shadow",
+      "status": "FAILED",
+      "package_version": null,
+      "checked_codes": 0,
+      "message": "连接失败，继续使用原数据源",
+      "error_type": "AttributeError"
+    }
   },
   "sources": [
     {
@@ -2400,6 +2409,12 @@
     {
       "source": "东方财富公告备份",
       "source_url": "https://np-anotice-stock.eastmoney.com/"
+    },
+    {
+      "source": "通达信TdxAiData（影子验证·回退原源）",
+      "source_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hjbgqpdhv114.html",
+      "status": "FAILED",
+      "mode": "shadow"
     }
   ],
   "error": null,
@@ -2409,7 +2424,7 @@
     "code": "NON_TRADING_DAY",
     "label": "非交易日·上一交易日收盘",
     "trade_date": "2026-09-18",
-    "source_generated_at": "2026-09-19T06:52:45+08:00",
+    "source_generated_at": "2026-09-19T07:14:44+08:00",
     "message": "周末展示最近一次成功收盘快照，全部执行通道保持关闭。"
   },
   "score_pool": [
@@ -3395,7 +3410,7 @@
     "status": "SKIPPED",
     "provider": "OpenAI",
     "model": "gpt-5.6-luna",
-    "generated_at": "2026-09-19T07:14:44+08:00",
+    "generated_at": "2026-09-19T07:45:44+08:00",
     "reason": "未配置OPENAI_API_KEY，继续使用规则模板。"
   }
 }
