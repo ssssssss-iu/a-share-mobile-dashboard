@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 PRIMARY_UPDATE_TIMES = (
@@ -20,6 +20,76 @@ BACKUP_UPDATE_TIMES = (
     "14:10", "14:25", "14:40", "14:55",
     "15:10",
 )
+
+
+def _minute(value: str) -> int:
+    hour, minute = map(int, value.split(":"))
+    return hour * 60 + minute
+
+
+def _scheduled_datetime(value: str | None, now: datetime) -> datetime | None:
+    if not value:
+        return None
+    try:
+        stamp = float(value)
+    except (TypeError, ValueError):
+        try:
+            parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        except ValueError:
+            return None
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(now.tzinfo)
+    if stamp > 10_000_000_000:
+        stamp /= 1000
+    return datetime.fromtimestamp(stamp, timezone.utc).astimezone(now.tzinfo)
+
+
+def intraday_slot(now: datetime, trigger: str = "manual", scheduled_time: str | None = None) -> dict:
+    """Resolve an update to a stable primary slot without disguising manual runs."""
+    trigger = (trigger or "manual").lower()
+    reference = _scheduled_datetime(scheduled_time, now) or now
+    reference_minute = reference.hour * 60 + reference.minute
+
+    if trigger == "cloudflare":
+        candidates = PRIMARY_UPDATE_TIMES
+        source = "primary"
+        max_distance = 3
+    elif trigger == "schedule":
+        candidates = BACKUP_UPDATE_TIMES
+        source = "backup"
+        max_distance = 12
+    else:
+        stamp = now.strftime("%H:%M:%S")
+        return {
+            "key": f"manual-{now.strftime('%H%M%S')}",
+            "label": f"手动 {stamp}",
+            "planned_time": None,
+            "kind": "manual",
+            "source": trigger,
+        }
+
+    index, matched = min(
+        enumerate(candidates),
+        key=lambda item: abs(_minute(item[1]) - reference_minute),
+    )
+    if abs(_minute(matched) - reference_minute) > max_distance:
+        stamp = now.strftime("%H:%M:%S")
+        return {
+            "key": f"late-{source}-{now.strftime('%H%M%S')}",
+            "label": f"延迟 {stamp}",
+            "planned_time": None,
+            "kind": "manual",
+            "source": source,
+        }
+    primary = PRIMARY_UPDATE_TIMES[index]
+    return {
+        "key": f"scheduled-{primary.replace(':', '')}",
+        "label": primary,
+        "planned_time": primary,
+        "kind": "scheduled",
+        "source": source,
+    }
 
 
 def should_write_close_history(now: datetime) -> bool:

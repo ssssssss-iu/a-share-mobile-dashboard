@@ -5,6 +5,7 @@ from zoneinfo import ZoneInfo
 from dashboard.schedule import (
     BACKUP_UPDATE_TIMES,
     PRIMARY_UPDATE_TIMES,
+    intraday_slot,
     should_write_close_history,
     snapshot_is_fresh,
 )
@@ -39,6 +40,23 @@ class ScheduleTests(unittest.TestCase):
         self.assertTrue(should_write_close_history(datetime(2026, 9, 17, 15, 10, tzinfo=TZ)))
         self.assertFalse(should_write_close_history(datetime(2026, 9, 17, 14, 50, tzinfo=TZ)))
         self.assertFalse(should_write_close_history(datetime(2026, 9, 17, 15, 20, tzinfo=TZ)))
+
+    def test_cloudflare_timestamp_resolves_primary_slot(self):
+        planned = datetime(2026, 9, 17, 9, 25, tzinfo=TZ)
+        now = datetime(2026, 9, 17, 9, 28, tzinfo=TZ)
+        slot = intraday_slot(now, "cloudflare", str(int(planned.timestamp() * 1000)))
+        self.assertEqual(slot["key"], "scheduled-0925")
+        self.assertEqual(slot["source"], "primary")
+
+    def test_backup_maps_to_same_primary_slot(self):
+        slot = intraday_slot(datetime(2026, 9, 17, 9, 31, tzinfo=TZ), "schedule")
+        self.assertEqual(slot["key"], "scheduled-0925")
+        self.assertEqual(slot["source"], "backup")
+
+    def test_manual_run_never_impersonates_scheduled_slot(self):
+        slot = intraday_slot(datetime(2026, 9, 17, 15, 5, tzinfo=TZ), "manual")
+        self.assertEqual(slot["kind"], "manual")
+        self.assertTrue(slot["key"].startswith("manual-"))
 
 
 if __name__ == "__main__":
