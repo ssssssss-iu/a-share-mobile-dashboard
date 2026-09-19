@@ -166,7 +166,13 @@ class TdxAiDataSource:
             "status": status,
             "package_version": payload.get("package_version"),
             "checked_codes": len(payload.get("snapshots") or {}),
-            "message": "数据服务连接成功，等待交易日影子对照" if status == "CONNECTED" else "连接失败，继续使用原数据源",
+            "message": (
+                "数据服务连接成功，交易时段将作为评分主源"
+                if status == "CONNECTED" and self.mode == "primary"
+                else "数据服务连接成功，等待交易日影子对照"
+                if status == "CONNECTED"
+                else "连接失败，继续使用原数据源"
+            ),
             "error_type": payload.get("error_type"),
             "error_message": payload.get("error_message"),
         }
