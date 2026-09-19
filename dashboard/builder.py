@@ -4,6 +4,7 @@ import json
 import os
 import tempfile
 from copy import deepcopy
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime
 from pathlib import Path
@@ -42,6 +43,43 @@ def attach_tdxaidata_status(snapshot: dict, status: dict) -> None:
     ]
     sources.append(source_record(status))
     snapshot["sources"] = sources
+
+
+def source_trace(universe_rows: list[dict], rows: list[dict], details: dict, tdx_status: dict | None = None) -> dict:
+    """Expose field-level source and timestamp coverage without exposing credentials."""
+    universe_sources = Counter(str(row.get("data_source") or "未知") for row in universe_rows)
+    quote_sources = Counter(str(row.get("data_source") or "未知") for row in rows)
+    quote_timestamps = Counter(str(row.get("timestamp_source") or "missing") for row in rows)
+    quote_lags = [row.get("source_latency_seconds") for row in rows if isinstance(row.get("source_latency_seconds"), (int, float))]
+    detail_meta = [value.get("provenance") or {} for value in details.values() if isinstance(value, dict)]
+    detail_sources = Counter(
+        str(meta.get("minute_source") or meta.get("daily_source") or "未知") for meta in detail_meta
+    )
+    detail_timestamps = Counter(str(meta.get("timestamp_source") or "missing") for meta in detail_meta)
+    detail_lags = [
+        value
+        for meta in detail_meta
+        for value in (meta.get("minute_latency_seconds"), meta.get("daily_latency_seconds"))
+        if isinstance(value, (int, float))
+    ]
+    return {
+        "universe_quote_sources": dict(universe_sources),
+        "quote_sources": dict(quote_sources),
+        "quote_timestamp_sources": dict(quote_timestamps),
+        "quote_received_at": max((row.get("received_at") for row in rows if row.get("received_at")), default=None),
+        "quote_provider_time_min": min((row.get("market_time") for row in rows if row.get("market_time")), default=None),
+        "quote_provider_time_max": max((row.get("market_time") for row in rows if row.get("market_time")), default=None),
+        "quote_latency_seconds_max": max(quote_lags) if quote_lags else None,
+        "detail_sources": dict(detail_sources),
+        "detail_timestamp_sources": dict(detail_timestamps),
+        "detail_latency_seconds_max": max(detail_lags) if detail_lags else None,
+        "tdxaidata": {
+            "status": (tdx_status or {}).get("status"),
+            "received_at": (tdx_status or {}).get("received_at"),
+            "provider_time_min": (tdx_status or {}).get("provider_time_min"),
+            "provider_time_max": (tdx_status or {}).get("provider_time_max"),
+        },
+    }
 
 
 def latest_successful_snapshot(previous: dict | None, history_dir: Path) -> dict | None:
@@ -357,6 +395,7 @@ def build(
                     "ranking_count": len(rankings),
                     "fully_scored_count": len(final_scores),
                     "tdxaidata": tdx_status,
+                    "source_trace": source_trace(rows, target_rows, details, tdx_status),
                 },
                 "sources": [
                     source,

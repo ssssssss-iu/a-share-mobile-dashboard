@@ -7,6 +7,7 @@ import sys
 from datetime import date, datetime
 
 from .data import number
+from .provenance import TZ, iso_timestamp, latest_row_timestamp, source_latency_seconds
 
 
 OFFICIAL_DOCS = "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hjbgqpdhv114.html"
@@ -226,8 +227,10 @@ class TdxAiDataSource:
                 "primary_detail_count": 0,
                 "fallback_quote_count": len(codes),
                 "fallback_detail_count": len(codes),
+                "received_at": observed_at.isoformat(timespec="seconds"),
             }
         payload = self._request_payload(codes, trade_date, phase_code)
+        received_at = datetime.now(observed_at.tzinfo or TZ)
         if payload.get("status") not in ("CONNECTED", "EMPTY"):
             return fallback_quotes, fallback_details, {
                 "enabled": True,
@@ -242,6 +245,7 @@ class TdxAiDataSource:
                 "primary_detail_count": 0,
                 "fallback_quote_count": len(codes),
                 "fallback_detail_count": len(codes),
+                "received_at": received_at.isoformat(timespec="seconds"),
             }
 
         snapshots = payload.get("snapshots") or {}
@@ -251,15 +255,23 @@ class TdxAiDataSource:
         details = {}
         primary_quotes = 0
         primary_details = 0
+        provenance = []
         for code in codes:
             code = plain_code(code)
             fallback_quote = dict(fallback_quotes.get(code) or {})
             raw = snapshots.get(tdx_symbol(code)) or {}
             now = number(raw.get("Now"))
             previous_close = number(raw.get("LastClose"))
+            snapshot_time = None
+            for key in ("Time", "time", "MarketTime", "market_time", "UpdateTime", "update_time", "DateTime", "datetime", "Timestamp", "timestamp"):
+                if raw.get(key) not in (None, ""):
+                    snapshot_time = iso_timestamp(raw.get(key), trade_date=trade_date)
+                    if snapshot_time:
+                        break
             if now is not None:
                 primary_quotes += 1
                 quote = dict(fallback_quote)
+                quote_timestamp = snapshot_time or quote.get("market_time")
                 quote.update({
                     "price": now,
                     "previous_close": previous_close if previous_close is not None else quote.get("previous_close"),
@@ -267,8 +279,11 @@ class TdxAiDataSource:
                     "high": number(raw.get("Max")) or quote.get("high"),
                     "low": number(raw.get("Min")) or quote.get("low"),
                     "amount": number(raw.get("Amount")) or quote.get("amount"),
-                    "market_time": observed_at.isoformat(timespec="seconds"),
+                    "market_time": quote_timestamp,
                     "data_source": "TdxAiData",
+                    "received_at": received_at.isoformat(timespec="seconds"),
+                    "source_latency_seconds": source_latency_seconds(snapshot_time, received_at),
+                    "timestamp_source": "tdx_snapshot" if snapshot_time else "fallback_quote",
                 })
                 if quote.get("previous_close"):
                     quote["change_pct"] = round((now / quote["previous_close"] - 1) * 100, 4)
@@ -287,12 +302,54 @@ class TdxAiDataSource:
                 for row in minutes.get(symbol) or []
                 if row.get("time")
             ]
+            detail_provider_time = latest_row_timestamp(minute_rows, trade_date=trade_date)
+            daily_provider_time = latest_row_timestamp(daily_rows, trade_date=trade_date)
+            if now is not None and not snapshot_time and detail_provider_time and code in quotes:
+                quotes[code]["market_time"] = detail_provider_time
+                quotes[code]["source_latency_seconds"] = source_latency_seconds(detail_provider_time, received_at)
+                quotes[code]["timestamp_source"] = "tdx_minute"
             if len(daily_rows) >= 21 and minute_rows:
                 primary_details += 1
-                details[code] = {"daily": daily_rows, "minute": minute_rows}
+                details[code] = {
+                    "daily": daily_rows,
+                    "minute": minute_rows,
+                    "provenance": {
+                        "quote_source": "TdxAiData实时行情" if now is not None else "原行情回退",
+                        "daily_source": "TdxAiData日K",
+                        "minute_source": "TdxAiData分钟K",
+                        "received_at": received_at.isoformat(timespec="seconds"),
+                        "daily_provider_time": daily_provider_time,
+                        "minute_provider_time": detail_provider_time,
+                        "daily_latency_seconds": None,
+                        "minute_latency_seconds": source_latency_seconds(detail_provider_time, received_at),
+                        "timestamp_source": "tdx_records" if detail_provider_time or daily_provider_time else "missing",
+                        "fallback": False,
+                    },
+                }
             else:
                 details[code] = dict(fallback_details.get(code) or {})
+                fallback_provenance = dict(details[code].get("provenance") or {})
+                fallback_provenance.update({
+                    "quote_source": "原行情回退",
+                    "daily_source": "原日K回退",
+                    "minute_source": "原分钟K回退",
+                    "received_at": fallback_provenance.get("received_at") or received_at.isoformat(timespec="seconds"),
+                    "fallback": True,
+                })
+                details[code]["provenance"] = fallback_provenance
+            provenance.append({
+                "code": code,
+                "quote_source": "TdxAiData" if now is not None else "fallback",
+                "daily_source": "TdxAiData" if len(daily_rows) >= 21 else "fallback",
+                "minute_source": "TdxAiData" if minute_rows else "fallback",
+                "provider_time": snapshot_time or detail_provider_time or daily_provider_time,
+                "received_at": received_at.isoformat(timespec="seconds"),
+                "source_latency_seconds": source_latency_seconds(snapshot_time or detail_provider_time or daily_provider_time, received_at),
+                "timestamp_source": "tdx" if snapshot_time or detail_provider_time or daily_provider_time else "fallback_or_missing",
+                "fallback": now is None or len(daily_rows) < 21 or not minute_rows,
+            })
         status = "CONNECTED" if primary_quotes == len(codes) and primary_details == len(codes) else "PRIMARY_WITH_FALLBACK"
+        provider_times = [item["provider_time"] for item in provenance if item.get("provider_time")]
         return quotes, details, {
             "enabled": True,
             "mode": self.mode,
@@ -306,6 +363,15 @@ class TdxAiDataSource:
             "primary_detail_count": primary_details,
             "fallback_quote_count": len(codes) - primary_quotes,
             "fallback_detail_count": len(codes) - primary_details,
+            "received_at": received_at.isoformat(timespec="seconds"),
+            "provider_time_min": min(provider_times) if provider_times else None,
+            "provider_time_max": max(provider_times) if provider_times else None,
+            "timestamp_source_counts": {
+                "tdx": sum(item["timestamp_source"] == "tdx" for item in provenance),
+                "tdx_records": sum(item["timestamp_source"] == "tdx_records" for item in provenance),
+                "fallback_or_missing": sum(item["timestamp_source"] == "fallback_or_missing" for item in provenance),
+            },
+            "provenance": provenance,
         }
 
 
@@ -325,4 +391,11 @@ def source_record(status: dict) -> dict:
         "source_url": OFFICIAL_DOCS,
         "status": status.get("status"),
         "mode": status.get("mode"),
+        "received_at": status.get("received_at"),
+        "provider_time_min": status.get("provider_time_min"),
+        "provider_time_max": status.get("provider_time_max"),
+        "primary_quote_count": status.get("primary_quote_count"),
+        "primary_detail_count": status.get("primary_detail_count"),
+        "fallback_quote_count": status.get("fallback_quote_count"),
+        "fallback_detail_count": status.get("fallback_detail_count"),
     }

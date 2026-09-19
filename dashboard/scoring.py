@@ -571,6 +571,7 @@ def score_candidate(
     confidence = data_confidence(
         quote, features, sector, announcement_error, announcement_checked, announcement_source
     )
+    detail_provenance = detail.get("provenance") or {}
     return {
         "code": quote["code"],
         "name": quote["name"],
@@ -580,6 +581,21 @@ def score_candidate(
         "amount": quote["amount"],
         "turnover_rate": _round(quote["turnover_rate"]),
         "market_time": quote.get("market_time"),
+        "data_provenance": {
+            "quote_source": quote.get("data_source"),
+            "quote_received_at": quote.get("received_at"),
+            "quote_provider_time": quote.get("market_time"),
+            "quote_timestamp_source": quote.get("timestamp_source"),
+            "quote_latency_seconds": quote.get("source_latency_seconds"),
+            "daily_source": detail_provenance.get("daily_source"),
+            "minute_source": detail_provenance.get("minute_source"),
+            "detail_received_at": detail_provenance.get("received_at"),
+            "daily_provider_time": detail_provenance.get("daily_provider_time"),
+            "minute_provider_time": detail_provenance.get("minute_provider_time"),
+            "daily_latency_seconds": detail_provenance.get("daily_latency_seconds"),
+            "minute_latency_seconds": detail_provenance.get("minute_latency_seconds"),
+            "fallback": bool(detail_provenance.get("fallback")),
+        },
         "score": total,
         "level": level,
         "modules": modules,

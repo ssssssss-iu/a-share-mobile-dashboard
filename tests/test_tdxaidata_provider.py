@@ -80,8 +80,13 @@ class TdxAiDataProviderTests(unittest.TestCase):
         self.assertEqual(status["primary_quote_count"], 1)
         self.assertEqual(quotes["600000"]["price"], 10.2)
         self.assertEqual(quotes["600000"]["data_source"], "TdxAiData")
+        self.assertEqual(quotes["600000"]["market_time"], "2026-09-18T14:59:00+08:00")
+        self.assertEqual(quotes["600000"]["timestamp_source"], "tdx_minute")
         self.assertEqual(len(details["600000"]["daily"]), 22)
         self.assertEqual(details["600000"]["minute"][0]["close"], 10.2)
+        self.assertEqual(details["600000"]["provenance"]["minute_source"], "TdxAiData分钟K")
+        self.assertFalse(details["600000"]["provenance"]["fallback"])
+        self.assertEqual(status["timestamp_source_counts"]["tdx"], 1)
 
 
 if __name__ == "__main__":

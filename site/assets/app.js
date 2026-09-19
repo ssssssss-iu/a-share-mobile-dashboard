@@ -230,6 +230,8 @@ function candidateCard(item) {
   const confidenceClass = confidence.level === "高" ? "ready" : confidence.level === "中" ? "wait" : "closed";
   const confidenceBadge = Number.isFinite(confidence.score) ? `<span class="badge ${confidenceClass}">数据可信度 ${confidence.score}/100</span>` : "";
   const confidenceEvidence = confidence.components?.length ? `<div class="evidence-item"><strong>数据可信度 · ${confidence.level} · ${confidence.score}/100</strong><p>${confidence.components.map(part => `${escapeHtml(part.label)} ${part.score}/${part.max}（${escapeHtml(part.detail)}）`).join("；")}</p></div>` : "";
+  const provenance = item.data_provenance || {};
+  const provenanceEvidence = (provenance.quote_source || provenance.daily_source || provenance.minute_source) ? `<div class="evidence-item"><strong>行情来源与时间</strong><p>报价：${escapeHtml(provenance.quote_source || "未知")}，时间 ${escapeHtml(fmtTime(provenance.quote_provider_time))}；日K：${escapeHtml(provenance.daily_source || "未知")}；分钟K：${escapeHtml(provenance.minute_source || "未知")}；${provenance.fallback ? "存在回退数据" : "未标记回退"}${Number.isFinite(provenance.minute_latency_seconds) ? `，分钟线延迟 ${provenance.minute_latency_seconds.toFixed(1)} 秒` : ""}</p></div>` : "";
   return `<article class="candidate-card" data-ordinary="${item.channels.ordinary.qualified}" data-hot="${item.channels.hot.qualified}">
     <div class="score-rail"><span class="score-value">${item.score}</span><span class="score-max">/ 100</span></div>
     <div class="candidate-body">
@@ -245,7 +247,7 @@ function candidateCard(item) {
         <div class="plan-cell"><span>不追高</span><strong>${item.plan.no_chase_above?.toFixed(2) ?? "—"}</strong></div>
         <div class="plan-cell"><span>失效参考</span><strong>${item.plan.invalid_below?.toFixed(2) ?? "—"}</strong></div>
       </div>
-      <details class="evidence"><summary>查看逐项证据与数据边界</summary><div class="evidence-list"><div class="evidence-item"><strong>买点结构</strong><p>${escapeHtml(item.plan.message)}</p></div>${confidenceEvidence}${evidence}</div></details>
+      <details class="evidence"><summary>查看逐项证据与数据边界</summary><div class="evidence-list"><div class="evidence-item"><strong>买点结构</strong><p>${escapeHtml(item.plan.message)}</p></div>${provenanceEvidence}${confidenceEvidence}${evidence}</div></details>
     </div>
   </article>`;
 }
@@ -274,8 +276,10 @@ function renderMethod(data) {
   const aiStatus = ai?.status === "SUCCESS" ? `${escapeHtml(ai.provider)} ${escapeHtml(ai.model)} 已生成` : ai?.status === "FAILED" ? "调用失败，已保留规则模板" : "未启用，使用规则模板";
   const layers = data.layers || {};
   const tdx = data.diagnostics?.tdxaidata;
+  const trace = data.diagnostics?.source_trace || {};
   const tdxStatus = !tdx ? "尚无检测结果" : tdx.status === "CONNECTED" ? `${tdx.mode === "shadow" ? "影子验证已连接" : "主源已连接"}${Number.isFinite(tdx.quote_match_ratio) ? `，报价一致率 ${(tdx.quote_match_ratio * 100).toFixed(1)}%` : ""}` : `${tdx.message || tdx.status}`;
-  $("#method-panel").innerHTML = `<strong>四层边界：</strong>评分榜是完整评分前5；观察池是总分达到60分；通道合格要求对应必过模块、风险和买点结构通过；当前可执行还要求处于执行窗口。四层结果分别展示，评分榜不等于推荐。<br><strong>本次统计：</strong>观察池 ${layers.score_pool_count ?? "—"}只；普通隔夜合格 ${layers.ordinary_qualified_count ?? ordinary?.qualified_count ?? 0}只；热点波段合格 ${layers.hot_qualified_count ?? hot?.qualified_count ?? 0}只；当前可执行 ${Number(layers.ordinary_actionable_count || 0) + Number(layers.hot_actionable_count || 0)}个通道机会。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>TdxAiData：</strong>${escapeHtml(tdxStatus)}。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
+  const sourceTrace = trace.quote_sources ? `全市场行情源 ${escapeHtml(JSON.stringify(trace.universe_quote_sources || {}))}；评分行情源 ${escapeHtml(JSON.stringify(trace.quote_sources))}；行情时间 ${escapeHtml(fmtTime(trace.quote_provider_time_max))}；报价最大延迟 ${Number.isFinite(trace.quote_latency_seconds_max) ? `${trace.quote_latency_seconds_max.toFixed(1)}秒` : "未知"}；详细数据源 ${escapeHtml(JSON.stringify(trace.detail_sources || {}))}` : "尚无字段级来源追踪";
+  $("#method-panel").innerHTML = `<strong>四层边界：</strong>评分榜是完整评分前5；观察池是总分达到60分；通道合格要求对应必过模块、风险和买点结构通过；当前可执行还要求处于执行窗口。四层结果分别展示，评分榜不等于推荐。<br><strong>本次统计：</strong>观察池 ${layers.score_pool_count ?? "—"}只；普通隔夜合格 ${layers.ordinary_qualified_count ?? ordinary?.qualified_count ?? 0}只；热点波段合格 ${layers.hot_qualified_count ?? hot?.qualified_count ?? 0}只；当前可执行 ${Number(layers.ordinary_actionable_count || 0) + Number(layers.hot_actionable_count || 0)}个通道机会。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>TdxAiData：</strong>${escapeHtml(tdxStatus)}。<br><strong>字段级来源：</strong>${sourceTrace}。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
 }
 
 function render(data) {

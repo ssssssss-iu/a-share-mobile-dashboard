@@ -12,6 +12,8 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+from .provenance import latest_row_timestamp, source_latency_seconds
+
 
 TZ = ZoneInfo("Asia/Shanghai")
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
@@ -102,6 +104,7 @@ class MarketClient:
         raise RuntimeError(f"东方财富行情第 {page} 页失败: {last_error}")
 
     def market_snapshot(self) -> tuple[list[dict], dict]:
+        request_started = datetime.now(TZ)
         first = self._market_page(1)
         total = int(first.get("total") or 0)
         if total < 1000:
@@ -116,11 +119,13 @@ class MarketClient:
                     rows.extend(future.result().get("diff") or [])
                 except Exception as exc:
                     errors.append({"page": futures[future], "error": str(exc)})
+        received_at = datetime.now(TZ)
         by_code = {}
         for raw in rows:
             code = str(raw.get("f12") or "").zfill(6)
             name = str(raw.get("f14") or "")
             stamp = number(raw.get("f124"))
+            market_time = datetime.fromtimestamp(stamp, TZ).isoformat(timespec="seconds") if stamp else None
             by_code[code] = {
                 "code": code,
                 "name": name,
@@ -134,7 +139,11 @@ class MarketClient:
                 "previous_close": number(raw.get("f18")),
                 "market_cap": number(raw.get("f20")),
                 "industry": str(raw.get("f100") or "").strip() or None,
-                "market_time": datetime.fromtimestamp(stamp, TZ).isoformat(timespec="seconds") if stamp else None,
+                "market_time": market_time,
+                "data_source": "东方财富沪深A股行情",
+                "received_at": received_at.isoformat(timespec="seconds"),
+                "source_latency_seconds": source_latency_seconds(market_time, received_at),
+                "timestamp_source": "provider" if market_time else "missing",
             }
         coverage = len(by_code) / total if total else 0
         if coverage < self.minimum_quote_coverage:
@@ -152,6 +161,10 @@ class MarketClient:
             "coverage": coverage,
             "minimum_coverage": self.minimum_quote_coverage,
             "failed_pages": len(errors),
+            "request_started_at": request_started.isoformat(timespec="seconds"),
+            "received_at": received_at.isoformat(timespec="seconds"),
+            "provider_time_min": min((row["market_time"] for row in output if row.get("market_time")), default=None),
+            "provider_time_max": max((row["market_time"] for row in output if row.get("market_time")), default=None),
         }
 
     def index_quotes(self) -> list[dict]:
@@ -162,6 +175,7 @@ class MarketClient:
             timeout=self.timeout,
         )
         response.raise_for_status()
+        received_at = datetime.now(TZ)
         output = []
         for line in response.content.decode("gbk", "ignore").split(";"):
             if "=" not in line or '"' not in line:
@@ -176,7 +190,17 @@ class MarketClient:
             except ValueError:
                 pass
             code, fallback_name = mapping[key]
-            output.append({"code": code, "name": values[1] or fallback_name, "price": number(values[3]), "change_pct": number(values[32]), "market_time": stamp})
+            output.append({
+                "code": code,
+                "name": values[1] or fallback_name,
+                "price": number(values[3]),
+                "change_pct": number(values[32]),
+                "market_time": stamp,
+                "data_source": "腾讯财经指数行情",
+                "received_at": received_at.isoformat(timespec="seconds"),
+                "source_latency_seconds": source_latency_seconds(stamp, received_at),
+                "timestamp_source": "provider" if stamp else "missing",
+            })
         return output
 
     def daily(self, code: str, count: int = 90, end: date | None = None) -> list[dict]:
@@ -244,15 +268,36 @@ class MarketClient:
         details, errors = {}, []
 
         def fetch(code):
-            return code, self.daily(code, end=trade_date), self.minutes(code)
+            received_at = datetime.now(TZ)
+            daily = self.daily(code, end=trade_date)
+            minute = self.minutes(code)
+            received_at = datetime.now(TZ)
+            return code, daily, minute, received_at
 
         with ThreadPoolExecutor(max_workers=self.workers) as pool:
             futures = {pool.submit(fetch, code): code for code in codes}
             for future in as_completed(futures):
                 code = futures[future]
                 try:
-                    _, daily, minute = future.result()
-                    details[code] = {"daily": daily, "minute": minute}
+                    _, daily, minute, received_at = future.result()
+                    minute_time = latest_row_timestamp(minute, trade_date=trade_date)
+                    daily_time = latest_row_timestamp(daily, trade_date=trade_date)
+                    details[code] = {
+                        "daily": daily,
+                        "minute": minute,
+                        "provenance": {
+                            "quote_source": "腾讯财经实时行情",
+                            "daily_source": "腾讯财经前复权日K",
+                            "minute_source": "腾讯财经分钟K",
+                            "received_at": received_at.isoformat(timespec="seconds"),
+                            "daily_provider_time": daily_time,
+                            "minute_provider_time": minute_time,
+                            "daily_latency_seconds": None,
+                            "minute_latency_seconds": source_latency_seconds(minute_time, received_at),
+                            "timestamp_source": "provider" if minute_time or daily_time else "missing",
+                            "fallback": False,
+                        },
+                    }
                 except Exception as exc:
                     errors.append({"code": code, "error": f"{type(exc).__name__}: {exc}"})
         return details, errors
