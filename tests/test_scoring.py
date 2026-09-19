@@ -3,7 +3,7 @@ import unittest
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from dashboard.scoring import market_summary, score_candidate
+from dashboard.scoring import build_leader_board, market_summary, score_candidate
 
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -53,6 +53,43 @@ def sector(previous=True):
 class ScoringTests(unittest.TestCase):
     def test_module_weights_sum_to_100(self):
         self.assertEqual(sum(config()["weights"].values()), 100)
+
+    def test_leader_board_is_independent_and_returns_leader_and_capacity_core(self):
+        rows = [
+            {"code": "600001", "name": "涨幅龙头", "industry": "测试行业", "change_pct": 8.0, "amount": 300_000_000, "turnover_rate": 6.0},
+            {"code": "600002", "name": "容量核心", "industry": "测试行业", "change_pct": 3.0, "amount": 2_000_000_000, "turnover_rate": 4.0},
+            {"code": "600003", "name": "样本三", "industry": "测试行业", "change_pct": 2.5, "amount": 500_000_000, "turnover_rate": 5.0},
+            {"code": "600004", "name": "样本四", "industry": "测试行业", "change_pct": 2.0, "amount": 400_000_000, "turnover_rate": 5.0},
+            {"code": "600005", "name": "样本五", "industry": "测试行业", "change_pct": 1.5, "amount": 350_000_000, "turnover_rate": 5.0},
+        ]
+        sectors = {
+            "测试行业": {
+                "strong": True,
+                "confirmed": True,
+                "relative_strength": 2.0,
+                "breadth": 0.8,
+                "median_pct": 2.5,
+                "limit_up_count": 1,
+                "amount": 3_550_000_000,
+            }
+        }
+        result = build_leader_board(rows, sectors, config())
+        self.assertEqual(result["status"], "SUCCESS")
+        self.assertEqual(result["sectors"][0]["sector"], "测试行业")
+        self.assertEqual(result["sectors"][0]["leaders"][0]["role"], "龙头")
+        self.assertEqual(result["sectors"][0]["leaders"][0]["code"], "600001")
+        self.assertEqual(result["sectors"][0]["leaders"][1]["role"], "容量核心")
+        self.assertEqual(result["sectors"][0]["leaders"][1]["code"], "600002")
+
+    def test_leader_board_requires_confirmed_sector_without_affecting_trade_score(self):
+        rows = [
+            {"code": f"60000{index}", "name": "样本", "industry": "测试行业", "change_pct": 2.0, "amount": 300_000_000, "turnover_rate": 5.0}
+            for index in range(1, 6)
+        ]
+        sectors = {"测试行业": {"strong": True, "confirmed": False, "relative_strength": 1.0, "breadth": 0.8, "median_pct": 2.0, "amount": 1_500_000_000}}
+        result = build_leader_board(rows, sectors, config())
+        self.assertEqual(result["status"], "NO_CONFIRMED_SECTOR")
+        self.assertEqual(result["sectors"], [])
 
     def test_missing_previous_sector_snapshot_cannot_pass_d(self):
         result = score_candidate(quote(), detail(), sector(False), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))

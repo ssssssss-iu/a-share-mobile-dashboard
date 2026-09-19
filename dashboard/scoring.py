@@ -137,6 +137,140 @@ def market_summary(rows: list[dict], previous: dict | None, cfg: dict) -> tuple[
     return summary, {"items": current_sectors, "public": sectors[:20]}
 
 
+def build_leader_board(rows: list[dict], sectors: dict, cfg: dict) -> dict:
+    """Build a standalone board of leaders inside confirmed strong sectors.
+
+    This board is deliberately independent from the A/B/C/D/E/G trade score. It
+    uses the full quote snapshot so the label means sector-wide leader rather
+    than leader among the detailed-score candidates only.
+    """
+    leader_cfg = cfg.get("leader_board") or {}
+    if not leader_cfg.get("enabled", True):
+        return {"status": "DISABLED", "sectors": [], "message": "板块龙头模块未启用"}
+
+    grouped = {}
+    for row in rows:
+        sector_name = row.get("industry")
+        if not sector_name or any(number(row.get(key)) is None for key in ("change_pct", "amount", "turnover_rate")):
+            continue
+        grouped.setdefault(sector_name, []).append(row)
+
+    minimum_members = int(leader_cfg.get("minimum_sector_members", cfg.get("market", {}).get("sector_members_min", 5)))
+    require_confirmed = bool(leader_cfg.get("require_confirmed", True))
+    sector_limit = max(1, int(leader_cfg.get("sector_limit", 5)))
+    leader_count = max(1, int(leader_cfg.get("leaders_per_sector", 2)))
+    eligible_sectors = []
+    for sector_name, sector in sectors.items():
+        members = grouped.get(sector_name) or []
+        if len(members) < minimum_members or not sector.get("strong"):
+            continue
+        if require_confirmed and not sector.get("confirmed"):
+            continue
+        eligible_sectors.append((sector_name, sector, members))
+
+    eligible_sectors.sort(
+        key=lambda item: (
+            -float(item[1].get("relative_strength") or 0),
+            -float(item[1].get("breadth") or 0),
+            -float(item[1].get("amount") or 0),
+            item[0],
+        )
+    )
+    if not eligible_sectors:
+        return {
+            "status": "NO_CONFIRMED_SECTOR",
+            "sectors": [],
+            "message": "当前没有同时满足强度、广度和连续性确认的板块，暂不确认板块龙头。",
+            "require_confirmed": require_confirmed,
+        }
+
+    output = []
+    for sector_rank, (sector_name, sector, members) in enumerate(eligible_sectors[:sector_limit], 1):
+        ordered_change = sorted(members, key=lambda row: (-float(row["change_pct"]), -float(row["amount"]), row["code"]))
+        ordered_amount = sorted(members, key=lambda row: (-float(row["amount"]), -float(row["change_pct"]), row["code"]))
+        max_change = max(float(row["change_pct"]) for row in members)
+        min_change = min(float(row["change_pct"]) for row in members)
+        change_span = max(max_change - min_change, 1.0)
+        scored = []
+        for change_rank, row in enumerate(ordered_change, 1):
+            amount_rank = next(index for index, item in enumerate(ordered_amount, 1) if item["code"] == row["code"])
+            rank_score = 100 * (len(members) - change_rank) / max(len(members) - 1, 1)
+            amount_score = 100 * (len(members) - amount_rank) / max(len(members) - 1, 1)
+            relative = float(row["change_pct"]) - float(sector.get("median_pct") or 0)
+            relative_score = clamp(50 + relative * 20, 0, 100)
+            turnover = float(row["turnover_rate"])
+            turnover_score = 100 if 0.5 <= turnover <= 12 else 70 if turnover <= 20 else 25
+            leader_score = round(relative_score * 0.45 + rank_score * 0.25 + amount_score * 0.20 + turnover_score * 0.10)
+            scored.append(
+                {
+                    "row": row,
+                    "score": leader_score,
+                    "change_rank": change_rank,
+                    "amount_rank": amount_rank,
+                    "relative": relative,
+                    "relative_score": relative_score,
+                    "amount_score": amount_score,
+                    "turnover_score": turnover_score,
+                }
+            )
+        scored.sort(key=lambda item: (-item["score"], -float(item["row"]["amount"]), item["row"]["code"]))
+        leader = scored[0]
+        capacity = next((item for item in scored if item["row"]["code"] == ordered_amount[0]["code"]), leader)
+
+        def public_item(item, role: str) -> dict:
+            row = item["row"]
+            risks = []
+            if float(row["change_pct"]) >= 8.5:
+                risks.append("接近涨停，追高风险")
+            if float(row["turnover_rate"]) > float(cfg.get("scoring", {}).get("hot_turnover_max", 25)):
+                risks.append("换手率过高")
+            evidence = [
+                f"板块内涨幅排名 {item['change_rank']}/{len(members)}｜相对板块中位 {item['relative']:+.2f}个百分点",
+                f"成交额排名 {item['amount_rank']}/{len(members)}｜换手 {float(row['turnover_rate']):.2f}%",
+            ]
+            return {
+                "code": row["code"],
+                "name": row["name"],
+                "role": role,
+                "leader_score": item["score"],
+                "change_rank": item["change_rank"],
+                "amount_rank": item["amount_rank"],
+                "sector_members": len(members),
+                "change_pct": _round(row["change_pct"]),
+                "amount": row["amount"],
+                "turnover_rate": _round(row["turnover_rate"]),
+                "relative_strength": _round(item["relative"]),
+                "evidence": evidence,
+                "risks": risks,
+            }
+
+        entries = [public_item(leader, "龙头")]
+        if capacity["row"]["code"] != leader["row"]["code"] and leader_count > 1:
+            entries.append(public_item(capacity, "容量核心"))
+        output.append(
+            {
+                "sector": sector_name,
+                "sector_rank": sector_rank,
+                "sector_strength": _round(float(sector.get("relative_strength") or 0) * 20 + float(sector.get("breadth") or 0) * 50),
+                "relative_strength": _round(sector.get("relative_strength")),
+                "breadth": _round(sector.get("breadth"), 4),
+                "members": len(members),
+                "limit_up_count": sector.get("limit_up_count", 0),
+                "confirmed": bool(sector.get("confirmed")),
+                "leaders": entries[:leader_count],
+                "message": "板块已连续确认，展示板块内相对强度与容量核心。",
+                "quote_coverage": 1.0,
+                "change_span": _round(change_span),
+            }
+        )
+    return {
+        "status": "SUCCESS",
+        "sectors": output,
+        "require_confirmed": require_confirmed,
+        "message": "板块龙头独立展示，不计入A/B/C/D/E/G总评分。",
+    }
+
+
 def prefilter(rows: list[dict], sectors: dict, cfg: dict) -> tuple[list[dict], dict]:
     limits = cfg["universe"]
     counters = {"input": len(rows), "invalid_quote": 0, "liquidity": 0, "price_move": 0, "passed": 0}

@@ -15,7 +15,7 @@ from .intraday_history import record_intraday_snapshot
 from .narrative import build_analysis
 from .research_history import record_research_snapshot
 from .schedule import should_write_close_history
-from .scoring import market_summary, phase_at, prefilter, score_candidate, source_quality
+from .scoring import build_leader_board, market_summary, phase_at, prefilter, score_candidate, source_quality
 from .tdxaidata_provider import TdxAiDataSource, source_record
 
 
@@ -159,6 +159,11 @@ def previous_close_snapshot(
         for candidate in result.get(collection) or []:
             for channel in (candidate.get("channels") or {}).values():
                 channel["actionable_now"] = False
+    result.setdefault("leader_board", {
+        "status": "NOT_AVAILABLE",
+        "sectors": [],
+        "message": "该快照生成前未记录独立板块龙头。",
+    })
     layers = result.setdefault("layers", {})
     layers["ordinary_actionable_count"] = 0
     layers["hot_actionable_count"] = 0
@@ -207,6 +212,7 @@ def build(
         "market": None,
         "indices": [],
         "sectors": [],
+        "leader_board": {"status": "PENDING", "sectors": [], "message": "等待板块龙头计算"},
         "channels": {},
         "rankings": [],
         "candidates": [],
@@ -259,6 +265,7 @@ def build(
             raise RuntimeError(f"主板有效行情仅 {len(rows)} 行")
 
         summary, sector_bundle = market_summary(rows, previous, cfg)
+        leader_board = build_leader_board(rows, sector_bundle["items"], cfg)
         pool_rows, funnel = prefilter(rows, sector_bundle["items"], cfg)
         expansion_cfg = cfg.get("detail_expansion") or {}
         initial_limit = int(cfg["universe"]["detail_limit"])
@@ -443,6 +450,7 @@ def build(
                 "market": summary,
                 "indices": indices,
                 "sectors": sector_bundle["public"],
+                "leader_board": leader_board,
                 "channels": {
                     "ordinary": {
                         "name": "普通隔夜",
@@ -477,6 +485,11 @@ def build(
                 "diagnostics": {
                     "market_rows": len(rows),
                     "prefilter": funnel,
+                    "leader_board": {
+                        "status": leader_board.get("status"),
+                        "sector_count": len(leader_board.get("sectors") or []),
+                        "require_confirmed": leader_board.get("require_confirmed"),
+                    },
                     "details_requested": len(target_rows),
                     "details_succeeded": len(details),
                     "detail_errors": detail_errors[:10],

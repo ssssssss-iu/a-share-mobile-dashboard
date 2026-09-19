@@ -84,6 +84,33 @@ function renderSectors(data) {
   panel.innerHTML = strong.map(item => `<div class="sector-pill"><strong>${item.confirmed ? '<i class="confirmed-dot"></i>' : ""}${escapeHtml(item.sector)}</strong><span>相对强度 ${item.relative_strength > 0 ? "+" : ""}${item.relative_strength.toFixed(2)}｜上涨 ${(item.breadth * 100).toFixed(0)}%</span></div>`).join("");
 }
 
+function renderLeaderBoard(data) {
+  const panel = $("#leader-panel");
+  if (!panel) return;
+  const board = data.leader_board || {};
+  if (data.status !== "SUCCESS" || !board.sectors?.length) {
+    panel.innerHTML = `<div class="leader-empty">${escapeHtml(board.message || "当前没有已确认的强板块，暂不确认板块龙头。")}</div>`;
+    return;
+  }
+  panel.innerHTML = board.sectors.map(sector => {
+    const members = sector.leaders || [];
+    const leaderCards = members.map(item => {
+      const risks = item.risks?.length ? `<span class="leader-risk">${escapeHtml(item.risks.join("、"))}</span>` : "";
+      return `<div class="leader-stock">
+        <div class="leader-stock-head"><div><span class="leader-role">${escapeHtml(item.role)}</span><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.code)} · 涨幅第${item.change_rank}名 · 成交额第${item.amount_rank}名</small></div><div class="leader-score">${Number(item.leader_score).toFixed(0)}<small>/100</small></div></div>
+        <div class="leader-quote"><span class="${pctClass(Number(item.change_pct))}">${fmtPct(Number(item.change_pct))}</span><span>成交额 ${fmtAmount(Number(item.amount))}</span><span>换手 ${Number(item.turnover_rate).toFixed(2)}%</span></div>
+        ${risks ? `<div class="leader-risk-row">${risks}</div>` : ""}
+        <p class="leader-evidence">${(item.evidence || []).map(escapeHtml).join("；")}</p>
+      </div>`;
+    }).join("");
+    return `<article class="leader-card">
+      <div class="leader-card-head"><div><span class="leader-rank">#${sector.sector_rank}</span><h3>${escapeHtml(sector.sector)}</h3></div><div class="leader-sector-score">板块强度 ${Number(sector.sector_strength).toFixed(0)}</div></div>
+      <p class="leader-sector-meta">相对全市场 ${signed(Number(sector.relative_strength), "个百分点")}｜上涨 ${(Number(sector.breadth) * 100).toFixed(0)}%｜涨停 ${Number(sector.limit_up_count)}只｜有效成员 ${Number(sector.members)}只</p>
+      <div class="leader-stock-list">${leaderCards}</div>
+    </article>`;
+  }).join("");
+}
+
 function signed(value, suffix = "") {
   if (!Number.isFinite(value)) return "—";
   return `${value > 0 ? "+" : ""}${value}${suffix}`;
@@ -293,7 +320,7 @@ function render(data) {
   const label = context?.label || data.phase?.label || "状态未知";
   const tradeDate = context?.trade_date ? ` · ${context.trade_date}` : "";
   $("#asof").textContent = `${label}${tradeDate}\n${fmtTime(data.generated_at)} 生成`;
-  renderStatus(data); renderCheckpoints(data); renderIndices(data); renderSectors(data); renderAnalysis(data); renderAI(data); renderCandidates(data); renderMethod(data);
+  renderStatus(data); renderCheckpoints(data); renderIndices(data); renderSectors(data); renderLeaderBoard(data); renderAnalysis(data); renderAI(data); renderCandidates(data); renderMethod(data);
 }
 
 document.addEventListener("click", event => {
