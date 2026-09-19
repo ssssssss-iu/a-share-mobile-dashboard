@@ -29,7 +29,7 @@ python3 -m http.server 8080 --directory site
 
 看板支持通达信 TdxAiData。仓库 Secret `TDX_AI_DATA_TOKEN` 只在 GitHub Actions 运行时写入临时的 `TdxAiData.ini`，不会进入网页、快照或公开仓库。原生动态库在独立子进程中运行，连接失败、返回空值或超时均不阻断候选发布。
 
-当前默认运行5个交易日的影子验证：每个节点对评分前5的实时价、日K收盘价和分钟线末价进行交叉核对，结果写入快照诊断和研究历史，但不参与评分。完成5个交易日且覆盖率、时间戳和价格差异符合阈值后，再实施主源切换。Linux环境暂时固定使用 `tdxaidata 1.0.2` 的稳定单股接口；1.1.0随包Linux动态库缺少新增批量和集合竞价符号，因此不启用这两项能力。
+当前默认使用 `tdxaidata 1.0.2` 作为评分所需实时快照、日K和分钟线的主源；全市场股票池、板块归属和公告仍由现有接口提供，TdxAiData 对单只股票返回缺失时逐只回退原行情，并在诊断中记录回退数量。Linux环境固定使用 `tdxaidata 1.0.2` 的稳定单股接口；1.1.0随包Linux动态库缺少新增批量和集合竞价符号，因此不启用这两项能力。每次推送仍会运行 Top5 历史回放对照。
 
 配置路径：`Settings → Secrets and variables → Actions → New repository secret`，名称固定为 `TDX_AI_DATA_TOKEN`。完整Key不得写入代码、Issue或Actions日志。
 

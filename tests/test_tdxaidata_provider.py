@@ -1,4 +1,6 @@
 import unittest
+from datetime import datetime
+from unittest.mock import patch
 
 import pandas as pd
 
@@ -54,6 +56,32 @@ class TdxAiDataProviderTests(unittest.TestCase):
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[-1]["close"], 10.2)
         self.assertTrue(rows[-1]["time"].startswith("2026-09-18T09:31:00"))
+
+    def test_primary_data_replaces_quote_and_details(self):
+        source = TdxAiDataSource(
+            {"enabled": True, "mode": "primary", "primary_limit": 1},
+            environ={"TDX_AI_DATA_TOKEN": "configured"},
+        )
+        payload = {
+            "status": "CONNECTED",
+            "package_version": "1.0.2",
+            "snapshots": {"600000.SH": {"Now": 10.2, "LastClose": 10.0, "Open": 10.1, "Max": 10.3, "Min": 10.0, "Amount": 123456789}},
+            "daily": {"600000.SH": [{"time": f"2026-09-{day:02d}T00:00:00", "open": 10.0, "close": 10.1, "high": 10.2, "low": 9.9, "volume": 100} for day in range(1, 23)]},
+            "minutes": {"600000.SH": [{"time": "2026-09-18T14:59:00", "open": 10.1, "close": 10.2, "high": 10.2, "low": 10.1, "volume": 10}]},
+        }
+        fallback_quotes = {"600000": {"code": "600000", "price": 9.9, "name": "测试", "change_pct": -1.0}}
+        fallback_details = {"600000": {"daily": [], "minute": []}}
+        with patch.object(source, "_call", return_value=payload):
+            quotes, details, status = source.primary_data(
+                ["600000"], "2026-09-18", "CLOSED", fallback_quotes, fallback_details,
+                datetime.fromisoformat("2026-09-18T15:00:00+08:00"),
+            )
+        self.assertEqual(status["status"], "CONNECTED")
+        self.assertEqual(status["primary_quote_count"], 1)
+        self.assertEqual(quotes["600000"]["price"], 10.2)
+        self.assertEqual(quotes["600000"]["data_source"], "TdxAiData")
+        self.assertEqual(len(details["600000"]["daily"]), 22)
+        self.assertEqual(details["600000"]["minute"][0]["close"], 10.2)
 
 
 if __name__ == "__main__":

@@ -83,7 +83,11 @@ def market_summary(rows: list[dict], previous: dict | None, cfg: dict) -> tuple[
     continuity_available = False
     if previous_time:
         try:
-            age = datetime.now(TZ) - datetime.fromisoformat(previous_time)
+            current_time = max(
+                (datetime.fromisoformat(str(row["market_time"])) for row in valid if row.get("market_time")),
+                default=datetime.now(TZ),
+            )
+            age = current_time - datetime.fromisoformat(previous_time)
             continuity_available = 0 <= age.total_seconds() <= 4 * 86400
         except ValueError:
             pass

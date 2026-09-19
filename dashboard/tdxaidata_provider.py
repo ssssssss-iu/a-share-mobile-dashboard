@@ -4,7 +4,7 @@ import json
 import os
 import subprocess
 import sys
-from datetime import date
+from datetime import date, datetime
 
 from .data import number
 
@@ -130,6 +130,24 @@ class TdxAiDataSource:
             }
         return None
 
+    def _request_payload(self, codes: list[str], trade_date: date | str, phase_code: str) -> dict:
+        default_limit = self.config.get("primary_limit", 36) if self.mode == "primary" else self.config.get("shadow_limit", 5)
+        limit = max(1, int(default_limit))
+        selected = [tdx_symbol(code) for code in codes[:limit]]
+        request = {
+            "action": "validate",
+            "symbols": selected,
+            "trade_date": str(trade_date),
+            "detail_limit": limit,
+            "daily_count": int(self.config.get("daily_count", 90)),
+            "minute_count": int(self.config.get("minute_count", 320)),
+            "include_auction": phase_code == "AUCTION",
+        }
+        try:
+            return self._call(request)
+        except subprocess.TimeoutExpired:
+            return {"status": "FAILED", "error_type": "TimeoutExpired"}
+
     def smoke(self) -> dict:
         base = self._base_status()
         if base:
@@ -157,21 +175,7 @@ class TdxAiDataSource:
         base = self._base_status()
         if base:
             return base
-        limit = max(1, int(self.config.get("shadow_limit", 5)))
-        selected = [tdx_symbol(code) for code in codes[:limit]]
-        request = {
-            "action": "validate",
-            "symbols": selected,
-            "trade_date": str(trade_date),
-            "detail_limit": limit,
-            "daily_count": int(self.config.get("daily_count", 90)),
-            "minute_count": int(self.config.get("minute_count", 320)),
-            "include_auction": phase_code == "AUCTION",
-        }
-        try:
-            payload = self._call(request)
-        except subprocess.TimeoutExpired:
-            payload = {"status": "FAILED", "error_type": "TimeoutExpired"}
+        payload = self._request_payload(codes, trade_date, phase_code)
         if payload.get("status") not in ("CONNECTED", "EMPTY"):
             return {
                 "enabled": True,
@@ -197,6 +201,107 @@ class TdxAiDataSource:
         })
         return result
 
+    def primary_data(
+        self,
+        codes: list[str],
+        trade_date: date | str,
+        phase_code: str,
+        fallback_quotes: dict[str, dict],
+        fallback_details: dict[str, dict],
+        observed_at: datetime,
+    ) -> tuple[dict[str, dict], dict[str, dict], dict]:
+        """Fetch the scoring quote/K-line set from TdxAiData, with per-code fallback."""
+        base = self._base_status()
+        if base:
+            return fallback_quotes, fallback_details, {
+                **base,
+                "affects_scoring": False,
+                "primary_quote_count": 0,
+                "primary_detail_count": 0,
+                "fallback_quote_count": len(codes),
+                "fallback_detail_count": len(codes),
+            }
+        payload = self._request_payload(codes, trade_date, phase_code)
+        if payload.get("status") not in ("CONNECTED", "EMPTY"):
+            return fallback_quotes, fallback_details, {
+                "enabled": True,
+                "mode": self.mode,
+                "status": "PRIMARY_WITH_FALLBACK",
+                "package_version": payload.get("package_version"),
+                "message": "TdxAiData主源请求失败，逐只回退原行情",
+                "error_type": payload.get("error_type"),
+                "error_message": payload.get("error_message"),
+                "affects_scoring": False,
+                "primary_quote_count": 0,
+                "primary_detail_count": 0,
+                "fallback_quote_count": len(codes),
+                "fallback_detail_count": len(codes),
+            }
+
+        snapshots = payload.get("snapshots") or {}
+        daily = payload.get("daily") or {}
+        minutes = payload.get("minutes") or {}
+        quotes = {}
+        details = {}
+        primary_quotes = 0
+        primary_details = 0
+        for code in codes:
+            code = plain_code(code)
+            fallback_quote = dict(fallback_quotes.get(code) or {})
+            raw = snapshots.get(tdx_symbol(code)) or {}
+            now = number(raw.get("Now"))
+            previous_close = number(raw.get("LastClose"))
+            if now is not None:
+                primary_quotes += 1
+                quote = dict(fallback_quote)
+                quote.update({
+                    "price": now,
+                    "previous_close": previous_close if previous_close is not None else quote.get("previous_close"),
+                    "open": number(raw.get("Open")) or quote.get("open"),
+                    "high": number(raw.get("Max")) or quote.get("high"),
+                    "low": number(raw.get("Min")) or quote.get("low"),
+                    "amount": number(raw.get("Amount")) or quote.get("amount"),
+                    "market_time": observed_at.isoformat(timespec="seconds"),
+                    "data_source": "TdxAiData",
+                })
+                if quote.get("previous_close"):
+                    quote["change_pct"] = round((now / quote["previous_close"] - 1) * 100, 4)
+                quotes[code] = quote
+            else:
+                quotes[code] = fallback_quote
+
+            symbol = tdx_symbol(code)
+            daily_rows = [
+                {"date": str(row.get("time") or "")[:10], **{k: row.get(k) for k in ("open", "close", "high", "low", "volume")}}
+                for row in daily.get(symbol) or []
+                if str(row.get("time") or "")[:10]
+            ]
+            minute_rows = [
+                {k: row.get(k) for k in ("time", "open", "close", "high", "low", "volume")}
+                for row in minutes.get(symbol) or []
+                if row.get("time")
+            ]
+            if len(daily_rows) >= 21 and minute_rows:
+                primary_details += 1
+                details[code] = {"daily": daily_rows, "minute": minute_rows}
+            else:
+                details[code] = dict(fallback_details.get(code) or {})
+        status = "CONNECTED" if primary_quotes == len(codes) and primary_details == len(codes) else "PRIMARY_WITH_FALLBACK"
+        return quotes, details, {
+            "enabled": True,
+            "mode": self.mode,
+            "status": status,
+            "package_version": payload.get("package_version"),
+            "message": "TdxAiData已作为评分主源" if status == "CONNECTED" else "TdxAiData部分缺失，已逐只回退原行情",
+            "error_type": None,
+            "error_message": None,
+            "affects_scoring": primary_quotes > 0 or primary_details > 0,
+            "primary_quote_count": primary_quotes,
+            "primary_detail_count": primary_details,
+            "fallback_quote_count": len(codes) - primary_quotes,
+            "fallback_detail_count": len(codes) - primary_details,
+        }
+
 
 def source_record(status: dict) -> dict:
     labels = {
@@ -205,6 +310,7 @@ def source_record(status: dict) -> dict:
         "FAILED": "回退原源",
         "MISSING_TOKEN": "未配置Key",
         "DISABLED": "未启用",
+        "PRIMARY_WITH_FALLBACK": "主源部分回退",
     }
     state = labels.get(status.get("status"), str(status.get("status") or "未知"))
     mode = "影子验证" if status.get("mode") == "shadow" else "主源"

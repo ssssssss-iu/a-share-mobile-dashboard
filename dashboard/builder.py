@@ -191,7 +191,26 @@ def build(
         summary, sector_bundle = market_summary(rows, previous, cfg)
         pool_rows, funnel = prefilter(rows, sector_bundle["items"], cfg)
         target_rows = pool_rows[: cfg["universe"]["detail_limit"]]
-        details, detail_errors = client.details([row["code"] for row in target_rows], now.date())
+        target_codes = [row["code"] for row in target_rows]
+        details, detail_errors = {}, []
+        tdx_status = None
+        if tdx_source.mode == "primary":
+            fallback_quotes = {row["code"]: row for row in target_rows}
+            primary_quotes, primary_details, tdx_status = tdx_source.primary_data(
+                target_codes,
+                trade_date,
+                base["phase"]["code"],
+                fallback_quotes,
+                {},
+                now,
+            )
+            target_rows = [primary_quotes.get(row["code"], row) for row in target_rows]
+            details = primary_details
+            if tdx_status.get("fallback_detail_count"):
+                details, detail_errors = client.details(target_codes, now.date())
+                details.update(primary_details)
+        else:
+            details, detail_errors = client.details(target_codes, now.date())
         first_pass = []
         for quote in target_rows:
             if quote["code"] not in details:
@@ -258,13 +277,14 @@ def build(
             [item for item in final_scores if item["in_score_pool"]][: cfg["universe"]["candidate_limit"]]
         )
         candidates = deepcopy(score_pool)  # compatibility for older page clients
-        tdx_status = tdx_source.validate(
-            [item["code"] for item in final_scores],
-            trade_date,
-            quote_by_code,
-            details,
-            base["phase"]["code"],
-        )
+        if tdx_status is None:
+            tdx_status = tdx_source.validate(
+                [item["code"] for item in final_scores],
+                trade_date,
+                quote_by_code,
+                details,
+                base["phase"]["code"],
+            )
 
         ordinary_qualified = sum(item["channels"]["ordinary"]["qualified"] for item in final_scores)
         hot_qualified = sum(item["channels"]["hot"]["qualified"] for item in final_scores)
