@@ -220,7 +220,15 @@ class TdxAiDataSource:
         """Fetch the scoring quote/K-line set from TdxAiData, with per-code fallback."""
         base = self._base_status()
         if base:
-            return fallback_quotes, fallback_details, {
+            marked_quotes = {
+                code: {
+                    **(quote or {}),
+                    "source_fallback": True,
+                    "source_fallback_reason": base.get("message") or "TdxAiData未提供主源数据",
+                }
+                for code, quote in fallback_quotes.items()
+            }
+            return marked_quotes, fallback_details, {
                 **base,
                 "affects_scoring": False,
                 "primary_quote_count": 0,
@@ -232,7 +240,15 @@ class TdxAiDataSource:
         payload = self._request_payload(codes, trade_date, phase_code)
         received_at = datetime.now(observed_at.tzinfo or TZ)
         if payload.get("status") not in ("CONNECTED", "EMPTY"):
-            return fallback_quotes, fallback_details, {
+            marked_quotes = {
+                code: {
+                    **(quote or {}),
+                    "source_fallback": True,
+                    "source_fallback_reason": "TdxAiData主源请求失败",
+                }
+                for code, quote in fallback_quotes.items()
+            }
+            return marked_quotes, fallback_details, {
                 "enabled": True,
                 "mode": self.mode,
                 "status": "PRIMARY_WITH_FALLBACK",
@@ -281,6 +297,7 @@ class TdxAiDataSource:
                     "amount": number(raw.get("Amount")) or quote.get("amount"),
                     "market_time": quote_timestamp,
                     "data_source": "TdxAiData",
+                    "source_fallback": False,
                     "received_at": received_at.isoformat(timespec="seconds"),
                     "source_latency_seconds": source_latency_seconds(snapshot_time, received_at),
                     "timestamp_source": "tdx_snapshot" if snapshot_time else "fallback_quote",
@@ -289,6 +306,8 @@ class TdxAiDataSource:
                     quote["change_pct"] = round((now / quote["previous_close"] - 1) * 100, 4)
                 quotes[code] = quote
             else:
+                fallback_quote["source_fallback"] = True
+                fallback_quote["source_fallback_reason"] = "TdxAiData缺少实时快照"
                 quotes[code] = fallback_quote
 
             symbol = tdx_symbol(code)
@@ -323,6 +342,7 @@ class TdxAiDataSource:
                         "daily_latency_seconds": None,
                         "minute_latency_seconds": source_latency_seconds(detail_provider_time, received_at),
                         "timestamp_source": "tdx_records" if detail_provider_time or daily_provider_time else "missing",
+                        "tdx_fallback": False,
                         "fallback": False,
                     },
                 }
@@ -334,6 +354,7 @@ class TdxAiDataSource:
                     "daily_source": "原日K回退",
                     "minute_source": "原分钟K回退",
                     "received_at": fallback_provenance.get("received_at") or received_at.isoformat(timespec="seconds"),
+                    "tdx_fallback": True,
                     "fallback": True,
                 })
                 details[code]["provenance"] = fallback_provenance

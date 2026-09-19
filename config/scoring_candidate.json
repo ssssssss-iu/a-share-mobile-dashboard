@@ -43,6 +43,16 @@
     "near_limit_ratio": 0.997,
     "announcement_lookback_days": 10
   },
+  "data_quality": {
+    "source_weight": 0.30,
+    "fallback_penalty": 30,
+    "timestamp_penalty": 15,
+    "alignment_penalty": 15,
+    "latency_warning_seconds": 120,
+    "latency_critical_seconds": 300,
+    "latency_penalty_max": 25,
+    "alignment_warning_seconds": 180
+  },
   "research": {
     "keep_days": 30,
     "labels": ["forward_30m", "same_close", "next_open", "next_1000", "next_close", "day3_close", "day5_close", "mfe_5d", "mae_5d"]

@@ -229,7 +229,9 @@ function candidateCard(item) {
   const confidence = item.data_confidence || {};
   const confidenceClass = confidence.level === "高" ? "ready" : confidence.level === "中" ? "wait" : "closed";
   const confidenceBadge = Number.isFinite(confidence.score) ? `<span class="badge ${confidenceClass}">数据可信度 ${confidence.score}/100</span>` : "";
-  const confidenceEvidence = confidence.components?.length ? `<div class="evidence-item"><strong>数据可信度 · ${confidence.level} · ${confidence.score}/100</strong><p>${confidence.components.map(part => `${escapeHtml(part.label)} ${part.score}/${part.max}（${escapeHtml(part.detail)}）`).join("；")}</p></div>` : "";
+  const sourceQuality = confidence.source_quality || {};
+  const sourceQualityText = Number.isFinite(confidence.source_quality_score) ? `来源质量 ${confidence.source_quality_score}/100${sourceQuality.issues?.length ? `（${sourceQuality.issues.map(escapeHtml).join("；")}）` : ""}` : "来源质量未提供追踪字段";
+  const confidenceEvidence = confidence.components?.length ? `<div class="evidence-item"><strong>数据可信度 · ${confidence.level} · ${confidence.score}/100</strong><p>字段完整性 ${confidence.completeness_score ?? "—"}/100；${sourceQualityText}；${confidence.components.map(part => `${escapeHtml(part.label)} ${part.score}/${part.max}（${escapeHtml(part.detail)}）`).join("；")}</p></div>` : "";
   const provenance = item.data_provenance || {};
   const provenanceEvidence = (provenance.quote_source || provenance.daily_source || provenance.minute_source) ? `<div class="evidence-item"><strong>行情来源与时间</strong><p>报价：${escapeHtml(provenance.quote_source || "未知")}，时间 ${escapeHtml(fmtTime(provenance.quote_provider_time))}；日K：${escapeHtml(provenance.daily_source || "未知")}；分钟K：${escapeHtml(provenance.minute_source || "未知")}；${provenance.fallback ? "存在回退数据" : "未标记回退"}${Number.isFinite(provenance.minute_latency_seconds) ? `，分钟线延迟 ${provenance.minute_latency_seconds.toFixed(1)} 秒` : ""}</p></div>` : "";
   return `<article class="candidate-card" data-ordinary="${item.channels.ordinary.qualified}" data-hot="${item.channels.hot.qualified}">

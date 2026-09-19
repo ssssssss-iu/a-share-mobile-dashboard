@@ -5,6 +5,7 @@ from datetime import datetime
 from statistics import mean, median
 
 from .data import TZ, number
+from .provenance import parse_timestamp
 
 
 MODULE_LABELS = {
@@ -436,7 +437,85 @@ def phase_at(now: datetime) -> dict:
     return {"code": "CLOSED", "label": "收盘复盘", "ordinary_open": False, "hot_open": False}
 
 
-def data_confidence(q, f, sector, announcement_error, announcement_checked, announcement_source=None) -> dict:
+def source_quality(q, detail, cfg=None) -> dict:
+    """Evaluate provenance health separately from field completeness."""
+    config = (cfg or {}).get("data_quality") or {}
+    fallback_penalty = float(config.get("fallback_penalty", 30))
+    timestamp_penalty = float(config.get("timestamp_penalty", 15))
+    alignment_penalty = float(config.get("alignment_penalty", 15))
+    latency_warning = float(config.get("latency_warning_seconds", 120))
+    latency_critical = max(latency_warning + 1, float(config.get("latency_critical_seconds", 300)))
+    latency_penalty_max = float(config.get("latency_penalty_max", 25))
+    provenance = detail.get("provenance") or {}
+    metadata_present = any(
+        value not in (None, "")
+        for value in (
+            q.get("data_source"),
+            q.get("received_at"),
+            q.get("timestamp_source"),
+            provenance.get("daily_source"),
+            provenance.get("minute_source"),
+        )
+    )
+    if not metadata_present:
+        return {
+            "score": 100,
+            "status": "未提供来源追踪，按兼容模式处理",
+            "issues": [],
+            "fallback": False,
+            "max_latency_seconds": None,
+            "alignment_seconds": None,
+        }
+
+    score = 100.0
+    issues = []
+    quote_fallback = bool(q.get("source_fallback"))
+    detail_fallback = bool(provenance.get("fallback") or provenance.get("tdx_fallback"))
+    if quote_fallback:
+        score -= fallback_penalty
+        issues.append(q.get("source_fallback_reason") or "报价使用回退来源")
+    if detail_fallback:
+        score -= fallback_penalty
+        issues.append(provenance.get("fallback_reason") or "日K或分钟线使用回退来源")
+
+    timestamp_source = str(q.get("timestamp_source") or "missing")
+    if not q.get("market_time") or timestamp_source in {"missing", "fallback_quote"}:
+        score -= timestamp_penalty
+        issues.append("报价时间戳缺失或来自回退行情")
+
+    latencies = [
+        value
+        for value in (q.get("source_latency_seconds"), provenance.get("minute_latency_seconds"))
+        if isinstance(value, (int, float))
+    ]
+    max_latency = max(latencies) if latencies else None
+    if max_latency is not None and max_latency > latency_warning:
+        ratio = min(1.0, (max_latency - latency_warning) / (latency_critical - latency_warning))
+        score -= latency_penalty_max * ratio
+        issues.append(f"数据延迟 {max_latency:.1f} 秒")
+
+    quote_time = parse_timestamp(q.get("market_time"))
+    minute_time = parse_timestamp(provenance.get("minute_provider_time"))
+    alignment_seconds = None
+    if quote_time and minute_time:
+        alignment_seconds = abs((quote_time - minute_time).total_seconds())
+        alignment_warning = float(config.get("alignment_warning_seconds", 180))
+        if alignment_seconds > alignment_warning:
+            score -= alignment_penalty
+            issues.append(f"报价与分钟线相差 {alignment_seconds:.0f} 秒")
+
+    score = int(round(max(0.0, min(100.0, score))))
+    return {
+        "score": score,
+        "status": "来源质量正常" if not issues else "来源质量存在问题",
+        "issues": issues,
+        "fallback": quote_fallback or detail_fallback,
+        "max_latency_seconds": round(max_latency, 3) if max_latency is not None else None,
+        "alignment_seconds": round(alignment_seconds, 3) if alignment_seconds is not None else None,
+    }
+
+
+def data_confidence(q, f, sector, announcement_error, announcement_checked, announcement_source=None, cfg=None, detail=None) -> dict:
     """Score source completeness separately from the trading score."""
     components = []
 
@@ -473,10 +552,25 @@ def data_confidence(q, f, sector, announcement_error, announcement_checked, anno
         announcement_score, announcement_detail = 20, f"已由{announcement_source or '公告源'}核验"
     add("announcement", "公告数据", announcement_score, 20, announcement_detail)
 
-    score = sum(item["score"] for item in components)
+    completeness_score = sum(item["score"] for item in components)
+    source = source_quality(q, detail or {}, cfg)
+    source_weight = float(((cfg or {}).get("data_quality") or {}).get("source_weight", 0.30))
+    source_weight = max(0.0, min(1.0, source_weight))
+    score = int(round(completeness_score * (1 - source_weight) + source["score"] * source_weight))
     level = "高" if score >= 90 else "中" if score >= 70 else "低"
     issues = [item["detail"] for item in components if item["score"] < item["max"]]
-    return {"score": score, "max": 100, "level": level, "components": components, "issues": issues}
+    issues.extend(source["issues"])
+    return {
+        "score": score,
+        "max": 100,
+        "level": level,
+        "components": components,
+        "issues": issues,
+        "completeness_score": completeness_score,
+        "source_quality_score": source["score"],
+        "source_quality": source,
+        "source_weight": source_weight,
+    }
 
 
 def _channel_result(keys, module_map, hard_ok, extra_gate, phase_open, qualify_pct, reasons):
@@ -569,7 +663,7 @@ def score_candidate(
     )
     hot["holding"] = "计划2–5个交易日，退潮或失效提前退出"
     confidence = data_confidence(
-        quote, features, sector, announcement_error, announcement_checked, announcement_source
+        quote, features, sector, announcement_error, announcement_checked, announcement_source, cfg=cfg, detail=detail
     )
     detail_provenance = detail.get("provenance") or {}
     return {

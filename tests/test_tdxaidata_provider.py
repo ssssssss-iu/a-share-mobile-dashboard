@@ -88,6 +88,20 @@ class TdxAiDataProviderTests(unittest.TestCase):
         self.assertFalse(details["600000"]["provenance"]["fallback"])
         self.assertEqual(status["timestamp_source_counts"]["tdx"], 1)
 
+    def test_primary_failure_marks_fallback_quote(self):
+        source = TdxAiDataSource(
+            {"enabled": True, "mode": "primary", "primary_limit": 1},
+            environ={"TDX_AI_DATA_TOKEN": "configured"},
+        )
+        fallback_quotes = {"600000": {"code": "600000", "price": 9.9, "market_time": "2026-09-18T15:00:00+08:00"}}
+        with patch.object(source, "_call", return_value={"status": "FAILED", "error_type": "TimeoutExpired"}):
+            quotes, _, status = source.primary_data(
+                ["600000"], "2026-09-18", "CLOSED", fallback_quotes, {},
+                datetime.fromisoformat("2026-09-18T15:00:00+08:00"),
+            )
+        self.assertTrue(quotes["600000"]["source_fallback"])
+        self.assertEqual(status["status"], "PRIMARY_WITH_FALLBACK")
+
 
 if __name__ == "__main__":
     unittest.main()

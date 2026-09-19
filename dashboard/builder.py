@@ -246,6 +246,14 @@ def build(
             details = primary_details
             if tdx_status.get("fallback_detail_count"):
                 details, detail_errors = client.details(target_codes, now.date())
+                primary_detail_codes = set(primary_details)
+                for code, detail in details.items():
+                    if code in primary_detail_codes:
+                        continue
+                    provenance = detail.setdefault("provenance", {})
+                    provenance["tdx_fallback"] = True
+                    provenance["fallback"] = True
+                    provenance["fallback_reason"] = "TdxAiData详细数据缺失，使用腾讯财经回退"
                 details.update(primary_details)
         else:
             details, detail_errors = client.details(target_codes, now.date())

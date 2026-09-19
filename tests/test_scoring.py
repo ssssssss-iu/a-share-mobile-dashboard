@@ -86,6 +86,33 @@ class ScoringTests(unittest.TestCase):
         self.assertGreater(checked["data_confidence"]["score"], unchecked["data_confidence"]["score"])
         self.assertEqual(checked["data_confidence"]["max"], 100)
 
+    def test_source_fallback_reduces_data_confidence_without_changing_trade_score(self):
+        baseline = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        degraded_quote = quote()
+        degraded_quote.update({
+            "data_source": "东方财富沪深A股行情",
+            "received_at": "2026-09-15T14:30:30+08:00",
+            "timestamp_source": "fallback_quote",
+            "source_fallback": True,
+            "source_fallback_reason": "TdxAiData主源请求失败",
+        })
+        degraded_detail = detail()
+        degraded_detail["provenance"] = {
+            "daily_source": "腾讯财经前复权日K",
+            "minute_source": "腾讯财经分钟K",
+            "received_at": "2026-09-15T14:30:30+08:00",
+            "minute_provider_time": "2026-09-15T14:20:00+08:00",
+            "minute_latency_seconds": 630,
+            "fallback": True,
+            "tdx_fallback": True,
+            "fallback_reason": "TdxAiData详细数据缺失，使用腾讯财经回退",
+        }
+        degraded = score_candidate(degraded_quote, degraded_detail, sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertEqual(degraded["score"], baseline["score"])
+        self.assertLess(degraded["data_confidence"]["source_quality_score"], 100)
+        self.assertLess(degraded["data_confidence"]["score"], baseline["data_confidence"]["score"])
+        self.assertTrue(degraded["data_confidence"]["source_quality"]["fallback"])
+
     def test_tail_momentum_can_be_scored_at_1420(self):
         result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 20, tzinfo=TZ))
         module_b = next(item for item in result["modules"] if item["key"] == "B")
