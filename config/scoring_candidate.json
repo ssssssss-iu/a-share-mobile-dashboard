@@ -19,6 +19,13 @@
     "ranking_limit": 5,
     "candidate_limit": 5
   },
+  "detail_expansion": {
+    "enabled": true,
+    "limits": [36, 60, 90],
+    "minimum_complete_candidates": 5,
+    "maximum_fallback_ratio": 0.20,
+    "minimum_source_quality_score": 70
+  },
   "market": {
     "risk_on_score": 0.22,
     "risk_off_score": -0.18,
@@ -63,7 +70,7 @@
       "mode": "primary",
       "shadow_days": 5,
       "shadow_limit": 5,
-      "primary_limit": 36,
+      "primary_limit": 90,
       "smoke_timeout_seconds": 60,
       "daily_count": 90,
       "minute_count": 320,

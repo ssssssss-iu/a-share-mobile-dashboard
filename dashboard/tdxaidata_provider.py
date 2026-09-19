@@ -235,6 +235,7 @@ class TdxAiDataSource:
                 "primary_detail_count": 0,
                 "fallback_quote_count": len(codes),
                 "fallback_detail_count": len(codes),
+                "requested_count": len(codes),
                 "received_at": observed_at.isoformat(timespec="seconds"),
             }
         payload = self._request_payload(codes, trade_date, phase_code)
@@ -261,6 +262,7 @@ class TdxAiDataSource:
                 "primary_detail_count": 0,
                 "fallback_quote_count": len(codes),
                 "fallback_detail_count": len(codes),
+                "requested_count": len(codes),
                 "received_at": received_at.isoformat(timespec="seconds"),
             }
 
@@ -384,6 +386,7 @@ class TdxAiDataSource:
             "primary_detail_count": primary_details,
             "fallback_quote_count": len(codes) - primary_quotes,
             "fallback_detail_count": len(codes) - primary_details,
+            "requested_count": len(codes),
             "received_at": received_at.isoformat(timespec="seconds"),
             "provider_time_min": min(provider_times) if provider_times else None,
             "provider_time_max": max(provider_times) if provider_times else None,

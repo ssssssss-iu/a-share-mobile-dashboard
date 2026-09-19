@@ -15,7 +15,7 @@ from .intraday_history import record_intraday_snapshot
 from .narrative import build_analysis
 from .research_history import record_research_snapshot
 from .schedule import should_write_close_history
-from .scoring import market_summary, phase_at, prefilter, score_candidate
+from .scoring import market_summary, phase_at, prefilter, score_candidate, source_quality
 from .tdxaidata_provider import TdxAiDataSource, source_record
 
 
@@ -80,6 +80,38 @@ def source_trace(universe_rows: list[dict], rows: list[dict], details: dict, tdx
             "provider_time_max": (tdx_status or {}).get("provider_time_max"),
         },
     }
+
+
+def merge_tdx_status(current: dict | None, incoming: dict | None) -> dict | None:
+    """Merge per-batch Tdx diagnostics when the detail pool is expanded."""
+    if not current:
+        return deepcopy(incoming) if incoming else None
+    if not incoming:
+        return current
+    merged = dict(current)
+    for key in ("primary_quote_count", "primary_detail_count", "fallback_quote_count", "fallback_detail_count", "requested_count"):
+        merged[key] = int(current.get(key) or 0) + int(incoming.get(key) or 0)
+    merged["affects_scoring"] = bool(current.get("affects_scoring") or incoming.get("affects_scoring"))
+    merged["status"] = "CONNECTED" if current.get("status") == incoming.get("status") == "CONNECTED" else "PRIMARY_WITH_FALLBACK"
+    merged["received_at"] = max(
+        value for value in (current.get("received_at"), incoming.get("received_at")) if value
+    ) if current.get("received_at") or incoming.get("received_at") else None
+    provider_times = [
+        value
+        for value in (current.get("provider_time_min"), current.get("provider_time_max"), incoming.get("provider_time_min"), incoming.get("provider_time_max"))
+        if value
+    ]
+    merged["provider_time_min"] = min(provider_times) if provider_times else None
+    merged["provider_time_max"] = max(provider_times) if provider_times else None
+    counts = {}
+    for item in (current.get("timestamp_source_counts") or {}, incoming.get("timestamp_source_counts") or {}):
+        for key, value in item.items():
+            counts[key] = counts.get(key, 0) + int(value or 0)
+    merged["timestamp_source_counts"] = counts
+    merged["provenance"] = list(current.get("provenance") or []) + list(incoming.get("provenance") or [])
+    if incoming.get("message"):
+        merged["message"] = incoming["message"]
+    return merged
 
 
 def latest_successful_snapshot(previous: dict | None, history_dir: Path) -> dict | None:
@@ -228,51 +260,113 @@ def build(
 
         summary, sector_bundle = market_summary(rows, previous, cfg)
         pool_rows, funnel = prefilter(rows, sector_bundle["items"], cfg)
-        target_rows = pool_rows[: cfg["universe"]["detail_limit"]]
-        target_codes = [row["code"] for row in target_rows]
-        details, detail_errors = {}, []
+        expansion_cfg = cfg.get("detail_expansion") or {}
+        initial_limit = int(cfg["universe"]["detail_limit"])
+        max_limit = min(int(cfg["universe"].get("prefilter_limit", initial_limit)), len(pool_rows))
+        requested_limits = expansion_cfg.get("limits") or [initial_limit, max_limit]
+        detail_limits = []
+        for value in [initial_limit, *requested_limits]:
+            value = min(max(1, int(value)), max_limit)
+            if value not in detail_limits:
+                detail_limits.append(value)
+        detail_limits.sort()
+        if not expansion_cfg.get("enabled", True):
+            detail_limits = [initial_limit]
+
+        target_by_code, details, detail_errors = {}, {}, []
         tdx_status = None
-        if tdx_source.mode == "primary":
-            fallback_quotes = {row["code"]: row for row in target_rows}
-            primary_quotes, primary_details, tdx_status = tdx_source.primary_data(
-                target_codes,
-                trade_date,
-                base["phase"]["code"],
-                fallback_quotes,
-                {},
-                now,
-            )
-            target_rows = [primary_quotes.get(row["code"], row) for row in target_rows]
-            details = primary_details
-            if tdx_status.get("fallback_detail_count"):
-                details, detail_errors = client.details(target_codes, now.date())
-                primary_detail_codes = set(primary_details)
-                for code, detail in details.items():
-                    if code in primary_detail_codes:
-                        continue
-                    provenance = detail.setdefault("provenance", {})
-                    provenance["tdx_fallback"] = True
-                    provenance["fallback"] = True
-                    provenance["fallback_reason"] = "TdxAiData详细数据缺失，使用腾讯财经回退"
-                details.update(primary_details)
-        else:
-            details, detail_errors = client.details(target_codes, now.date())
-        first_pass = []
-        for quote in target_rows:
-            if quote["code"] not in details:
-                continue
-            first_pass.append(
-                score_candidate(
-                    quote,
-                    details[quote["code"]],
-                    sector_bundle["items"].get(quote.get("industry")),
-                    summary,
-                    cfg,
+        detail_steps, expansion_reasons = [], []
+
+        def fetch_detail_batch(batch_rows):
+            batch_codes = [row["code"] for row in batch_rows]
+            if tdx_source.mode == "primary":
+                fallback_quotes = {row["code"]: row for row in batch_rows}
+                primary_quotes, primary_details, batch_status = tdx_source.primary_data(
+                    batch_codes,
                     trade_date,
-                    now=now,
+                    base["phase"]["code"],
+                    fallback_quotes,
+                    {},
+                    now,
                 )
-            )
-        first_pass.sort(key=lambda item: (-item["score"], -item["amount"], item["code"]))
+                batch_rows = [primary_quotes.get(row["code"], row) for row in batch_rows]
+                batch_details = primary_details
+                batch_errors = []
+                if batch_status.get("fallback_detail_count"):
+                    batch_details, batch_errors = client.details(batch_codes, now.date())
+                    primary_detail_codes = set(primary_details)
+                    for code, detail in batch_details.items():
+                        if code in primary_detail_codes:
+                            continue
+                        provenance = detail.setdefault("provenance", {})
+                        provenance["tdx_fallback"] = True
+                        provenance["fallback"] = True
+                        provenance["fallback_reason"] = "TdxAiData详细数据缺失，使用腾讯财经回退"
+                    batch_details.update(primary_details)
+                return batch_rows, batch_details, batch_errors, batch_status
+            batch_details, batch_errors = client.details(batch_codes, now.date())
+            return batch_rows, batch_details, batch_errors, None
+
+        def score_first_pass(quote_rows):
+            scored = []
+            for quote in quote_rows:
+                if quote["code"] not in details:
+                    continue
+                scored.append(
+                    score_candidate(
+                        quote,
+                        details[quote["code"]],
+                        sector_bundle["items"].get(quote.get("industry")),
+                        summary,
+                        cfg,
+                        trade_date,
+                        now=now,
+                    )
+                )
+            scored.sort(key=lambda item: (-item["score"], -item["amount"], item["code"]))
+            return scored
+
+        first_pass = []
+        for limit in detail_limits:
+            batch_rows = [row for row in pool_rows[:limit] if row["code"] not in target_by_code]
+            if batch_rows:
+                fetched_rows, batch_details, batch_errors, batch_status = fetch_detail_batch(batch_rows)
+                target_by_code.update({row["code"]: row for row in fetched_rows})
+                details.update(batch_details)
+                detail_errors.extend(batch_errors)
+                tdx_status = merge_tdx_status(tdx_status, batch_status)
+            target_rows = [target_by_code[row["code"]] for row in pool_rows[:limit] if row["code"] in target_by_code]
+            detail_steps.append(len(target_rows))
+            first_pass = score_first_pass(target_rows)
+            if limit == detail_limits[-1]:
+                break
+
+            fallback_ratio = 0.0
+            if tdx_status:
+                requested_count = max(1, int(tdx_status.get("requested_count") or len(target_rows)))
+                fallback_ratio = max(
+                    int(tdx_status.get("fallback_quote_count") or 0),
+                    int(tdx_status.get("fallback_detail_count") or 0),
+                ) / requested_count
+            quality_scores = [
+                source_quality(target_by_code[item["code"]], details[item["code"]], cfg)["score"]
+                for item in first_pass
+                if item["code"] in target_by_code and item["code"] in details
+            ]
+            average_quality = sum(quality_scores) / len(quality_scores) if quality_scores else None
+            source_can_expand = not tdx_status or tdx_status.get("status") == "CONNECTED" or int(tdx_status.get("primary_quote_count") or 0) > 0
+            reasons = []
+            if len(first_pass) < int(expansion_cfg.get("minimum_complete_candidates", 5)):
+                reasons.append("完整评分候选不足")
+            if source_can_expand and fallback_ratio > float(expansion_cfg.get("maximum_fallback_ratio", 0.20)):
+                reasons.append("主源回退比例过高")
+            if source_can_expand and average_quality is not None and average_quality < float(expansion_cfg.get("minimum_source_quality_score", 70)):
+                reasons.append("来源质量低于阈值")
+            if not reasons:
+                break
+            expansion_reasons.append({"from": limit, "to": detail_limits[detail_limits.index(limit) + 1], "reasons": reasons})
+
+        target_rows = [target_by_code[row["code"]] for row in pool_rows if row["code"] in target_by_code]
 
         announcement_map, announcement_errors = {}, {}
         announcement_sources, announcement_attempt_errors = {}, {}
@@ -386,6 +480,15 @@ def build(
                     "details_requested": len(target_rows),
                     "details_succeeded": len(details),
                     "detail_errors": detail_errors[:10],
+                    "detail_expansion": {
+                        "enabled": bool(expansion_cfg.get("enabled", True)),
+                        "requested_limits": detail_limits,
+                        "steps": detail_steps,
+                        "expanded": len(detail_steps) > 1,
+                        "reasons": expansion_reasons,
+                        "initial_limit": initial_limit,
+                        "final_limit": len(target_rows),
+                    },
                     "announcement_targets": len(announcement_targets),
                     "announcement_successes": len(announcement_map),
                     "announcement_failures": len(announcement_errors),
