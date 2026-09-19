@@ -79,7 +79,12 @@ jobs:
         if: steps.freshness.outputs.should_refresh != 'false'
         env:
           TDX_AI_DATA_TOKEN: ${{ secrets.TDX_AI_DATA_TOKEN }}
-        run: python scripts/check_tdxaidata.py
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            python scripts/check_tdxaidata.py --full
+          else
+            python scripts/check_tdxaidata.py
+          fi
 
       - name: Build current snapshot
         if: steps.freshness.outputs.should_refresh != 'false'
