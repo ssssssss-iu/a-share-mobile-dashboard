@@ -56,6 +56,8 @@ python3 -m http.server 8080 --directory site
 
 API key 只通过 GitHub Secret 注入工作流，不得写入网页、代码或公开仓库。GitHub Pages 仍是静态托管；模型 API 会按实际用量计费。
 
+启用 AI 解读后，工作流会在规则评分完成后调用 Responses API；未配置密钥或调用失败时，仍发布规则模板，不影响行情和评分看板。
+
 ## 公开数据边界
 
 仓库只保存静态看板与公开行情结果。不要把持仓、成本价、交易笔记、SQLite 数据库或任何密钥加入这个公开仓库。
