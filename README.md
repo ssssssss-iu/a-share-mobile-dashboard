@@ -53,7 +53,7 @@ GitHub备援任务还必须在计划时间后的8分钟内启动；如果GitHub�
 
 1. 在 OpenAI API 平台创建 API key。
 2. 进入仓库 `Settings → Secrets and variables → Actions → Secrets`，新增仓库密钥 `OPENAI_API_KEY`。
-3. 可选：在同一页面的 `Variables` 新增 `OPENAI_MODEL`；未设置时使用 `gpt-5.6-luna`。
+3. 可选：在同一页面的 `Variables` 新增 `OPENAI_MODEL`；未设置时使用低成本、较高吞吐量的 `gpt-5-mini`。
 4. 进入 `Actions → 更新并发布A股研究看板 → Run workflow` 手动运行一次。
 
 API key 只通过 GitHub Secret 注入工作流，不得写入网页、代码或公开仓库。GitHub Pages 仍是静态托管；模型 API 会按实际用量计费。

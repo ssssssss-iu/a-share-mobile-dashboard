@@ -105,6 +105,24 @@ class AIAnalysisTests(unittest.TestCase):
                 request_model("prompt", "test-key", "test-model", sleeper=lambda _: None)
         self.assertEqual(mocked.call_count, 1)
 
+    def test_long_retry_after_fails_fast_and_redacts_public_details(self):
+        body = io.BytesIO(
+            b'{"error":{"message":"Rate limit for org-secret123. Visit https://example.com/limits",'
+            b'"type":"rate_limit_error","code":"rate_limit_exceeded"}}'
+        )
+        throttled = urllib.error.HTTPError(
+            "https://api.openai.com", 429, "rate limit", {"Retry-After": "3600"}, body
+        )
+        with patch("dashboard.ai_analysis.urllib.request.urlopen", side_effect=throttled) as mocked:
+            with self.assertRaises(RuntimeError) as caught:
+                request_model("prompt", "test-key", "test-model", sleeper=lambda _: None)
+        message = str(caught.exception)
+        self.assertIn("rate_limit_exceeded", message)
+        self.assertIn("org-[redacted]", message)
+        self.assertNotIn("org-secret123", message)
+        self.assertNotIn("https://", message)
+        self.assertEqual(mocked.call_count, 1)
+
     def test_retryable_error_reports_attempt_count_after_exhaustion(self):
         failures = [
             urllib.error.HTTPError("https://api.openai.com", 503, "unavailable", {}, io.BytesIO())
