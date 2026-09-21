@@ -34,6 +34,10 @@ on:
         description: "Publish the checked-in site without fetching market data"
         required: false
         default: "false"
+      ai_only:
+        description: "Reuse the checked-in market snapshot and refresh only AI analysis"
+        required: false
+        default: "false"
 
 permissions:
   contents: write
@@ -80,7 +84,7 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Check optional TdxAiData source
-        if: (github.event_name != 'workflow_dispatch' || inputs.publish_only != 'true') && steps.freshness.outputs.should_refresh != 'false'
+        if: (github.event_name != 'workflow_dispatch' || (inputs.publish_only != 'true' && inputs.ai_only != 'true')) && steps.freshness.outputs.should_refresh != 'false'
         env:
           TDX_AI_DATA_TOKEN: ${{ secrets.TDX_AI_DATA_TOKEN }}
         run: |
@@ -91,7 +95,7 @@ jobs:
           fi
 
       - name: Build current snapshot
-        if: (github.event_name != 'workflow_dispatch' || inputs.publish_only != 'true') && steps.freshness.outputs.should_refresh != 'false'
+        if: (github.event_name != 'workflow_dispatch' || (inputs.publish_only != 'true' && inputs.ai_only != 'true')) && steps.freshness.outputs.should_refresh != 'false'
         env:
           DASHBOARD_TRIGGER: ${{ github.event_name == 'workflow_dispatch' && inputs.scheduler || github.event_name }}
           DASHBOARD_SCHEDULED_TIME: ${{ inputs.scheduled_time || '' }}
