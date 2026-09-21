@@ -97,6 +97,21 @@ def should_write_close_history(now: datetime) -> bool:
     return now.hour == 15 and 5 <= now.minute < 20
 
 
+def backup_run_is_timely(now: datetime, max_lateness_minutes: int = 8) -> bool:
+    """Allow a GitHub backup only shortly after one of its planned times.
+
+    GitHub scheduled workflows can be delayed substantially. A stale backup must
+    not run hours later and replace the valid close snapshot.
+    """
+    if now.weekday() >= 5:
+        return False
+    current_minute = now.hour * 60 + now.minute
+    return any(
+        0 <= current_minute - _minute(planned) <= max_lateness_minutes
+        for planned in BACKUP_UPDATE_TIMES
+    )
+
+
 def snapshot_is_fresh(snapshot: dict | None, now: datetime, max_age_minutes: int = 10) -> bool:
     if not snapshot or snapshot.get("status") != "SUCCESS" or not snapshot.get("generated_at"):
         return False

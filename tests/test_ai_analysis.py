@@ -1,6 +1,9 @@
+import io
+import urllib.error
 import unittest
+from unittest.mock import patch
 
-from dashboard.ai_analysis import build_prompt, enrich_snapshot, extract_output_text
+from dashboard.ai_analysis import build_prompt, enrich_snapshot, extract_output_text, request_model
 
 
 def sample_snapshot():
@@ -65,6 +68,43 @@ class AIAnalysisTests(unittest.TestCase):
     def test_extracts_responses_api_text(self):
         response = {"output": [{"type": "message", "content": [{"type": "output_text", "text": "解读结果"}]}]}
         self.assertEqual(extract_output_text(response), "解读结果")
+
+    def test_retries_429_then_returns_successful_response(self):
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_):
+                return False
+
+            def read(self, *_):
+                return b'{"output_text":"retry success"}'
+
+        throttled = urllib.error.HTTPError("https://api.openai.com", 429, "rate limit", {}, io.BytesIO())
+        delays = []
+        with patch("dashboard.ai_analysis.urllib.request.urlopen", side_effect=[throttled, Response()]) as mocked:
+            text = request_model("prompt", "test-key", "test-model", sleeper=delays.append)
+        self.assertEqual(text, "retry success")
+        self.assertEqual(mocked.call_count, 2)
+        self.assertEqual(delays, [1.0])
+
+    def test_non_retryable_auth_error_fails_immediately(self):
+        unauthorized = urllib.error.HTTPError("https://api.openai.com", 401, "unauthorized", {}, io.BytesIO())
+        with patch("dashboard.ai_analysis.urllib.request.urlopen", side_effect=unauthorized) as mocked:
+            with self.assertRaisesRegex(RuntimeError, "HTTP 401"):
+                request_model("prompt", "bad-key", "test-model", sleeper=lambda _: None)
+        self.assertEqual(mocked.call_count, 1)
+
+    def test_retryable_error_reports_attempt_count_after_exhaustion(self):
+        failures = [
+            urllib.error.HTTPError("https://api.openai.com", 503, "unavailable", {}, io.BytesIO())
+            for _ in range(3)
+        ]
+        delays = []
+        with patch("dashboard.ai_analysis.urllib.request.urlopen", side_effect=failures):
+            with self.assertRaisesRegex(RuntimeError, "重试3次仍失败"):
+                request_model("prompt", "test-key", "test-model", sleeper=delays.append)
+        self.assertEqual(delays, [1.0, 2.0])
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 from copy import deepcopy
@@ -89,7 +90,29 @@ def extract_output_text(response: dict) -> str:
     return text
 
 
-def request_model(prompt: str, api_key: str, model: str, timeout: int = 75) -> str:
+RETRYABLE_HTTP_CODES = {429, 500, 502, 503, 504}
+
+
+def _retry_delay(exc: urllib.error.HTTPError | None, attempt: int, base_delay: float) -> float:
+    retry_after = None
+    if exc is not None and exc.headers:
+        try:
+            retry_after = float(exc.headers.get("Retry-After"))
+        except (TypeError, ValueError):
+            retry_after = None
+    delay = retry_after if retry_after is not None else base_delay * (2 ** (attempt - 1))
+    return max(0.0, min(delay, 15.0))
+
+
+def request_model(
+    prompt: str,
+    api_key: str,
+    model: str,
+    timeout: int = 75,
+    max_attempts: int = 3,
+    base_delay: float = 1.0,
+    sleeper=time.sleep,
+) -> str:
     body = json.dumps(
         {
             "model": model,
@@ -100,24 +123,31 @@ def request_model(prompt: str, api_key: str, model: str, timeout: int = 75) -> s
         },
         ensure_ascii=False,
     ).encode("utf-8")
-    request = urllib.request.Request(
-        API_URL,
-        data=body,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "User-Agent": "a-share-mobile-dashboard/1.0",
-        },
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            payload = json.load(response)
-    except urllib.error.HTTPError as exc:
-        raise RuntimeError(f"OpenAI API HTTP {exc.code}") from None
-    except urllib.error.URLError as exc:
-        raise RuntimeError(f"OpenAI API连接失败: {exc.reason}") from None
-    return extract_output_text(payload)
+    max_attempts = max(1, int(max_attempts))
+    for attempt in range(1, max_attempts + 1):
+        request = urllib.request.Request(
+            API_URL,
+            data=body,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "User-Agent": "a-share-mobile-dashboard/1.0",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return extract_output_text(json.load(response))
+        except urllib.error.HTTPError as exc:
+            if exc.code not in RETRYABLE_HTTP_CODES or attempt >= max_attempts:
+                suffix = f"（重试{attempt}次仍失败）" if attempt > 1 else ""
+                raise RuntimeError(f"OpenAI API HTTP {exc.code}{suffix}") from None
+            sleeper(_retry_delay(exc, attempt, base_delay))
+        except urllib.error.URLError as exc:
+            if attempt >= max_attempts:
+                raise RuntimeError(f"OpenAI API连接失败（重试{attempt}次）: {exc.reason}") from None
+            sleeper(_retry_delay(None, attempt, base_delay))
+    raise RuntimeError("OpenAI API请求未完成")
 
 
 def _validate_text(text: str, snapshot: dict) -> str:

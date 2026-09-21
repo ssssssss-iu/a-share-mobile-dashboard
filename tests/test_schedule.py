@@ -5,6 +5,7 @@ from zoneinfo import ZoneInfo
 from dashboard.schedule import (
     BACKUP_UPDATE_TIMES,
     PRIMARY_UPDATE_TIMES,
+    backup_run_is_timely,
     intraday_slot,
     should_write_close_history,
     snapshot_is_fresh,
@@ -26,6 +27,16 @@ class ScheduleTests(unittest.TestCase):
             return hour * 60 + minute_value
 
         self.assertEqual([minute(value) for value in BACKUP_UPDATE_TIMES], [minute(value) + 5 for value in PRIMARY_UPDATE_TIMES])
+
+    def test_backup_run_must_start_inside_planned_window(self):
+        self.assertTrue(backup_run_is_timely(datetime(2026, 9, 21, 9, 30, tzinfo=TZ)))
+        self.assertTrue(backup_run_is_timely(datetime(2026, 9, 21, 9, 38, tzinfo=TZ)))
+        self.assertFalse(backup_run_is_timely(datetime(2026, 9, 21, 9, 39, tzinfo=TZ)))
+        self.assertFalse(backup_run_is_timely(datetime(2026, 9, 21, 16, 25, tzinfo=TZ)))
+        self.assertFalse(backup_run_is_timely(datetime(2026, 9, 21, 18, 38, tzinfo=TZ)))
+
+    def test_backup_run_is_disabled_on_weekends(self):
+        self.assertFalse(backup_run_is_timely(datetime(2026, 9, 20, 9, 30, tzinfo=TZ)))
 
     def test_recent_successful_snapshot_skips_backup(self):
         now = datetime(2026, 9, 17, 10, 30, tzinfo=TZ)

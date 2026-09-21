@@ -65,7 +65,7 @@ jobs:
       - name: Check scheduled backup freshness
         id: freshness
         if: github.event_name == 'schedule'
-        run: python scripts/should_refresh.py --max-age-minutes 10
+        run: python scripts/should_refresh.py --max-age-minutes 10 --max-lateness-minutes 8
 
       - name: Install dependency
         if: steps.freshness.outputs.should_refresh != 'false'
