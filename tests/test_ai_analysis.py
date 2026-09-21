@@ -101,7 +101,17 @@ class AIAnalysisTests(unittest.TestCase):
         )
         exhausted = urllib.error.HTTPError("https://api.openai.com", 429, "rate limit", {}, body)
         with patch("dashboard.ai_analysis.urllib.request.urlopen", side_effect=exhausted) as mocked:
-            with self.assertRaisesRegex(RuntimeError, r"HTTP 429 \[insufficient_quota\]: quota exhausted"):
+            with self.assertRaisesRegex(RuntimeError, r"HTTP 429 \[insufficient_quota\].*额度不足"):
+                request_model("prompt", "test-key", "test-model", sleeper=lambda _: None)
+        self.assertEqual(mocked.call_count, 1)
+
+    def test_exhausted_credit_is_reported_in_chinese_without_retry(self):
+        body = io.BytesIO(
+            b'{"error":{"message":"No credits","type":"insufficient_quota","code":"credit_balance_exhausted"}}'
+        )
+        exhausted = urllib.error.HTTPError("https://api.openai.com", 429, "rate limit", {}, body)
+        with patch("dashboard.ai_analysis.urllib.request.urlopen", side_effect=exhausted) as mocked:
+            with self.assertRaisesRegex(RuntimeError, "余额已用尽"):
                 request_model("prompt", "test-key", "test-model", sleeper=lambda _: None)
         self.assertEqual(mocked.call_count, 1)
 

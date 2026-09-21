@@ -92,7 +92,22 @@ def extract_output_text(response: dict) -> str:
 
 
 RETRYABLE_HTTP_CODES = {429, 500, 502, 503, 504}
-NON_RETRYABLE_OPENAI_CODES = {"insufficient_quota", "billing_hard_limit_reached"}
+NON_RETRYABLE_OPENAI_CODES = {
+    "insufficient_quota",
+    "billing_hard_limit_reached",
+    "credit_balance_exhausted",
+    "organization_spend_limit_exceeded",
+    "project_spend_limit_exceeded",
+    "organization_usage_limit_exceeded",
+}
+OPENAI_ERROR_MESSAGES = {
+    "insufficient_quota": "OpenAI API额度不足，请检查余额和用量限制。",
+    "billing_hard_limit_reached": "OpenAI API消费上限已触发，请检查账单限额。",
+    "credit_balance_exhausted": "OpenAI API余额已用尽，请充值后重试。",
+    "organization_spend_limit_exceeded": "OpenAI组织消费上限已触发，请调整组织限额。",
+    "project_spend_limit_exceeded": "OpenAI项目消费上限已触发，请调整项目限额。",
+    "organization_usage_limit_exceeded": "OpenAI组织用量上限已触发，请申请提高限额。",
+}
 
 
 def _http_error_detail(exc: urllib.error.HTTPError) -> tuple[str | None, str | None]:
@@ -115,7 +130,8 @@ def _http_error_detail(exc: urllib.error.HTTPError) -> tuple[str | None, str | N
 
 def _format_http_error(status: int, code: str | None, message: str | None, attempt: int) -> str:
     detail = f" [{code}]" if code else ""
-    explanation = f": {message}" if message else ""
+    public_message = OPENAI_ERROR_MESSAGES.get(code or "", message)
+    explanation = f": {public_message}" if public_message else ""
     suffix = f"（重试{attempt}次仍失败）" if attempt > 1 else ""
     return f"OpenAI API HTTP {status}{detail}{explanation}{suffix}"
 
