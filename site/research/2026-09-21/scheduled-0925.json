@@ -1,0 +1,357 @@
+{
+  "schema_version": "1.0",
+  "trade_date": "2026-09-21",
+  "slot": {
+    "key": "scheduled-0925",
+    "label": "09:25",
+    "planned_time": "09:25",
+    "kind": "scheduled",
+    "source": "primary"
+  },
+  "generated_at": "2026-09-21T09:25:41+08:00",
+  "market": {
+    "regime": "RISK_ON",
+    "environment_score": 0.525,
+    "breadth": 0.5724,
+    "advancers": 1400,
+    "decliners": 1046,
+    "flat": 598,
+    "median_pct": 0.0,
+    "limit_up_count": 10,
+    "limit_down_count": 1,
+    "market_amount": 11501688568.479998,
+    "market_time": "2026-09-21T09:25:49+08:00",
+    "sector_coverage": 1.0,
+    "continuity_available": true,
+    "strong_sector_count": 6
+  },
+  "strategy": {
+    "id": "a-share-tail-hot-v2",
+    "version": "2.2.0",
+    "automation_profile": "static-scoring-candidate-0.3",
+    "automation_status": "trial_not_active_strategy",
+    "parameter_set_id": "rules-20260918-p1",
+    "weights": {
+      "A": 20,
+      "B": 15,
+      "C": 15,
+      "D": 20,
+      "E": 10,
+      "G": 20
+    },
+    "note": "模块权重来自生效策略；通道资格已按必过模块独立判定，精确数值阈值继续作为前向验证参数。"
+  },
+  "data_source_validation": {
+    "enabled": true,
+    "mode": "primary",
+    "status": "CONNECTED",
+    "package_version": "1.0.2",
+    "message": "TdxAiData已作为评分主源",
+    "error_type": null,
+    "error_message": null,
+    "affects_scoring": true,
+    "primary_quote_count": 1,
+    "primary_detail_count": 1,
+    "fallback_quote_count": 0,
+    "fallback_detail_count": 0,
+    "requested_count": 1,
+    "received_at": "2026-09-21T09:25:58+08:00",
+    "provider_time_min": "2026-09-21T09:31:00+08:00",
+    "provider_time_max": "2026-09-21T09:31:00+08:00",
+    "timestamp_source_counts": {
+      "tdx": 1,
+      "tdx_records": 0,
+      "fallback_or_missing": 0
+    },
+    "provenance": [
+      {
+        "code": "002185",
+        "quote_source": "TdxAiData",
+        "daily_source": "TdxAiData",
+        "minute_source": "TdxAiData",
+        "provider_time": "2026-09-21T09:31:00+08:00",
+        "received_at": "2026-09-21T09:25:58+08:00",
+        "source_latency_seconds": 0.0,
+        "timestamp_source": "tdx",
+        "fallback": false
+      }
+    ]
+  },
+  "score_pool_codes": [],
+  "qualified_codes": {
+    "ordinary": [],
+    "hot": []
+  },
+  "signals": [
+    {
+      "code": "002185",
+      "name": "华天科技",
+      "sector": "半导体",
+      "price": 18.68,
+      "change_pct": 3.61,
+      "amount": 31092.3,
+      "turnover_rate": 0.5,
+      "market_time": "2026-09-21T09:31:00+08:00",
+      "data_provenance": {
+        "quote_source": "TdxAiData",
+        "quote_received_at": "2026-09-21T09:25:58+08:00",
+        "quote_provider_time": "2026-09-21T09:31:00+08:00",
+        "quote_timestamp_source": "tdx_minute",
+        "quote_latency_seconds": 0.0,
+        "daily_source": "TdxAiData日K",
+        "minute_source": "TdxAiData分钟K",
+        "detail_received_at": "2026-09-21T09:25:58+08:00",
+        "daily_provider_time": "2026-09-21T00:00:00+08:00",
+        "minute_provider_time": "2026-09-21T09:31:00+08:00",
+        "daily_latency_seconds": null,
+        "minute_latency_seconds": 0.0,
+        "fallback": false
+      },
+      "score": 33,
+      "level": "排除",
+      "modules": [
+        {
+          "key": "A",
+          "label": "当日量价",
+          "score": 8,
+          "max": 20,
+          "state": "不通过",
+          "evidence": [
+            "当日涨跌 +3.61%",
+            "收盘位于日内区间 50%",
+            "量比(对近5日) 0.07",
+            "近20日阳/阴实体比 1.20，60日涨停 3 次",
+            "突破20日前高"
+          ]
+        },
+        {
+          "key": "B",
+          "label": "尾盘动能",
+          "score": 0,
+          "max": 15,
+          "state": "数据不足",
+          "evidence": [
+            "14:20前不评估尾盘动能，等待尾盘窗口确认"
+          ]
+        },
+        {
+          "key": "C",
+          "label": "隔夜质量",
+          "score": 4,
+          "max": 15,
+          "state": "不通过",
+          "evidence": [
+            "日内振幅 0.00%｜跳空 3.61%",
+            "成交额 0.0亿｜上影占比 0%"
+          ]
+        },
+        {
+          "key": "D",
+          "label": "板块持续",
+          "score": 8,
+          "max": 20,
+          "state": "不通过",
+          "evidence": [
+            "板块中位涨幅 +0.49%｜相对全市场 +0.49pct",
+            "上涨占比 88%｜涨停 0｜样本 33",
+            "当前与上一有效快照均为强板块"
+          ]
+        },
+        {
+          "key": "E",
+          "label": "公告催化",
+          "score": 5,
+          "max": 10,
+          "state": "数据不足",
+          "evidence": [
+            "已核验 3 条正式公告，未识别明确正向催化"
+          ]
+        },
+        {
+          "key": "G",
+          "label": "反转风险",
+          "score": 8,
+          "max": 20,
+          "state": "不通过",
+          "evidence": [
+            "换手 0.50%｜振幅 0.00%｜上影 0%",
+            "明显偏离MA5"
+          ]
+        }
+      ],
+      "risks": [
+        "明显偏离MA5"
+      ],
+      "data_confidence": {
+        "score": 86,
+        "max": 100,
+        "level": "中",
+        "components": [
+          {
+            "key": "quote",
+            "label": "行情时间与报价",
+            "score": 15,
+            "max": 15,
+            "detail": "可核验"
+          },
+          {
+            "key": "daily",
+            "label": "当日日K",
+            "score": 25,
+            "max": 25,
+            "detail": "日期一致且不少于21根"
+          },
+          {
+            "key": "minute",
+            "label": "当日分钟线",
+            "score": 0,
+            "max": 20,
+            "detail": "可用1根"
+          },
+          {
+            "key": "sector",
+            "label": "板块数据",
+            "score": 20,
+            "max": 20,
+            "detail": "板块归属与上一快照均可用"
+          },
+          {
+            "key": "announcement",
+            "label": "公告数据",
+            "score": 20,
+            "max": 20,
+            "detail": "已由深圳证券交易所正式公告核验"
+          }
+        ],
+        "issues": [
+          "可用1根"
+        ],
+        "completeness_score": 80,
+        "source_quality_score": 100,
+        "source_quality": {
+          "score": 100,
+          "status": "来源质量正常",
+          "issues": [],
+          "fallback": false,
+          "max_latency_seconds": 0.0,
+          "alignment_seconds": 0.0
+        },
+        "source_weight": 0.3
+      },
+      "channels": {
+        "ordinary": {
+          "qualified": false,
+          "actionable_now": false,
+          "score": 20,
+          "max": 70,
+          "normalized_score": 28.6,
+          "required_modules": [
+            "A",
+            "B",
+            "C",
+            "G"
+          ],
+          "reasons": [
+            "触发反转风险",
+            "必过模块未通过：A、B、C、G"
+          ],
+          "holding": "尾盘确认，次日早盘按条件退出"
+        },
+        "hot": {
+          "qualified": false,
+          "actionable_now": false,
+          "score": 24,
+          "max": 60,
+          "normalized_score": 40.0,
+          "required_modules": [
+            "A",
+            "D",
+            "G"
+          ],
+          "reasons": [
+            "触发反转风险",
+            "必过模块未通过：A、D、G"
+          ],
+          "holding": "计划2–5个交易日，退潮或失效提前退出"
+        }
+      },
+      "plan": {
+        "feasible": true,
+        "message": "存在可观察的触发区间",
+        "hold_above": 18.68,
+        "breakout": 18.69,
+        "no_chase_above": 19.05,
+        "invalid_below": 18.33
+      },
+      "features": {
+        "return_5d": 16.75,
+        "volume_ratio": 0.07,
+        "red_green_body_ratio": 1.2,
+        "limit_up_history_60d": 3,
+        "breakout": true
+      },
+      "announcements": [
+        {
+          "title": "华天科技：关于开展外汇套期保值业务的公告",
+          "published_at": "2026-09-12T00:00:00+08:00",
+          "source": "深圳证券交易所正式公告",
+          "source_url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-09-12/f7b0d31e-ca32-467a-89fa-256ab8e9181f.PDF"
+        },
+        {
+          "title": "华天科技：第八届董事会第十八次会议决议公告",
+          "published_at": "2026-09-12T00:00:00+08:00",
+          "source": "深圳证券交易所正式公告",
+          "source_url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-09-12/3142b1bb-5aed-4db3-bb15-f73377494987.PDF"
+        },
+        {
+          "title": "华天科技：关于开展外汇套期保值业务的可行性分析",
+          "published_at": "2026-09-12T00:00:00+08:00",
+          "source": "深圳证券交易所正式公告",
+          "source_url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-09-12/634d4639-b189-4bc7-a6bd-c723a80c7f03.PDF"
+        }
+      ],
+      "rank": 1,
+      "in_score_pool": false,
+      "in_candidate_pool": false,
+      "signal_id": "2026-09-21T09:25:41+08:00:002185",
+      "trade_date": "2026-09-21",
+      "generated_at": "2026-09-21T09:25:41+08:00",
+      "entry_price": 18.68,
+      "labels": {
+        "forward_30m": {
+          "status": "PENDING"
+        },
+        "same_close": {
+          "status": "PENDING"
+        },
+        "next_open": {
+          "status": "PENDING"
+        },
+        "next_1000": {
+          "status": "PENDING"
+        },
+        "next_close": {
+          "status": "PENDING"
+        },
+        "day3_close": {
+          "status": "PENDING"
+        },
+        "day5_close": {
+          "status": "PENDING"
+        },
+        "mfe_5d": {
+          "status": "PENDING"
+        },
+        "mae_5d": {
+          "status": "PENDING"
+        }
+      },
+      "observed_future_trade_dates": [],
+      "excursions_5d": {
+        "mfe_pct": null,
+        "mae_pct": null,
+        "last_trade_date": null
+      }
+    }
+  ]
+}
