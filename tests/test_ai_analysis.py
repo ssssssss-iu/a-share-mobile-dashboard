@@ -95,6 +95,16 @@ class AIAnalysisTests(unittest.TestCase):
                 request_model("prompt", "bad-key", "test-model", sleeper=lambda _: None)
         self.assertEqual(mocked.call_count, 1)
 
+    def test_insufficient_quota_is_reported_without_pointless_retries(self):
+        body = io.BytesIO(
+            b'{"error":{"message":"quota exhausted","type":"insufficient_quota","code":"insufficient_quota"}}'
+        )
+        exhausted = urllib.error.HTTPError("https://api.openai.com", 429, "rate limit", {}, body)
+        with patch("dashboard.ai_analysis.urllib.request.urlopen", side_effect=exhausted) as mocked:
+            with self.assertRaisesRegex(RuntimeError, r"HTTP 429 \[insufficient_quota\]: quota exhausted"):
+                request_model("prompt", "test-key", "test-model", sleeper=lambda _: None)
+        self.assertEqual(mocked.call_count, 1)
+
     def test_retryable_error_reports_attempt_count_after_exhaustion(self):
         failures = [
             urllib.error.HTTPError("https://api.openai.com", 503, "unavailable", {}, io.BytesIO())

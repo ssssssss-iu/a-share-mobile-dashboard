@@ -91,6 +91,29 @@ def extract_output_text(response: dict) -> str:
 
 
 RETRYABLE_HTTP_CODES = {429, 500, 502, 503, 504}
+NON_RETRYABLE_OPENAI_CODES = {"insufficient_quota", "billing_hard_limit_reached"}
+
+
+def _http_error_detail(exc: urllib.error.HTTPError) -> tuple[str | None, str | None]:
+    try:
+        payload = json.loads(exc.read().decode("utf-8", errors="replace"))
+    except (AttributeError, json.JSONDecodeError, OSError):
+        return None, None
+    error = payload.get("error") if isinstance(payload, dict) else None
+    if not isinstance(error, dict):
+        return None, None
+    code = error.get("code") or error.get("type")
+    message = error.get("message")
+    safe_code = str(code).strip()[:80] if code else None
+    safe_message = re.sub(r"\s+", " ", str(message)).strip()[:200] if message else None
+    return safe_code, safe_message
+
+
+def _format_http_error(status: int, code: str | None, message: str | None, attempt: int) -> str:
+    detail = f" [{code}]" if code else ""
+    explanation = f": {message}" if message else ""
+    suffix = f"（重试{attempt}次仍失败）" if attempt > 1 else ""
+    return f"OpenAI API HTTP {status}{detail}{explanation}{suffix}"
 
 
 def _retry_delay(exc: urllib.error.HTTPError | None, attempt: int, base_delay: float) -> float:
@@ -101,7 +124,7 @@ def _retry_delay(exc: urllib.error.HTTPError | None, attempt: int, base_delay: f
         except (TypeError, ValueError):
             retry_after = None
     delay = retry_after if retry_after is not None else base_delay * (2 ** (attempt - 1))
-    return max(0.0, min(delay, 15.0))
+    return max(0.0, min(delay, 60.0))
 
 
 def request_model(
@@ -139,9 +162,15 @@ def request_model(
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 return extract_output_text(json.load(response))
         except urllib.error.HTTPError as exc:
-            if exc.code not in RETRYABLE_HTTP_CODES or attempt >= max_attempts:
-                suffix = f"（重试{attempt}次仍失败）" if attempt > 1 else ""
-                raise RuntimeError(f"OpenAI API HTTP {exc.code}{suffix}") from None
+            error_code, error_message = _http_error_detail(exc)
+            if (
+                exc.code not in RETRYABLE_HTTP_CODES
+                or error_code in NON_RETRYABLE_OPENAI_CODES
+                or attempt >= max_attempts
+            ):
+                raise RuntimeError(
+                    _format_http_error(exc.code, error_code, error_message, attempt)
+                ) from None
             sleeper(_retry_delay(exc, attempt, base_delay))
         except urllib.error.URLError as exc:
             if attempt >= max_attempts:
