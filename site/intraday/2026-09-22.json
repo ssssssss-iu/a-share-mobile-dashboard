@@ -11053,6 +11053,889 @@
           "previous_rank": 3
         }
       ]
+    },
+    {
+      "slot": {
+        "key": "scheduled-1435",
+        "label": "14:35",
+        "planned_time": "14:35",
+        "kind": "scheduled",
+        "source": "primary"
+      },
+      "generated_at": "2026-09-22T14:35:41+08:00",
+      "market_time": "2026-09-22T14:38:00+08:00",
+      "strategy": {
+        "id": "a-share-tail-hot-v2",
+        "version": "2.2.0",
+        "automation_profile": "static-scoring-candidate-0.3"
+      },
+      "data_quality": {
+        "name": "东方财富沪深A股行情",
+        "coverage": 1.0,
+        "minimum_coverage": 0.9,
+        "failed_pages": 0
+      },
+      "rankings": [
+        {
+          "code": "600589",
+          "name": "大位科技",
+          "sector": "IT服务Ⅱ",
+          "rank": 1,
+          "score": 68,
+          "price": 8.29,
+          "change_pct": 5.61,
+          "market_time": "2026-09-22T14:38:00+08:00",
+          "in_candidate_pool": true,
+          "in_score_pool": true,
+          "data_confidence": {
+            "score": 100,
+            "max": 100,
+            "level": "高",
+            "components": [
+              {
+                "key": "quote",
+                "label": "行情时间与报价",
+                "score": 15,
+                "max": 15,
+                "detail": "可核验"
+              },
+              {
+                "key": "daily",
+                "label": "当日日K",
+                "score": 25,
+                "max": 25,
+                "detail": "日期一致且不少于21根"
+              },
+              {
+                "key": "minute",
+                "label": "当日分钟线",
+                "score": 20,
+                "max": 20,
+                "detail": "可用218根"
+              },
+              {
+                "key": "sector",
+                "label": "板块数据",
+                "score": 20,
+                "max": 20,
+                "detail": "板块归属与上一快照均可用"
+              },
+              {
+                "key": "announcement",
+                "label": "公告数据",
+                "score": 20,
+                "max": 20,
+                "detail": "已由巨潮资讯正式公告核验"
+              }
+            ],
+            "issues": [],
+            "completeness_score": 100,
+            "source_quality_score": 100,
+            "source_quality": {
+              "score": 100,
+              "status": "来源质量正常",
+              "issues": [],
+              "fallback": false,
+              "max_latency_seconds": 0.0,
+              "alignment_seconds": 0.0
+            },
+            "source_weight": 0.3
+          },
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 16,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 10,
+              "max": 15,
+              "state": "通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 6,
+              "max": 15,
+              "state": "不通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 15,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 16,
+              "max": 20,
+              "state": "通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 8.11,
+            "breakout": 8.8,
+            "no_chase_above": 8.46,
+            "invalid_below": 8.07
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 48,
+              "max": 70,
+              "normalized_score": 68.6,
+              "required_modules": [
+                "A",
+                "B",
+                "C",
+                "G"
+              ],
+              "reasons": [
+                "买点区间不可执行",
+                "必过模块未通过：C"
+              ],
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 47,
+              "max": 60,
+              "normalized_score": 78.3,
+              "required_modules": [
+                "A",
+                "D",
+                "G"
+              ],
+              "reasons": [
+                "买点区间不可执行"
+              ],
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "14:35",
+            "generated_at": "2026-09-22T14:35:41+08:00",
+            "price": 8.29
+          },
+          "change": {
+            "type": "FIRST_ENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "当日首次进入前五"
+          }
+        },
+        {
+          "code": "000333",
+          "name": "美的集团",
+          "sector": "白色家电",
+          "rank": 2,
+          "score": 65,
+          "price": 82.55,
+          "change_pct": 2.04,
+          "market_time": "2026-09-22T14:38:00+08:00",
+          "in_candidate_pool": true,
+          "in_score_pool": true,
+          "data_confidence": {
+            "score": 100,
+            "max": 100,
+            "level": "高",
+            "components": [
+              {
+                "key": "quote",
+                "label": "行情时间与报价",
+                "score": 15,
+                "max": 15,
+                "detail": "可核验"
+              },
+              {
+                "key": "daily",
+                "label": "当日日K",
+                "score": 25,
+                "max": 25,
+                "detail": "日期一致且不少于21根"
+              },
+              {
+                "key": "minute",
+                "label": "当日分钟线",
+                "score": 20,
+                "max": 20,
+                "detail": "可用218根"
+              },
+              {
+                "key": "sector",
+                "label": "板块数据",
+                "score": 20,
+                "max": 20,
+                "detail": "板块归属与上一快照均可用"
+              },
+              {
+                "key": "announcement",
+                "label": "公告数据",
+                "score": 20,
+                "max": 20,
+                "detail": "已由巨潮资讯正式公告核验"
+              }
+            ],
+            "issues": [],
+            "completeness_score": 100,
+            "source_quality_score": 100,
+            "source_quality": {
+              "score": 100,
+              "status": "来源质量正常",
+              "issues": [],
+              "fallback": false,
+              "max_latency_seconds": 0.0,
+              "alignment_seconds": 0.0
+            },
+            "source_weight": 0.3
+          },
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 8,
+              "max": 20,
+              "state": "不通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 6,
+              "max": 15,
+              "state": "不通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 12,
+              "max": 15,
+              "state": "通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 14,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 20,
+              "max": 20,
+              "state": "通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 83.58,
+            "breakout": 88.51,
+            "no_chase_above": 84.2,
+            "invalid_below": 81.69
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 46,
+              "max": 70,
+              "normalized_score": 65.7,
+              "required_modules": [
+                "A",
+                "B",
+                "C",
+                "G"
+              ],
+              "reasons": [
+                "买点区间不可执行",
+                "必过模块未通过：A、B"
+              ],
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 42,
+              "max": 60,
+              "normalized_score": 70.0,
+              "required_modules": [
+                "A",
+                "D",
+                "G"
+              ],
+              "reasons": [
+                "买点区间不可执行",
+                "必过模块未通过：A"
+              ],
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "14:35",
+            "generated_at": "2026-09-22T14:35:41+08:00",
+            "price": 82.55
+          },
+          "change": {
+            "type": "FIRST_ENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "当日首次进入前五"
+          }
+        },
+        {
+          "code": "601900",
+          "name": "南方传媒",
+          "sector": "出版",
+          "rank": 3,
+          "score": 57,
+          "price": 12.6,
+          "change_pct": 3.7,
+          "market_time": "2026-09-22T14:38:00+08:00",
+          "in_candidate_pool": false,
+          "in_score_pool": false,
+          "data_confidence": {
+            "score": 100,
+            "max": 100,
+            "level": "高",
+            "components": [
+              {
+                "key": "quote",
+                "label": "行情时间与报价",
+                "score": 15,
+                "max": 15,
+                "detail": "可核验"
+              },
+              {
+                "key": "daily",
+                "label": "当日日K",
+                "score": 25,
+                "max": 25,
+                "detail": "日期一致且不少于21根"
+              },
+              {
+                "key": "minute",
+                "label": "当日分钟线",
+                "score": 20,
+                "max": 20,
+                "detail": "可用218根"
+              },
+              {
+                "key": "sector",
+                "label": "板块数据",
+                "score": 20,
+                "max": 20,
+                "detail": "板块归属与上一快照均可用"
+              },
+              {
+                "key": "announcement",
+                "label": "公告数据",
+                "score": 20,
+                "max": 20,
+                "detail": "已由巨潮资讯正式公告核验"
+              }
+            ],
+            "issues": [],
+            "completeness_score": 100,
+            "source_quality_score": 100,
+            "source_quality": {
+              "score": 100,
+              "status": "来源质量正常",
+              "issues": [],
+              "fallback": false,
+              "max_latency_seconds": 0.0,
+              "alignment_seconds": 0.0
+            },
+            "source_weight": 0.3
+          },
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 14,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 5,
+              "max": 15,
+              "state": "不通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 6,
+              "max": 15,
+              "state": "不通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 19,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 8,
+              "max": 20,
+              "state": "不通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 12.69,
+            "breakout": 13.36,
+            "no_chase_above": 12.85,
+            "invalid_below": 12.35
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 33,
+              "max": 70,
+              "normalized_score": 47.1,
+              "required_modules": [
+                "A",
+                "B",
+                "C",
+                "G"
+              ],
+              "reasons": [
+                "触发反转风险",
+                "买点区间不可执行",
+                "必过模块未通过：B、C、G"
+              ],
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 41,
+              "max": 60,
+              "normalized_score": 68.3,
+              "required_modules": [
+                "A",
+                "D",
+                "G"
+              ],
+              "reasons": [
+                "触发反转风险",
+                "买点区间不可执行",
+                "必过模块未通过：G"
+              ],
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "10:25",
+            "generated_at": "2026-09-22T10:25:41+08:00",
+            "price": 12.82
+          },
+          "change": {
+            "type": "DOWN",
+            "rank_delta": -2,
+            "score_delta": -13,
+            "module_deltas": [
+              {
+                "key": "A",
+                "label": "当日量价",
+                "delta": -2
+              },
+              {
+                "key": "B",
+                "label": "尾盘动能",
+                "delta": -1
+              },
+              {
+                "key": "G",
+                "label": "反转风险",
+                "delta": -10
+              }
+            ],
+            "summary": "排名下降2位，总分减少13分，主要来自G 反转风险 -10分"
+          }
+        },
+        {
+          "code": "600640",
+          "name": "国脉文化",
+          "sector": "广告营销",
+          "rank": 4,
+          "score": 56,
+          "price": 13.31,
+          "change_pct": 6.14,
+          "market_time": "2026-09-22T14:38:00+08:00",
+          "in_candidate_pool": false,
+          "in_score_pool": false,
+          "data_confidence": {
+            "score": 100,
+            "max": 100,
+            "level": "高",
+            "components": [
+              {
+                "key": "quote",
+                "label": "行情时间与报价",
+                "score": 15,
+                "max": 15,
+                "detail": "可核验"
+              },
+              {
+                "key": "daily",
+                "label": "当日日K",
+                "score": 25,
+                "max": 25,
+                "detail": "日期一致且不少于21根"
+              },
+              {
+                "key": "minute",
+                "label": "当日分钟线",
+                "score": 20,
+                "max": 20,
+                "detail": "可用218根"
+              },
+              {
+                "key": "sector",
+                "label": "板块数据",
+                "score": 20,
+                "max": 20,
+                "detail": "板块归属与上一快照均可用"
+              },
+              {
+                "key": "announcement",
+                "label": "公告数据",
+                "score": 20,
+                "max": 20,
+                "detail": "已由巨潮资讯正式公告核验"
+              }
+            ],
+            "issues": [],
+            "completeness_score": 100,
+            "source_quality_score": 100,
+            "source_quality": {
+              "score": 100,
+              "status": "来源质量正常",
+              "issues": [],
+              "fallback": false,
+              "max_latency_seconds": 0.0,
+              "alignment_seconds": 0.0
+            },
+            "source_weight": 0.3
+          },
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 16,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 3,
+              "max": 15,
+              "state": "不通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 5,
+              "max": 15,
+              "state": "不通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 19,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 8,
+              "max": 20,
+              "state": "不通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 13.34,
+            "breakout": 13.8,
+            "no_chase_above": 13.58,
+            "invalid_below": 13.07
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 32,
+              "max": 70,
+              "normalized_score": 45.7,
+              "required_modules": [
+                "A",
+                "B",
+                "C",
+                "G"
+              ],
+              "reasons": [
+                "触发反转风险",
+                "买点区间不可执行",
+                "必过模块未通过：B、C、G"
+              ],
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 43,
+              "max": 60,
+              "normalized_score": 71.7,
+              "required_modules": [
+                "A",
+                "D",
+                "G"
+              ],
+              "reasons": [
+                "触发反转风险",
+                "买点区间不可执行",
+                "必过模块未通过：G"
+              ],
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "10:55",
+            "generated_at": "2026-09-22T10:55:43+08:00",
+            "price": 13.48
+          },
+          "change": {
+            "type": "REENTRY",
+            "rank_delta": null,
+            "score_delta": null,
+            "module_deltas": [],
+            "summary": "退出后再次进入前五"
+          }
+        },
+        {
+          "code": "605168",
+          "name": "三人行",
+          "sector": "广告营销",
+          "rank": 5,
+          "score": 56,
+          "price": 55.76,
+          "change_pct": 5.13,
+          "market_time": "2026-09-22T14:38:00+08:00",
+          "in_candidate_pool": false,
+          "in_score_pool": false,
+          "data_confidence": {
+            "score": 100,
+            "max": 100,
+            "level": "高",
+            "components": [
+              {
+                "key": "quote",
+                "label": "行情时间与报价",
+                "score": 15,
+                "max": 15,
+                "detail": "可核验"
+              },
+              {
+                "key": "daily",
+                "label": "当日日K",
+                "score": 25,
+                "max": 25,
+                "detail": "日期一致且不少于21根"
+              },
+              {
+                "key": "minute",
+                "label": "当日分钟线",
+                "score": 20,
+                "max": 20,
+                "detail": "可用218根"
+              },
+              {
+                "key": "sector",
+                "label": "板块数据",
+                "score": 20,
+                "max": 20,
+                "detail": "板块归属与上一快照均可用"
+              },
+              {
+                "key": "announcement",
+                "label": "公告数据",
+                "score": 20,
+                "max": 20,
+                "detail": "已由巨潮资讯正式公告核验"
+              }
+            ],
+            "issues": [],
+            "completeness_score": 100,
+            "source_quality_score": 100,
+            "source_quality": {
+              "score": 100,
+              "status": "来源质量正常",
+              "issues": [],
+              "fallback": false,
+              "max_latency_seconds": 0.0,
+              "alignment_seconds": 0.0
+            },
+            "source_weight": 0.3
+          },
+          "modules": {
+            "A": {
+              "label": "当日量价",
+              "score": 12,
+              "max": 20,
+              "state": "通过"
+            },
+            "B": {
+              "label": "尾盘动能",
+              "score": 6,
+              "max": 15,
+              "state": "不通过"
+            },
+            "C": {
+              "label": "隔夜质量",
+              "score": 6,
+              "max": 15,
+              "state": "不通过"
+            },
+            "D": {
+              "label": "板块持续",
+              "score": 19,
+              "max": 20,
+              "state": "通过"
+            },
+            "E": {
+              "label": "公告催化",
+              "score": 5,
+              "max": 10,
+              "state": "数据不足"
+            },
+            "G": {
+              "label": "反转风险",
+              "score": 8,
+              "max": 20,
+              "state": "不通过"
+            }
+          },
+          "plan": {
+            "feasible": false,
+            "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+            "hold_above": 55.34,
+            "breakout": 57.0,
+            "no_chase_above": 56.88,
+            "invalid_below": 54.21
+          },
+          "channels": {
+            "ordinary": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 32,
+              "max": 70,
+              "normalized_score": 45.7,
+              "required_modules": [
+                "A",
+                "B",
+                "C",
+                "G"
+              ],
+              "reasons": [
+                "触发反转风险",
+                "买点区间不可执行",
+                "必过模块未通过：B、C、G"
+              ],
+              "holding": "尾盘确认，次日早盘按条件退出"
+            },
+            "hot": {
+              "qualified": false,
+              "actionable_now": false,
+              "score": 39,
+              "max": 60,
+              "normalized_score": 65.0,
+              "required_modules": [
+                "A",
+                "D",
+                "G"
+              ],
+              "reasons": [
+                "触发反转风险",
+                "买点区间不可执行",
+                "必过模块未通过：G"
+              ],
+              "holding": "计划2–5个交易日，退潮或失效提前退出"
+            }
+          },
+          "first_seen": {
+            "slot": "10:10",
+            "generated_at": "2026-09-22T10:10:40+08:00",
+            "price": 55.54
+          },
+          "change": {
+            "type": "DOWN",
+            "rank_delta": -2,
+            "score_delta": -5,
+            "module_deltas": [
+              {
+                "key": "A",
+                "label": "当日量价",
+                "delta": -2
+              },
+              {
+                "key": "B",
+                "label": "尾盘动能",
+                "delta": 3
+              },
+              {
+                "key": "C",
+                "label": "隔夜质量",
+                "delta": -6
+              }
+            ],
+            "summary": "排名下降2位，总分减少5分，主要来自C 隔夜质量 -6分"
+          }
+        }
+      ],
+      "exited": [
+        {
+          "code": "002400",
+          "name": "省广集团",
+          "previous_rank": 2
+        },
+        {
+          "code": "003005",
+          "name": "竞业达",
+          "previous_rank": 4
+        },
+        {
+          "code": "002439",
+          "name": "启明星辰",
+          "previous_rank": 5
+        }
+      ]
     }
   ]
 }
