@@ -81,7 +81,7 @@ function renderSectors(data) {
   if (data.status !== "SUCCESS" || !data.sectors?.length) { panel.innerHTML = ""; return; }
   const strong = data.sectors.filter(item => item.strong).slice(0, 8);
   if (!strong.length) { panel.innerHTML = `<div class="sector-pill"><strong>无确认强板块</strong><span>等待下一节点</span></div>`; return; }
-  panel.innerHTML = strong.map(item => `<div class="sector-pill"><strong>${item.confirmed ? '<i class="confirmed-dot"></i>' : ""}${escapeHtml(item.sector)}</strong><span>相对强度 ${item.relative_strength > 0 ? "+" : ""}${item.relative_strength.toFixed(2)}｜上涨 ${(item.breadth * 100).toFixed(0)}%</span></div>`).join("");
+  panel.innerHTML = strong.map(item => `<div class="sector-pill"><strong>${item.confirmed_intraday ? '<i class="confirmed-dot"></i>' : ""}${escapeHtml(item.sector)}</strong><span>相对强度 ${item.relative_strength > 0 ? "+" : ""}${item.relative_strength.toFixed(2)}｜上涨 ${(item.breadth * 100).toFixed(0)}%｜盘中连续 ${Number(item.snapshot_streak || 1)} 节点｜跨日 ${Number(item.strong_trade_days || 1)} 天</span></div>`).join("");
 }
 
 function renderLeaderBoard(data) {
@@ -239,10 +239,12 @@ function renderAI(data) {
 
 function channelBadge(candidate, key, label) {
   const channel = candidate.channels[key];
-  const cls = channel.actionable_now ? "ready" : channel.qualified ? "wait" : "closed";
-  const state = channel.actionable_now ? "条件就绪" : channel.qualified ? "等待窗口" : "未通过";
+  const labels = {TRIGGERED:"价格已触发", WAIT_TRIGGER:"等待价格触发", WINDOW_CLOSED:"等待执行窗口", DATA_STALE:"数据新鲜度不足", UNQUALIFIED:"未通过"};
+  const cls = channel.action_state === "TRIGGERED" ? "ready" : channel.qualified && channel.action_state !== "DATA_STALE" ? "wait" : "closed";
+  const state = labels[channel.action_state] || (channel.actionable_now ? "价格已触发" : channel.qualified ? "等待确认" : "未通过");
   const score = Number.isFinite(channel.normalized_score) ? ` · ${channel.normalized_score.toFixed(0)}` : "";
-  const reason = channel.reasons?.length ? ` title="${escapeHtml(channel.reasons.join("；"))}"` : "";
+  const reasons = [...(channel.reasons || []), ...(candidate.execution_data?.reasons || [])];
+  const reason = reasons.length ? ` title="${escapeHtml(reasons.join("；"))}"` : ` title="${escapeHtml(channel.action_message || "")}"`;
   return `<span class="badge ${cls}"${reason}>${label} · ${state}${score}</span>`;
 }
 
@@ -250,7 +252,7 @@ function candidateCard(item) {
   const modules = item.modules.map(module => `<div class="module ${stateClass(module.state)}" title="${escapeHtml(module.state)}"><span class="module-key">${module.key}</span><span class="module-score">${module.score}/${module.max}</span></div>`).join("");
   const evidence = item.modules.map(module => `<div class="evidence-item"><strong>${module.key} ${escapeHtml(module.label)} · ${module.state} · ${module.score}/${module.max}</strong><p>${module.evidence.map(escapeHtml).join("；")}</p></div>`).join("");
   const risks = item.risks?.length ? `<span class="badge closed">风险：${escapeHtml(item.risks.join("、"))}</span>` : "";
-  const planState = item.plan.feasible ? "" : `<span class="badge wait">买点未确认</span>`;
+  const planState = item.plan.triggered_now ? `<span class="badge ready">突破已确认</span>` : item.plan.feasible ? `<span class="badge wait">等待突破确认</span>` : `<span class="badge closed">无可执行区间</span>`;
   const inScorePool = item.in_score_pool ?? item.in_candidate_pool ?? Number(item.score) >= 60;
   const poolBadge = inScorePool ? `<span class="badge ready">评分观察池</span>` : `<span class="badge closed">未进入观察池</span>`;
   const confidence = item.data_confidence || {};
@@ -311,7 +313,7 @@ function renderMethod(data) {
   const tdxStatus = !tdx ? "尚无检测结果" : tdx.status === "CONNECTED" ? `${tdx.mode === "shadow" ? "影子验证已连接" : "主源已连接"}${Number.isFinite(tdx.quote_match_ratio) ? `，报价一致率 ${(tdx.quote_match_ratio * 100).toFixed(1)}%` : ""}` : `${tdx.message || tdx.status}`;
   const sourceTrace = trace.quote_sources ? `全市场行情源 ${escapeHtml(JSON.stringify(trace.universe_quote_sources || {}))}；评分行情源 ${escapeHtml(JSON.stringify(trace.quote_sources))}；行情时间 ${escapeHtml(fmtTime(trace.quote_provider_time_max))}；报价最大延迟 ${Number.isFinite(trace.quote_latency_seconds_max) ? `${trace.quote_latency_seconds_max.toFixed(1)}秒` : "未知"}；详细数据源 ${escapeHtml(JSON.stringify(trace.detail_sources || {}))}` : "尚无字段级来源追踪";
   const detailFlow = `全市场 ${prefilter.input ?? "—"} → 预筛选 ${prefilter.passed ?? "—"} → 详细评分 ${expansion.final_limit ?? data.diagnostics?.details_requested ?? "—"}（${expansion.expanded ? `已扩展，${(expansion.steps || []).join("→")}` : "初始范围"}）→ 展示前5`;
-  $("#method-panel").innerHTML = `<strong>四层边界：</strong>评分榜是完整评分前5；观察池是总分达到60分；通道合格要求对应必过模块、风险和买点结构通过；当前可执行还要求处于执行窗口。四层结果分别展示，评分榜不等于推荐。<br><strong>筛选范围：</strong>${detailFlow}。<br><strong>本次统计：</strong>观察池 ${layers.score_pool_count ?? "—"}只；普通隔夜合格 ${layers.ordinary_qualified_count ?? ordinary?.qualified_count ?? 0}只；热点波段合格 ${layers.hot_qualified_count ?? hot?.qualified_count ?? 0}只；当前可执行 ${Number(layers.ordinary_actionable_count || 0) + Number(layers.hot_actionable_count || 0)}个通道机会。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>TdxAiData：</strong>${escapeHtml(tdxStatus)}。<br><strong>字段级来源：</strong>${sourceTrace}。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
+  $("#method-panel").innerHTML = `<strong>四层边界：</strong>评分榜是完整评分前5；观察池是总分达到60分；通道合格要求对应必过模块、风险和买点结构通过；当前可执行还要求价格已触发、行情新鲜且处于执行窗口。四层结果分别展示，评分榜不等于推荐。<br><strong>筛选范围：</strong>${detailFlow}。<br><strong>本次统计：</strong>观察池 ${layers.score_pool_count ?? "—"}只；普通隔夜合格 ${layers.ordinary_qualified_count ?? ordinary?.qualified_count ?? 0}只；热点波段合格 ${layers.hot_qualified_count ?? hot?.qualified_count ?? 0}只；当前可执行 ${Number(layers.ordinary_actionable_count || 0) + Number(layers.hot_actionable_count || 0)}个通道机会。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>TdxAiData：</strong>${escapeHtml(tdxStatus)}。<br><strong>字段级来源：</strong>${sourceTrace}。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
 }
 
 function render(data) {

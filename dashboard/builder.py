@@ -159,6 +159,8 @@ def previous_close_snapshot(
         for candidate in result.get(collection) or []:
             for channel in (candidate.get("channels") or {}).values():
                 channel["actionable_now"] = False
+                channel["action_state"] = "WINDOW_CLOSED"
+                channel["action_message"] = "当前仅展示上一交易日收盘"
     result.setdefault("leader_board", {
         "status": "NOT_AVAILABLE",
         "sectors": [],
@@ -207,7 +209,7 @@ def build(
             "automation_status": cfg["automation_status"],
             "parameter_set_id": cfg.get("parameter_set_id"),
             "weights": cfg["weights"],
-            "note": "模块权重来自生效策略；通道资格已按必过模块独立判定，精确数值阈值继续作为前向验证参数。",
+            "note": "V2.3.0规则已部署并进入前向验证；模块权重不变，精确阈值不因早期结果自动调整。",
         },
         "market": None,
         "indices": [],
@@ -264,7 +266,10 @@ def build(
         if len(rows) < cfg["universe"]["minimum_market_rows"]:
             raise RuntimeError(f"主板有效行情仅 {len(rows)} 行")
 
-        summary, sector_bundle = market_summary(rows, previous, cfg)
+        continuity_snapshot = previous
+        if (previous or {}).get("status") != "SUCCESS":
+            continuity_snapshot = latest_successful_snapshot(previous, history_dir)
+        summary, sector_bundle = market_summary(rows, continuity_snapshot, cfg)
         leader_board = build_leader_board(rows, sector_bundle["items"], cfg)
         pool_rows, funnel = prefilter(rows, sector_bundle["items"], cfg)
         expansion_cfg = cfg.get("detail_expansion") or {}
@@ -479,7 +484,7 @@ def build(
                         "ranking": "完整评分中的总分前五",
                         "score_pool": "总分达到60分的观察池",
                         "qualified": "对应通道必过模块、风险和买点结构均通过",
-                        "actionable": "通道合格且当前处于执行窗口",
+                        "actionable": "通道合格、价格已触发、行情新鲜且当前处于执行窗口",
                     },
                 },
                 "diagnostics": {
@@ -490,6 +495,19 @@ def build(
                         "sector_count": len(leader_board.get("sectors") or []),
                         "require_confirmed": leader_board.get("require_confirmed"),
                     },
+                    "sector_continuity": [
+                        {
+                            "sector": item.get("sector"),
+                            "strong": item.get("strong"),
+                            "snapshot_streak": item.get("snapshot_streak"),
+                            "strong_trade_days": item.get("strong_trade_days"),
+                            "confirmed_intraday": item.get("confirmed_intraday"),
+                            "confirmed_swing": item.get("confirmed_swing"),
+                            "median_pct": item.get("median_pct"),
+                            "last_trade_date": item.get("last_trade_date"),
+                        }
+                        for item in sector_bundle["items"].values()
+                    ],
                     "details_requested": len(target_rows),
                     "details_succeeded": len(details),
                     "detail_errors": detail_errors[:10],

@@ -251,6 +251,10 @@ def record_research_snapshot(
                 "ordinary": [item.get("code") for item in full_scores if item.get("channels", {}).get("ordinary", {}).get("qualified")],
                 "hot": [item.get("code") for item in full_scores if item.get("channels", {}).get("hot", {}).get("qualified")],
             },
+            "actionable_codes": {
+                "ordinary": [item.get("code") for item in full_scores if item.get("channels", {}).get("ordinary", {}).get("actionable_now")],
+                "hot": [item.get("code") for item in full_scores if item.get("channels", {}).get("hot", {}).get("actionable_now")],
+            },
             "signals": [
                 _compact_signal(item, trade_date, generated_at, (snapshot.get("phase") or {}).get("code", ""))
                 for item in full_scores

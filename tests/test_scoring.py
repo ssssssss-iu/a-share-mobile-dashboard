@@ -3,7 +3,7 @@ import unittest
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from dashboard.scoring import build_leader_board, market_summary, score_candidate
+from dashboard.scoring import build_leader_board, market_summary, score_candidate, technical_features
 
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -214,6 +214,56 @@ class ScoringTests(unittest.TestCase):
         previous = {"generated_at": "2026-09-15T10:25:00+08:00", "sectors": current["public"]}
         _, confirmed = market_summary(rows, previous, config())
         self.assertTrue(confirmed["items"]["测试行业"]["confirmed"])
+
+    def test_cross_day_sector_continuity_is_required_for_hot_channel(self):
+        rows = [
+            {"code": f"600{index:03d}", "name": "样本", "change_pct": 2.5, "amount": 300_000_000, "industry": "测试行业", "market_time": "2026-09-21T10:30:00+08:00"}
+            for index in range(10)
+        ]
+        rows.extend(
+            {"code": f"601{index:03d}", "name": "对照", "change_pct": -2.0, "amount": 200_000_000, "industry": "弱势行业", "market_time": "2026-09-21T10:30:00+08:00"}
+            for index in range(10)
+        )
+        previous = {
+            "trade_date": "2026-09-18",
+            "generated_at": "2026-09-18T15:05:00+08:00",
+            "diagnostics": {"sector_continuity": [{"sector": "测试行业", "strong": True, "snapshot_streak": 4, "strong_trade_days": 1, "last_trade_date": "2026-09-18"}]},
+        }
+        _, current = market_summary(rows, previous, config())
+        item = current["items"]["测试行业"]
+        self.assertTrue(item["confirmed_swing"])
+        self.assertFalse(item["confirmed_intraday"])
+        self.assertEqual(item["snapshot_streak"], 1)
+        self.assertEqual(item["strong_trade_days"], 2)
+
+    def test_current_execution_requires_price_trigger(self):
+        waiting_quote = quote()
+        waiting_quote.update({"price": 10.8, "high": 10.9, "change_pct": 2.1})
+        result = score_candidate(waiting_quote, detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertTrue(result["channels"]["hot"]["qualified"])
+        self.assertFalse(result["channels"]["hot"]["actionable_now"])
+        self.assertEqual(result["channels"]["hot"]["action_state"], "WAIT_TRIGGER")
+
+    def test_stale_quote_blocks_execution_without_removing_qualification(self):
+        stale_quote = quote()
+        stale_quote["market_time"] = "2026-09-15T14:00:00+08:00"
+        result = score_candidate(stale_quote, detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertTrue(result["channels"]["hot"]["qualified"])
+        self.assertFalse(result["channels"]["hot"]["actionable_now"])
+        self.assertEqual(result["channels"]["hot"]["action_state"], "DATA_STALE")
+
+    def test_intraday_volume_prefers_same_time_history(self):
+        sample = detail()
+        current = []
+        previous = []
+        for index in range(30):
+            minute = 30 + index
+            current.append({"time": f"2026-09-15T09:{minute:02d}:00+08:00", "open": 10, "close": 10, "high": 10.1, "low": 9.9, "volume": 200})
+            previous.append({"time": f"2026-09-14T09:{minute:02d}:00+08:00", "open": 10, "close": 10, "high": 10.1, "low": 9.9, "volume": 100})
+        sample["minute"] = previous + current
+        features = technical_features(quote(), sample, "2026-09-15")
+        self.assertEqual(features["volume_ratio_method"], "same_time_minutes")
+        self.assertAlmostEqual(features["volume_ratio"], 2.0)
 
 
 if __name__ == "__main__":

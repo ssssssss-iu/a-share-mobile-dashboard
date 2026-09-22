@@ -1,9 +1,9 @@
 {
   "strategy_id": "a-share-tail-hot-v2",
-  "strategy_version": "2.2.0",
-  "automation_profile": "static-scoring-candidate-0.3",
-  "parameter_set_id": "rules-20260918-p1",
-  "automation_status": "trial_not_active_strategy",
+  "strategy_version": "2.3.0",
+  "automation_profile": "static-scoring-candidate-0.4",
+  "parameter_set_id": "rules-20260922-p2",
+  "automation_status": "active_forward_validation",
   "timezone": "Asia/Shanghai",
   "weights": {"A": 20, "B": 15, "C": 15, "D": 20, "E": 10, "G": 20},
   "levels": {"strong": 80, "watch": 70, "weak": 60},
@@ -32,6 +32,13 @@
     "sector_members_min": 5,
     "sector_rs_min": 0.5,
     "sector_breadth_min": 0.60
+  },
+  "execution": {
+    "max_quote_age_seconds": 180,
+    "max_minute_age_seconds": 360,
+    "max_quote_minute_alignment_seconds": 180,
+    "minimum_intraday_progress": 0.15,
+    "require_price_trigger": true
   },
   "leader_board": {
     "enabled": true,
@@ -69,6 +76,8 @@
   },
   "research": {
     "keep_days": 30,
+    "minimum_unique_stock_days": 100,
+    "round_trip_cost_bps": 20,
     "labels": ["forward_30m", "same_close", "next_open", "next_1000", "next_close", "day3_close", "day5_close", "mfe_5d", "mae_5d"]
   },
   "data_sources": {

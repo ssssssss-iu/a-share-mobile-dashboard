@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from datetime import datetime
+from datetime import datetime, timedelta
 from statistics import mean, median
 
 from .data import TZ, number
@@ -35,6 +35,68 @@ def _avg(values):
 
 def _round(value, digits=2):
     return round(float(value), digits) if number(value) is not None else None
+
+
+def trading_progress(timestamp) -> float:
+    """Return the completed fraction of the 240-minute A-share session."""
+    parsed = parse_timestamp(timestamp)
+    if not parsed:
+        return 0.0
+    minute = parsed.hour * 60 + parsed.minute
+    if minute < 9 * 60 + 30:
+        elapsed = 0
+    elif minute <= 11 * 60 + 30:
+        elapsed = minute - (9 * 60 + 30)
+    elif minute < 13 * 60:
+        elapsed = 120
+    elif minute <= 15 * 60:
+        elapsed = 120 + minute - 13 * 60
+    else:
+        elapsed = 240
+    return clamp(elapsed / 240, 0, 1)
+
+
+def _weekday_gap(start_date: str | None, end_date: str | None) -> int | None:
+    try:
+        cursor = datetime.fromisoformat(str(start_date)).date()
+        end = datetime.fromisoformat(str(end_date)).date()
+    except (TypeError, ValueError):
+        return None
+    count = 0
+    while cursor < end:
+        cursor += timedelta(days=1)
+        if cursor.weekday() < 5:
+            count += 1
+    return count
+
+
+def _same_time_volume_ratio(minutes: list[dict], trade_date: str) -> tuple[float | None, int]:
+    today = sorted((row for row in minutes if str(row.get("time", ""))[:10] == trade_date), key=lambda row: row["time"])
+    if not today:
+        return None, 0
+    latest = parse_timestamp(today[-1].get("time"))
+    if not latest:
+        return None, 0
+    cutoff = (latest.hour, latest.minute)
+    expected_bars = max(1, round(trading_progress(latest) * 240))
+    if len(today) < max(10, round(expected_bars * 0.8)):
+        return None, 0
+    today_volume = sum(number(row.get("volume")) or 0 for row in today)
+    prior_by_date = {}
+    for row in minutes:
+        stamp = parse_timestamp(row.get("time"))
+        if not stamp or stamp.date().isoformat() == trade_date or (stamp.hour, stamp.minute) > cutoff:
+            continue
+        prior_by_date.setdefault(stamp.date().isoformat(), []).append(row)
+    comparable = []
+    for rows in prior_by_date.values():
+        if len(rows) < max(10, round(expected_bars * 0.8)):
+            continue
+        comparable.append(sum(number(row.get("volume")) or 0 for row in rows))
+    baseline = _avg(comparable)
+    if not baseline:
+        return None, 0
+    return today_volume / baseline, len(comparable)
 
 
 def market_summary(rows: list[dict], previous: dict | None, cfg: dict) -> tuple[dict, dict]:
@@ -79,8 +141,10 @@ def market_summary(rows: list[dict], previous: dict | None, cfg: dict) -> tuple[
         current_sectors[sector] = item
         sector_amounts.append(amount)
 
-    previous_map = {item["sector"]: item for item in ((previous or {}).get("sectors") or [])}
+    previous_state = ((previous or {}).get("diagnostics") or {}).get("sector_continuity") or []
+    previous_map = {item["sector"]: item for item in (previous_state or (previous or {}).get("sectors") or [])}
     previous_time = (previous or {}).get("generated_at")
+    current_trade_date = max((str(row.get("market_time"))[:10] for row in valid if row.get("market_time")), default=None)
     continuity_available = False
     if previous_time:
         try:
@@ -89,14 +153,37 @@ def market_summary(rows: list[dict], previous: dict | None, cfg: dict) -> tuple[
                 default=datetime.now(TZ),
             )
             age = current_time - datetime.fromisoformat(previous_time)
-            continuity_available = 0 <= age.total_seconds() <= 4 * 86400
+            continuity_available = 0 <= age.total_seconds() <= 14 * 86400
         except ValueError:
             pass
     for sector, item in current_sectors.items():
         prior = previous_map.get(sector) if continuity_available else None
+        prior_trade_date = (prior or {}).get("last_trade_date") or (previous or {}).get("trade_date")
+        prior_strong = bool(prior and prior.get("strong"))
+        same_trade_date = bool(prior_trade_date and current_trade_date and prior_trade_date == current_trade_date)
+        adjacent_trade_day = _weekday_gap(prior_trade_date, current_trade_date) == 1
+        snapshot_streak = (
+            int((prior or {}).get("snapshot_streak") or 0) + 1
+            if item["strong"] and prior_strong and same_trade_date
+            else 1 if item["strong"] else 0
+        )
+        prior_days = int((prior or {}).get("strong_trade_days") or (1 if prior_strong else 0))
+        if not item["strong"]:
+            strong_trade_days = 0
+        elif prior_strong and prior_trade_date == current_trade_date:
+            strong_trade_days = max(1, prior_days)
+        elif prior_strong and adjacent_trade_day:
+            strong_trade_days = max(1, prior_days) + 1
+        else:
+            strong_trade_days = 1
         item["continuity_available"] = continuity_available
-        item["previous_strong"] = bool(prior and prior.get("strong"))
-        item["confirmed"] = bool(item["strong"] and item["previous_strong"])
+        item["previous_strong"] = prior_strong
+        item["snapshot_streak"] = snapshot_streak
+        item["strong_trade_days"] = strong_trade_days
+        item["confirmed_intraday"] = bool(item["strong"] and snapshot_streak >= 2)
+        item["confirmed_swing"] = bool(item["strong"] and strong_trade_days >= 2)
+        item["confirmed"] = item["confirmed_intraday"]
+        item["last_trade_date"] = current_trade_date
         item["previous_median_pct"] = prior.get("median_pct") if prior else None
         if sector_amounts:
             item["amount_percentile"] = sum(value <= item["amount"] for value in sector_amounts) / len(sector_amounts)
@@ -280,7 +367,9 @@ def prefilter(rows: list[dict], sectors: dict, cfg: dict) -> tuple[list[dict], d
         if any(number(value) is None for value in required) or row["price"] <= 0 or row["amount"] <= 0:
             counters["invalid_quote"] += 1
             continue
-        if row["amount"] < limits["minimum_amount"] or row["turnover_rate"] < limits["minimum_turnover_rate"]:
+        progress_floor = float((cfg.get("execution") or {}).get("minimum_intraday_progress", 0.15))
+        amount_threshold = limits["minimum_amount"] * max(progress_floor, trading_progress(row.get("market_time")))
+        if row["amount"] < amount_threshold or row["turnover_rate"] < limits["minimum_turnover_rate"]:
             counters["liquidity"] += 1
             continue
         if not limits["minimum_daily_change_pct"] <= row["change_pct"] <= limits["maximum_daily_change_pct"]:
@@ -312,7 +401,7 @@ def technical_features(quote: dict, detail: dict, trade_date: str) -> dict:
     ma10 = mean(close[-10:])
     ma20 = mean(close[-20:])
     prior_vol5 = _avg(volume[-6:-1])
-    volume_ratio = volume[-1] / prior_vol5 if prior_vol5 else None
+    raw_volume_ratio = volume[-1] / prior_vol5 if prior_vol5 else None
     high20_prior = max(row["high"] for row in daily[-21:-1])
     true_ranges = []
     for index in range(len(daily) - 20, len(daily)):
@@ -335,7 +424,13 @@ def technical_features(quote: dict, detail: dict, trade_date: str) -> dict:
     intraday_strength = (price - low) / day_range if day_range else 0.5
     upper_shadow = (high - max(open_price, price)) / day_range if day_range else 0
 
-    today_minutes = [row for row in detail.get("minute", []) if row.get("time", "")[:10] == trade_date]
+    all_minutes = detail.get("minute", [])
+    today_minutes = [row for row in all_minutes if row.get("time", "")[:10] == trade_date]
+    same_time_ratio, same_time_days = _same_time_volume_ratio(all_minutes, trade_date)
+    progress = trading_progress(today_minutes[-1].get("time") if today_minutes else quote.get("market_time"))
+    projected_ratio = raw_volume_ratio / max(progress, 0.15) if raw_volume_ratio is not None else None
+    volume_ratio = same_time_ratio if same_time_ratio is not None else projected_ratio
+    volume_ratio_method = "same_time_minutes" if same_time_ratio is not None else "progress_projection" if projected_ratio is not None else "unavailable"
     tail = today_minutes[-30:]
     intraday_vwap = None
     if today_minutes:
@@ -371,6 +466,10 @@ def technical_features(quote: dict, detail: dict, trade_date: str) -> dict:
         "ma20": ma20,
         "distance_ma5_pct": pct(price, ma5),
         "volume_ratio": volume_ratio,
+        "raw_volume_ratio": raw_volume_ratio,
+        "volume_ratio_method": volume_ratio_method,
+        "same_time_volume_days": same_time_days,
+        "trading_progress": progress,
         "red_green_body_ratio": red_green_ratio,
         "limit_up_history_60d": limit_up_history,
         "high20_prior": high20_prior,
@@ -414,7 +513,8 @@ def score_a(q, f, cfg):
         healthy_min = cfg["scoring"]["volume_ratio_healthy_min"]
         healthy_max = cfg["scoring"]["volume_ratio_healthy_max"]
         score += 4 if healthy_min <= vr <= healthy_max else 2 if 0.9 <= vr <= 3.5 else 0
-        evidence.append(f"量比(对近5日) {vr:.2f}")
+        method = "历史同刻分钟量" if f.get("volume_ratio_method") == "same_time_minutes" else "按交易进度折算"
+        evidence.append(f"盘中量比 {vr:.2f}（{method}）")
     rg = f["red_green_body_ratio"]
     score += 4 if rg >= cfg["scoring"]["red_green_body_ratio_pass"] else 2 if rg >= 1 else 0
     evidence.append(f"近20日阳/阴实体比 {rg:.2f}，60日涨停 {f['limit_up_history_60d']} 次")
@@ -483,12 +583,17 @@ def score_d(sector, cfg):
     score += 1 if sector["median_pct"] > 0 else 0
     evidence.append(f"板块中位涨幅 {sector['median_pct']:+.2f}%｜相对全市场 {rs:+.2f}pct")
     evidence.append(f"上涨占比 {breadth:.0%}｜涨停 {zt}｜样本 {sector['members']}")
-    if not sector.get("previous_strong"):
-        evidence.append("缺少上一有效快照的连续强势确认")
+    swing_confirmed = sector.get("confirmed_swing", sector.get("confirmed", False))
+    if not swing_confirmed:
+        evidence.append(
+            f"盘中连续 {int(sector.get('snapshot_streak') or 1)} 个节点｜跨日强势 {int(sector.get('strong_trade_days') or 1)} 个交易日，尚未达到热点波段确认"
+        )
         return _module("D", min(score, 10), "数据不足", evidence)
     score += 3
-    evidence.append("当前与上一有效快照均为强板块")
-    state = "通过" if score >= cfg["scoring"]["d_pass"] and sector.get("confirmed") else "不通过"
+    evidence.append(
+        f"盘中连续 {int(sector.get('snapshot_streak') or 0)} 个节点｜跨日强势 {int(sector.get('strong_trade_days') or 0)} 个交易日"
+    )
+    state = "通过" if score >= cfg["scoring"]["d_pass"] and swing_confirmed else "不通过"
     return _module("D", score, state, evidence)
 
 
@@ -724,6 +829,57 @@ def _channel_result(keys, module_map, hard_ok, extra_gate, phase_open, qualify_p
     }
 
 
+def execution_data_status(q, f, detail, evaluation_time, cfg) -> dict:
+    limits = cfg.get("execution") or {}
+    quote_time = parse_timestamp(q.get("market_time"))
+    provenance = detail.get("provenance") or {}
+    minute_time = parse_timestamp(provenance.get("minute_provider_time"))
+    if minute_time is None:
+        parsed_minutes = [parse_timestamp(row.get("time")) for row in detail.get("minute", [])]
+        minute_time = max((stamp for stamp in parsed_minutes if stamp), default=None)
+    reasons = []
+
+    def age_seconds(stamp):
+        return max(0.0, (evaluation_time - stamp.astimezone(evaluation_time.tzinfo)).total_seconds()) if stamp else None
+
+    quote_age = age_seconds(quote_time)
+    minute_age = age_seconds(minute_time)
+    alignment = abs((quote_time - minute_time).total_seconds()) if quote_time and minute_time else None
+    if quote_age is None:
+        reasons.append("报价时间不可核验")
+    elif quote_age > float(limits.get("max_quote_age_seconds", 180)):
+        reasons.append(f"报价延迟 {quote_age:.0f} 秒")
+    if minute_age is None:
+        reasons.append("分钟线时间不可核验")
+    elif minute_age > float(limits.get("max_minute_age_seconds", 360)):
+        reasons.append(f"分钟线延迟 {minute_age:.0f} 秒")
+    if alignment is not None and alignment > float(limits.get("max_quote_minute_alignment_seconds", 180)):
+        reasons.append(f"报价与分钟线相差 {alignment:.0f} 秒")
+    return {
+        "ready": not reasons,
+        "reasons": reasons,
+        "quote_age_seconds": _round(quote_age, 1),
+        "minute_age_seconds": _round(minute_age, 1),
+        "alignment_seconds": _round(alignment, 1),
+    }
+
+
+def finalize_action_state(channel: dict, phase_open: bool, triggered: bool, data_status: dict) -> None:
+    if not channel["qualified"]:
+        state, message = "UNQUALIFIED", "通道条件未通过"
+    elif not phase_open:
+        state, message = "WINDOW_CLOSED", "通道合格，等待执行窗口"
+    elif not data_status["ready"]:
+        state, message = "DATA_STALE", "通道合格，但行情新鲜度不足"
+    elif not triggered:
+        state, message = "WAIT_TRIGGER", "通道合格，价格尚未确认突破"
+    else:
+        state, message = "TRIGGERED", "通道合格，价格、窗口和数据均已确认"
+    channel["action_state"] = state
+    channel["action_message"] = message
+    channel["actionable_now"] = state == "TRIGGERED"
+
+
 def score_candidate(
     quote,
     detail,
@@ -760,12 +916,23 @@ def score_candidate(
     module_map = {item["key"]: item for item in modules}
     phase = phase_at(evaluation_time)
     support = max(features.get("ma5") or 0, (features.get("intraday_vwap_approx") or 0))
-    high = quote.get("high") or quote["price"]
     atr = features.get("atr20") or quote["price"] * 0.02
-    trigger = max(features.get("high20_prior") or 0, high) + 0.01
+    breakout_reference = features.get("high20_prior") or 0
+    trigger = breakout_reference + 0.01
     invalid = max(0.01, min(support if support else quote["price"], quote["price"] - 0.5 * atr) - 0.01)
     no_chase = min((quote.get("previous_close") or quote["price"]) * 1.10 - 0.02, quote["price"] * 1.02)
     plan_feasible = trigger <= no_chase and invalid < trigger
+    trigger_required = bool((cfg.get("execution") or {}).get("require_price_trigger", True))
+    triggered_now = bool(
+        not trigger_required
+        or (
+            plan_feasible
+            and quote["price"] >= trigger
+            and quote["price"] <= no_chase
+            and (not support or quote["price"] >= support)
+        )
+    )
+    execution_data = execution_data_status(quote, features, detail, evaluation_time, cfg)
     hard_ok = features.get("complete") and not risks and plan_feasible
     qualify_pct = cfg["scoring"].get("channel_qualify_pct", 60)
     common_reasons = []
@@ -796,6 +963,8 @@ def score_candidate(
         phase["hot_open"], qualify_pct, hot_reasons,
     )
     hot["holding"] = "计划2–5个交易日，退潮或失效提前退出"
+    finalize_action_state(ordinary, phase["ordinary_open"], triggered_now, execution_data)
+    finalize_action_state(hot, phase["hot_open"], triggered_now, execution_data)
     confidence = data_confidence(
         quote, features, sector, announcement_error, announcement_checked, announcement_source, cfg=cfg, detail=detail
     )
@@ -832,15 +1001,22 @@ def score_candidate(
         "channels": {"ordinary": ordinary, "hot": hot},
         "plan": {
             "feasible": plan_feasible,
-            "message": "存在可观察的触发区间" if plan_feasible else "突破确认价高于不追价，当前没有可执行跟随区间",
+            "triggered_now": triggered_now,
+            "trigger_status": "TRIGGERED" if triggered_now else "WAIT_TRIGGER" if plan_feasible else "NO_FEASIBLE_RANGE",
+            "message": "价格已经确认突破且未超过不追价" if triggered_now else "存在可观察的触发区间，等待价格确认" if plan_feasible else "突破确认价高于不追价，当前没有可执行跟随区间",
             "hold_above": _round(support),
+            "breakout_reference": _round(breakout_reference),
             "breakout": _round(trigger),
             "no_chase_above": _round(no_chase),
             "invalid_below": _round(invalid),
         },
+        "execution_data": execution_data,
         "features": {
             "return_5d": _round(features.get("return_5d")),
             "volume_ratio": _round(features.get("volume_ratio")),
+            "raw_volume_ratio": _round(features.get("raw_volume_ratio")),
+            "volume_ratio_method": features.get("volume_ratio_method"),
+            "trading_progress": _round(features.get("trading_progress"), 4),
             "red_green_body_ratio": _round(features.get("red_green_body_ratio")),
             "limit_up_history_60d": features.get("limit_up_history_60d"),
             "breakout": features.get("breakout"),
