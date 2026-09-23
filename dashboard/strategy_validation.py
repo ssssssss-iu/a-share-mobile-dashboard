@@ -27,13 +27,24 @@ def _observed_return(signal: dict, label_key: str):
 def _metrics(signals: list[dict], label_key: str, round_trip_cost_bps: float) -> dict:
     values = [value for signal in signals if (value := _observed_return(signal, label_key)) is not None]
     cost_pct = round_trip_cost_bps / 100
+    net_values = [value - cost_pct for value in values]
+    wins = [value for value in net_values if value > 0]
+    losses = [value for value in net_values if value < 0]
+    average_win = mean(wins) if wins else None
+    average_loss_abs = abs(mean(losses)) if losses else None
+    payoff_ratio = average_win / average_loss_abs if average_win is not None and average_loss_abs else None
+    profit_factor = sum(wins) / abs(sum(losses)) if wins and losses and sum(losses) else None
     return {
         "label": label_key,
         "observations": len(values),
         "gross_mean_pct": round(mean(values), 4) if values else None,
         "gross_median_pct": round(median(values), 4) if values else None,
-        "win_rate": round(sum(value > cost_pct for value in values) / len(values), 4) if values else None,
-        "net_mean_after_cost_pct": round(mean(values) - cost_pct, 4) if values else None,
+        "win_rate": round(len(wins) / len(net_values), 4) if net_values else None,
+        "average_win_after_cost_pct": round(average_win, 4) if average_win is not None else None,
+        "average_loss_after_cost_pct": round(average_loss_abs, 4) if average_loss_abs is not None else None,
+        "payoff_ratio": round(payoff_ratio, 4) if payoff_ratio is not None else None,
+        "profit_factor": round(profit_factor, 4) if profit_factor is not None else None,
+        "net_mean_after_cost_pct": round(mean(net_values), 4) if net_values else None,
         "round_trip_cost_bps": round_trip_cost_bps,
     }
 

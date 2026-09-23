@@ -55,4 +55,4 @@ GitHub备援任务还必须在计划时间后的8分钟内启动；如果GitHub�
 
 仓库只保存静态看板与公开行情结果。不要把持仓、成本价、交易笔记、SQLite 数据库或任何密钥加入这个公开仓库。
 
-评分规则位于 `config/scoring_candidate.json`。它把已锁定模块权重转成机器可执行条件，具体时效和价格阈值继续作为前向验证参数。运行 `python scripts/validate_strategy.py` 可在终端查看按唯一股票交易日去重、计入成本代理的前向结果；命令不生成报告文件。样本不足时返回 `DATA_INSUFFICIENT`，不得据此调权。
+评分规则位于 `config/scoring_candidate.json`。它把已锁定模块权重转成机器可执行条件，具体时效和价格阈值继续作为前向验证参数。运行 `python scripts/validate_strategy.py` 可在终端查看按唯一股票交易日去重、计入成本代理的胜率、平均盈亏、盈亏比、利润因子和净期望；命令不生成报告文件。样本不足时返回 `DATA_INSUFFICIENT`，不得据此调权。
