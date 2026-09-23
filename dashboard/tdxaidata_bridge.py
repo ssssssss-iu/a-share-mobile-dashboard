@@ -85,8 +85,9 @@ def _run(request: dict) -> dict:
 
         action = request.get("action", "validate")
         daily, minutes, auction = {}, {}, {}
-        if action == "validate":
+        if action in {"validate", "history_probe"}:
             detail_symbols = symbols[: max(1, int(request.get("detail_limit") or 5))]
+            minute_period = str(request.get("minute_period") or "1m")
             daily_raw = tqs.get_market_data(
                 field_list=["Open", "High", "Low", "Close", "Volume", "Amount"],
                 stock_list=detail_symbols,
@@ -98,7 +99,7 @@ def _run(request: dict) -> dict:
             minute_raw = tqs.get_market_data(
                 field_list=["Open", "High", "Low", "Close", "Volume", "Amount"],
                 stock_list=detail_symbols,
-                period="1m",
+                period=minute_period,
                 end_time=str(request.get("trade_date") or ""),
                 count=max(30, int(request.get("minute_count") or 320)),
                 dividend_type="none",
@@ -106,7 +107,7 @@ def _run(request: dict) -> dict:
             daily = _records_from_market_data(daily_raw, detail_symbols)
             minutes = _records_from_market_data(minute_raw, detail_symbols)
             auction_supported = hasattr(tqs, "get_call_auction_batch")
-            if request.get("include_auction") and auction_supported:
+            if action == "validate" and request.get("include_auction") and auction_supported:
                 value = tqs.get_call_auction_batch(
                     detail_symbols,
                     ["Time", "Price", "Volume", "LeaveQty", "InOutFlag", "TotalNum"],
@@ -124,6 +125,7 @@ def _run(request: dict) -> dict:
         "capabilities": {
             "batch_snapshot": batch_snapshot,
             "call_auction": hasattr(tqs, "get_call_auction_batch"),
+            "requested_minute_period": str(request.get("minute_period") or "1m"),
         },
     }
 

@@ -1,0 +1,36 @@
+name: 历史回放数据探测
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "dashboard/tdxaidata_bridge.py"
+      - "scripts/probe_historical_replay.py"
+      - ".github/workflows/historical-replay-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependency
+        run: python -m pip install -r requirements.txt
+
+      - name: Probe three-month intraday history
+        env:
+          TDX_AI_DATA_TOKEN: ${{ secrets.TDX_AI_DATA_TOKEN }}
+        run: python scripts/probe_historical_replay.py
