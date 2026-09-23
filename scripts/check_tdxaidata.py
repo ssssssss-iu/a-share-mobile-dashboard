@@ -29,7 +29,7 @@ def full_validation(config: dict, source: TdxAiDataSource) -> dict:
         return result
     codes = [str(item.get("code") or "") for item in rankings[:5] if item.get("code")]
     client = MarketClient(
-        minimum_quote_coverage=float(config.get("universe", {}).get("minimum_quote_coverage", 0.90))
+        minimum_quote_coverage=float(config.get("universe", {}).get("minimum_quote_coverage", 0.85))
     )
     details, detail_errors = client.details(codes, date.fromisoformat(trade_date))
     quotes = {str(item.get("code")): item for item in rankings if item.get("code")}

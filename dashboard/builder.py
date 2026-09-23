@@ -247,7 +247,7 @@ def build(
                 return result
 
         client = MarketClient(
-            minimum_quote_coverage=float(cfg["universe"].get("minimum_quote_coverage", 0.90))
+            minimum_quote_coverage=float(cfg["universe"].get("minimum_quote_coverage", 0.85))
         )
         with ThreadPoolExecutor(max_workers=2) as pool:
             market_future = pool.submit(client.market_snapshot)

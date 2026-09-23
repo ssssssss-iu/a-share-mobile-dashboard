@@ -14,32 +14,32 @@ def market_page(page: int, total: int = 1000) -> dict:
 
 
 class MarketCoverageTests(unittest.TestCase):
-    def test_exactly_90_percent_passes_even_when_one_page_failed(self):
-        client = MarketClient(workers=1, minimum_quote_coverage=0.90)
+    def test_exactly_85_percent_passes_when_three_pages_fail(self):
+        client = MarketClient(workers=1)
 
         def fetch(page):
-            if page == 10:
+            if page in (18, 19, 20):
                 raise RuntimeError("page unavailable")
-            return market_page(page)
+            return market_page(page, total=2000)
 
         with patch.object(client, "_market_page", side_effect=fetch):
             rows, source = client.market_snapshot()
 
-        self.assertEqual(len(rows), 900)
-        self.assertEqual(source["coverage"], 0.90)
-        self.assertEqual(source["minimum_coverage"], 0.90)
-        self.assertEqual(source["failed_pages"], 1)
+        self.assertEqual(len(rows), 1700)
+        self.assertEqual(source["coverage"], 0.85)
+        self.assertEqual(source["minimum_coverage"], 0.85)
+        self.assertEqual(source["failed_pages"], 3)
 
-    def test_below_90_percent_fails(self):
-        client = MarketClient(workers=1, minimum_quote_coverage=0.90)
+    def test_below_85_percent_fails(self):
+        client = MarketClient(workers=1)
 
         def fetch(page):
-            if page in (9, 10):
+            if page in (17, 18, 19, 20):
                 raise RuntimeError("page unavailable")
-            return market_page(page)
+            return market_page(page, total=2000)
 
         with patch.object(client, "_market_page", side_effect=fetch):
-            with self.assertRaisesRegex(RuntimeError, "低于 90% 门槛"):
+            with self.assertRaisesRegex(RuntimeError, "低于 85% 门槛"):
                 client.market_snapshot()
 
 

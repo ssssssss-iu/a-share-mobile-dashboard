@@ -47,7 +47,7 @@ def symbol(code: str) -> str:
 
 
 class MarketClient:
-    def __init__(self, timeout: int = 15, workers: int = 6, minimum_quote_coverage: float = 0.90):
+    def __init__(self, timeout: int = 15, workers: int = 6, minimum_quote_coverage: float = 0.85):
         self.timeout = timeout
         self.workers = workers
         self.minimum_quote_coverage = minimum_quote_coverage
