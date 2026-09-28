@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "status": "SUCCESS",
-  "generated_at": "2026-09-28T08:41:26+08:00",
+  "generated_at": "2026-09-28T08:48:20+08:00",
   "phase": {
     "code": "PREOPEN",
     "label": "盘前·上一交易日收盘",
@@ -10,9 +10,10 @@
   },
   "strategy": {
     "id": "a-share-tail-hot-v2",
-    "version": "2.1.0",
-    "automation_profile": "static-scoring-candidate-0.1",
-    "automation_status": "trial_not_active_strategy",
+    "version": "2.3.1",
+    "automation_profile": "static-scoring-candidate-0.4",
+    "automation_status": "active_forward_validation",
+    "parameter_set_id": "rules-20260928-v1",
     "weights": {
       "A": 20,
       "B": 15,
@@ -21,7 +22,7 @@
       "E": 10,
       "G": 20
     },
-    "note": "模块权重来自生效策略；精确阈值是自动化试运行参数，尚未替代生效策略。"
+    "note": "V2.3.1规则已部署；新增V价值观察层，但不计入A/B/C/D/E/G交易总分，也不改变两条通道门槛。"
   },
   "market": {
     "regime": "RISK_OFF",
@@ -994,7 +995,7 @@
     "announcement_errors": {},
     "shortlist_before_limit": 8,
     "previous_close_reused": true,
-    "source_generated_at": "2026-09-15T23:20:27+08:00",
+    "source_generated_at": "2026-09-28T08:41:26+08:00",
     "tdxaidata": {
       "enabled": true,
       "mode": "primary",
@@ -1044,7 +1045,7 @@
     "code": "PREVIOUS_CLOSE",
     "label": "上一交易日收盘",
     "trade_date": "2026-09-15",
-    "source_generated_at": "2026-09-15T23:20:27+08:00",
+    "source_generated_at": "2026-09-28T08:41:26+08:00",
     "message": "9:25竞价节点前展示最近一次成功收盘快照，不执行新筛选。"
   },
   "leader_board": {
