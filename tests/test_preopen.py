@@ -61,6 +61,14 @@ class PreopenTests(unittest.TestCase):
         self.assertFalse(result["rankings"][0]["channels"]["hot"]["actionable_now"])
         self.assertIn("上一交易日收盘快照", result["analysis"]["summary"])
 
+    def test_previous_close_can_expose_current_strategy_version(self):
+        result = previous_close_snapshot(
+            closed_snapshot(),
+            datetime(2026, 9, 16, 8, 30, tzinfo=TZ),
+            strategy={"version": "2.3.1", "note": "当前规则"},
+        )
+        self.assertEqual(result["strategy"]["version"], "2.3.1")
+
     def test_non_trading_day_context_disables_execution(self):
         result = previous_close_snapshot(
             closed_snapshot(),

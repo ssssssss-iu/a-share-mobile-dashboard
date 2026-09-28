@@ -130,6 +130,7 @@ def previous_close_snapshot(
     context_code: str = "PREVIOUS_CLOSE",
     context_label: str = "上一交易日收盘",
     context_message: str = "9:25竞价节点前展示最近一次成功收盘快照，不执行新筛选。",
+    strategy: dict | None = None,
 ) -> dict:
     trade_date = snapshot.get("trade_date")
     if not trade_date:
@@ -140,6 +141,10 @@ def previous_close_snapshot(
         raise RuntimeError(f"上一交易日收盘快照日期异常: {trade_date}")
 
     result = deepcopy(snapshot)
+    if strategy:
+        # Keep the displayed snapshot data from the prior close, but expose the
+        # currently deployed rule version even before the next live refresh.
+        result["strategy"] = deepcopy(strategy)
     source_generated_at = result.get("generated_at")
     result["generated_at"] = now.isoformat(timespec="seconds")
     result["phase"] = phase_at(now)
@@ -234,6 +239,7 @@ def build(
                     context_code="NON_TRADING_DAY",
                     context_label="非交易日·上一交易日收盘",
                     context_message="周末展示最近一次成功收盘快照，全部执行通道保持关闭。",
+                    strategy=base["strategy"],
                 )
                 attach_tdxaidata_status(result, tdx_source.smoke())
                 write_json(output, result)
@@ -241,7 +247,7 @@ def build(
         if base["phase"]["code"] == "PREOPEN":
             prior_close = latest_successful_snapshot(previous, history_dir)
             if prior_close:
-                result = previous_close_snapshot(prior_close, now)
+                result = previous_close_snapshot(prior_close, now, strategy=base["strategy"])
                 attach_tdxaidata_status(result, tdx_source.smoke())
                 write_json(output, result)
                 return result
