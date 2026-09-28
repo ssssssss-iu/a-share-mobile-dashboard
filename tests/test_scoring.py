@@ -3,7 +3,7 @@ import unittest
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from dashboard.scoring import build_leader_board, market_summary, score_candidate, technical_features
+from dashboard.scoring import build_leader_board, market_summary, score_candidate, technical_features, value_observation
 
 
 TZ = ZoneInfo("Asia/Shanghai")
@@ -29,6 +29,8 @@ def quote():
         "low": 10.3,
         "open": 10.5,
         "previous_close": 10.58,
+        "pe_ttm": 12.0,
+        "pb": 1.4,
         "market_time": "2026-09-15T14:30:00+08:00",
     }
 
@@ -106,6 +108,42 @@ class ScoringTests(unittest.TestCase):
         result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [{"title": "关于股份回购的公告"}], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
         self.assertEqual(result["score"], sum(item["score"] for item in result["modules"]))
         self.assertEqual([item["key"] for item in result["modules"]], ["A", "B", "C", "D", "E", "G"])
+        self.assertIn("value_observation", result)
+        self.assertEqual(result["score"], sum(item["score"] for item in result["modules"]))
+
+    def test_value_observation_is_separate_from_trade_score(self):
+        result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertEqual(result["value_observation"]["valuation_label"], "相对低估")
+        self.assertTrue(result["value_observation"]["not_in_trade_score"])
+        self.assertEqual(result["score"], sum(item["score"] for item in result["modules"]))
+
+    def test_complete_value_observation_has_independent_score(self):
+        sample = detail()
+        sample["fundamentals"] = {
+            "notice_date": "2026-08-30",
+            "report_period": "2026-06-30",
+            "roe": 14.2,
+            "roic": 10.1,
+            "cashflow_match": 1.05,
+            "debt_ratio": 42.0,
+            "interest_coverage": 8.0,
+        }
+        observation = value_observation(quote(), sample, config(), "2026-09-15", datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertEqual(observation["status"], "READY")
+        self.assertIsNotNone(observation["score"])
+
+    def test_future_financial_notice_is_rejected(self):
+        sample = detail()
+        sample["fundamentals"] = {"notice_date": "2026-09-20", "roe": 20, "debt_ratio": 30}
+        observation = value_observation(quote(), sample, config(), "2026-09-15", datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertEqual(observation["status"], "DATA_INSUFFICIENT")
+        self.assertEqual(observation["quality_fields"], [])
+
+    def test_undated_financial_fields_are_not_used(self):
+        sample = detail()
+        sample["fundamentals"] = {"roe": 20, "debt_ratio": 30}
+        observation = value_observation(quote(), sample, config(), "2026-09-15", datetime(2026, 9, 15, 14, 30, tzinfo=TZ))
+        self.assertEqual(observation["quality_fields"], [])
 
     def test_tail_momentum_is_not_scored_before_1420(self):
         result = score_candidate(quote(), detail(), sector(True), {"regime": "RISK_ON"}, config(), "2026-09-15", [], now=datetime(2026, 9, 15, 14, 19, tzinfo=TZ))

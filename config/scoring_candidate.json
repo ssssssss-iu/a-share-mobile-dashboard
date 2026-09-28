@@ -1,8 +1,8 @@
 {
   "strategy_id": "a-share-tail-hot-v2",
-  "strategy_version": "2.3.0",
+  "strategy_version": "2.3.1",
   "automation_profile": "static-scoring-candidate-0.4",
-  "parameter_set_id": "rules-20260922-p2",
+  "parameter_set_id": "rules-20260928-v1",
   "automation_status": "active_forward_validation",
   "timezone": "Asia/Shanghai",
   "weights": {"A": 20, "B": 15, "C": 15, "D": 20, "E": 10, "G": 20},
@@ -63,6 +63,14 @@
     "hot_amplitude_max": 12.0,
     "near_limit_ratio": 0.997,
     "announcement_lookback_days": 10
+  },
+  "value_observation": {
+    "enabled": true,
+    "low_pe": 15.0,
+    "high_pe": 35.0,
+    "low_pb": 1.5,
+    "high_pb": 4.0,
+    "max_fundamental_age_days": 400
   },
   "data_quality": {
     "source_weight": 0.30,

@@ -17,7 +17,9 @@ from .provenance import latest_row_timestamp, source_latency_seconds
 
 TZ = ZoneInfo("Asia/Shanghai")
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
-EM_FIELDS = "f2,f3,f6,f8,f12,f14,f15,f16,f17,f18,f20,f100,f124"
+# f9/f23 are valuation fields supplied with the same market snapshot. They are
+# displayed as provider-defined PE/PB and never treated as audited financials.
+EM_FIELDS = "f2,f3,f6,f8,f9,f12,f14,f15,f16,f17,f18,f20,f23,f100,f124"
 EM_FILTER = "m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23"
 
 
@@ -133,11 +135,13 @@ class MarketClient:
                 "change_pct": number(raw.get("f3")),
                 "amount": number(raw.get("f6")),
                 "turnover_rate": number(raw.get("f8")),
+                "pe": number(raw.get("f9")),
                 "high": number(raw.get("f15")),
                 "low": number(raw.get("f16")),
                 "open": number(raw.get("f17")),
                 "previous_close": number(raw.get("f18")),
                 "market_cap": number(raw.get("f20")),
+                "pb": number(raw.get("f23")),
                 "industry": str(raw.get("f100") or "").strip() or None,
                 "market_time": market_time,
                 "data_source": "东方财富沪深A股行情",

@@ -659,6 +659,153 @@ def score_g(q, f, cfg):
     return _module("G", score, state, evidence), risks
 
 
+def _value_number(values: dict, quote: dict, key: str):
+    """Read a value without turning missing/placeholder fields into zero."""
+    for source in (values, quote):
+        if not isinstance(source, dict):
+            continue
+        value = number(source.get(key))
+        if value is not None:
+            return value
+    return None
+
+
+def value_observation(quote: dict, detail: dict, cfg: dict, trade_date: str, evaluation_time: datetime) -> dict:
+    """Build the independent V observation layer.
+
+    V is deliberately excluded from ``modules`` and therefore cannot alter the
+    100-point trading score or either execution channel. Financial fields are
+    accepted only when their notice date is not after the signal date.
+    """
+    settings = cfg.get("value_observation") or {}
+    if not settings.get("enabled", True):
+        return {"status": "DISABLED", "score": None, "score_status": "DISABLED", "message": "V价值观察层未启用"}
+
+    detail = detail or {}
+    values = detail.get("fundamentals") or detail.get("financials") or quote.get("fundamentals") or {}
+    if isinstance(values, list):
+        visible = [
+            item for item in values
+            if isinstance(item, dict) and str(item.get("notice_date") or "")[:10] <= str(trade_date)[:10]
+        ]
+        values = sorted(visible, key=lambda item: (str(item.get("notice_date") or ""), str(item.get("report_period") or "")))[-1] if visible else {}
+    if isinstance(values, dict) and isinstance(values.get("latest"), dict):
+        values = {**values, **values["latest"]}
+
+    notice_date = str(values.get("notice_date") or values.get("disclosed_at") or "")[:10] or None
+    future_financials = bool(notice_date and notice_date > str(trade_date)[:10])
+    if future_financials:
+        values = {}
+
+    metric_keys = (
+        "pe", "pe_ttm", "expected_pe", "pb", "ev_ebitda", "fcf_yield", "dividend_yield",
+        "historical_percentile", "industry_percentile",
+        "roe", "roic", "cashflow_match", "debt_ratio", "interest_coverage",
+    )
+    metrics = {key: _value_number(values, quote, key) for key in metric_keys}
+    financial_keys = ("roe", "roic", "cashflow_match", "debt_ratio", "interest_coverage")
+    try:
+        notice_age_days = (evaluation_time.date() - datetime.fromisoformat(notice_date).date()).days if notice_date else None
+    except ValueError:
+        notice_age_days = None
+    stale_financials = bool(
+        notice_age_days is not None
+        and notice_age_days > int(settings.get("max_fundamental_age_days", 400))
+    )
+    if not notice_date or future_financials or stale_financials:
+        for key in financial_keys:
+            metrics[key] = None
+    available = [key for key, value in metrics.items() if value is not None]
+    if metrics["pe"] is None:
+        metrics["pe"] = metrics["pe_ttm"]
+    valuation_available = [key for key in ("pe", "expected_pe", "pb", "ev_ebitda", "fcf_yield", "dividend_yield") if metrics[key] is not None]
+    quality_available = [key for key in ("roe", "roic", "cashflow_match", "debt_ratio", "interest_coverage") if metrics[key] is not None]
+    risks = []
+    if metrics["cashflow_match"] is not None and metrics["cashflow_match"] < 0.8:
+        risks.append("经营现金流与利润匹配度偏低")
+    if metrics["debt_ratio"] is not None and metrics["debt_ratio"] > 70:
+        risks.append("资产负债率偏高")
+    if metrics["interest_coverage"] is not None and metrics["interest_coverage"] < 2:
+        risks.append("利息覆盖不足")
+    governance_risks = values.get("governance_risks") if isinstance(values, dict) else []
+    for item in governance_risks or []:
+        if item:
+            risks.append(str(item))
+
+    pe = metrics["pe"]
+    pb = metrics["pb"]
+    if future_financials:
+        valuation_label = "数据不足"
+    elif pe is None and pb is None:
+        valuation_label = "数据不足"
+    elif pe is not None and pe <= 0 and pb is not None:
+        valuation_label = "PE口径不可用，PB参考"
+    elif pe is not None and pb is not None and pe <= float(settings.get("low_pe", 15)) and pb <= float(settings.get("low_pb", 1.5)):
+        valuation_label = "相对低估"
+    elif pe is not None and pb is not None and pe >= float(settings.get("high_pe", 35)) and pb >= float(settings.get("high_pb", 4)):
+        valuation_label = "相对高估"
+    else:
+        valuation_label = "估值合理或指标分化"
+
+    quality_label = "数据不足"
+    if quality_available:
+        quality_label = "经营质量待核验" if len(quality_available) < 3 else "经营质量有支撑"
+        if risks:
+            quality_label = "价值陷阱风险"
+
+    source = values.get("source") if isinstance(values, dict) else None
+    source_url = values.get("source_url") if isinstance(values, dict) else None
+    valuation_asof = quote.get("market_time") or quote.get("received_at")
+    score = None
+    score_status = "DATA_INSUFFICIENT"
+    if len(valuation_available) >= 2 and len(quality_available) >= 3 and not future_financials:
+        valuation_score = 40 if valuation_label == "相对低估" else 15 if valuation_label == "相对高估" else 28
+        quality_score = min(35, 10 + len(quality_available) * 5 + (5 if not risks else 0))
+        safety_score = 15
+        if metrics["debt_ratio"] is not None and metrics["debt_ratio"] > 70:
+            safety_score -= 6
+        if metrics["interest_coverage"] is not None and metrics["interest_coverage"] < 2:
+            safety_score -= 5
+        governance_score = 0 if any("治理" in item or "违规" in item or "稀释" in item for item in risks) else 10
+        score = max(0, min(100, valuation_score + quality_score + safety_score + governance_score))
+        score_status = "READY"
+
+    if future_financials:
+        status, message = "DATA_INSUFFICIENT", "财务数据披露日晚于信号日，已按时间顺序排除"
+    elif stale_financials:
+        status, message = "DATA_INSUFFICIENT", "财务数据距信号日过久，已按时效门槛排除"
+    elif not available:
+        status, message = "DATA_INSUFFICIENT", "缺少估值与经营质量字段，V层不作结论"
+    elif risks:
+        status, message = "RISK_FLAG", "估值背景可见，但存在公司价值风险提示"
+    elif score_status == "READY":
+        status, message = "READY", "估值与公司价值字段已达到观察层最低完整度"
+    else:
+        status, message = "PARTIAL", "已取得部分估值字段，经营质量仍需财务披露数据补充"
+
+    return {
+        "status": status,
+        "score": score,
+        "score_status": score_status,
+        "valuation_label": valuation_label,
+        "quality_label": quality_label,
+        "overall_label": "价值陷阱风险" if risks else valuation_label,
+        "metrics": metrics,
+        "available_fields": available,
+        "valuation_fields": valuation_available,
+        "quality_fields": quality_available,
+        "risk_flags": risks,
+        "report_period": values.get("report_period") if isinstance(values, dict) else None,
+        "notice_date": notice_date,
+        "notice_age_days": notice_age_days,
+        "valuation_asof": valuation_asof,
+        "source": source or quote.get("data_source") or "未提供来源",
+        "source_url": source_url,
+        "message": message,
+        "not_in_trade_score": True,
+    }
+
+
 def phase_at(now: datetime) -> dict:
     minute = now.hour * 60 + now.minute
     if minute < 9 * 60 + 25:
@@ -892,6 +1039,7 @@ def score_candidate(
     announcement_checked=True,
     announcement_source=None,
     now=None,
+    fundamentals=None,
 ):
     evaluation_time = now or datetime.now(TZ)
     features = technical_features(quote, detail, trade_date)
@@ -933,6 +1081,10 @@ def score_candidate(
         )
     )
     execution_data = execution_data_status(quote, features, detail, evaluation_time, cfg)
+    value_detail = dict(detail or {})
+    if fundamentals is not None:
+        value_detail["fundamentals"] = fundamentals
+    value = value_observation(quote, value_detail, cfg, trade_date, evaluation_time)
     hard_ok = features.get("complete") and not risks and plan_feasible
     qualify_pct = cfg["scoring"].get("channel_qualify_pct", 60)
     common_reasons = []
@@ -1011,6 +1163,7 @@ def score_candidate(
             "invalid_below": _round(invalid),
         },
         "execution_data": execution_data,
+        "value_observation": value,
         "features": {
             "return_5d": _round(features.get("return_5d")),
             "volume_ratio": _round(features.get("volume_ratio")),

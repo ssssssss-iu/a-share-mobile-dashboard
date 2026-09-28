@@ -261,6 +261,14 @@ function candidateCard(item) {
   const sourceQuality = confidence.source_quality || {};
   const sourceQualityText = Number.isFinite(confidence.source_quality_score) ? `来源质量 ${confidence.source_quality_score}/100${sourceQuality.issues?.length ? `（${sourceQuality.issues.map(escapeHtml).join("；")}）` : ""}` : "来源质量未提供追踪字段";
   const confidenceEvidence = confidence.components?.length ? `<div class="evidence-item"><strong>数据可信度 · ${confidence.level} · ${confidence.score}/100</strong><p>字段完整性 ${confidence.completeness_score ?? "—"}/100；${sourceQualityText}；${confidence.components.map(part => `${escapeHtml(part.label)} ${part.score}/${part.max}（${escapeHtml(part.detail)}）`).join("；")}</p></div>` : "";
+  const value = item.value_observation || {};
+  const valueClass = value.status === "RISK_FLAG" ? "closed" : value.status === "PARTIAL" ? "wait" : value.status === "DATA_INSUFFICIENT" ? "closed" : "ready";
+  const valueScore = Number.isFinite(value.score) ? ` · ${value.score}/100` : "";
+  const valueBadge = `<span class="badge ${valueClass}" title="${escapeHtml(value.message || "V价值观察不参与交易评分")}">V价值观察 · ${escapeHtml(value.overall_label || value.status || "数据不足")}${valueScore}</span>`;
+  const valueMetrics = value.metrics || {};
+  const providerPe = valueMetrics.pe ?? valueMetrics.pe_ttm;
+  const valueText = `估值：${value.valuation_label || "数据不足"}；公司价值：${value.quality_label || "数据不足"}；PE（行情口径） ${Number.isFinite(providerPe) ? providerPe.toFixed(2) : "—"}；PB ${Number.isFinite(valueMetrics.pb) ? valueMetrics.pb.toFixed(2) : "—"}；历史估值分位 ${Number.isFinite(valueMetrics.historical_percentile) ? `${valueMetrics.historical_percentile.toFixed(0)}%` : "—"}；行业估值分位 ${Number.isFinite(valueMetrics.industry_percentile) ? `${valueMetrics.industry_percentile.toFixed(0)}%` : "—"}；${value.risk_flags?.length ? `风险：${value.risk_flags.join("、")}` : value.message || "暂无价值风险提示"}。数据截止 ${value.notice_date || fmtTime(value.valuation_asof)}`;
+  const valueEvidence = `<div class="evidence-item"><strong>V 估值与公司价值观察 · ${escapeHtml(value.status || "数据不足")}${valueScore}</strong><p>${escapeHtml(valueText)} 来源：${escapeHtml(value.source || "未提供来源")}。V层不计入100分交易评分。</p></div>`;
   const provenance = item.data_provenance || {};
   const provenanceEvidence = (provenance.quote_source || provenance.daily_source || provenance.minute_source) ? `<div class="evidence-item"><strong>行情来源与时间</strong><p>报价：${escapeHtml(provenance.quote_source || "未知")}，时间 ${escapeHtml(fmtTime(provenance.quote_provider_time))}；日K：${escapeHtml(provenance.daily_source || "未知")}；分钟K：${escapeHtml(provenance.minute_source || "未知")}；${provenance.fallback ? "存在回退数据" : "未标记回退"}${Number.isFinite(provenance.minute_latency_seconds) ? `，分钟线延迟 ${provenance.minute_latency_seconds.toFixed(1)} 秒` : ""}</p></div>` : "";
   return `<article class="candidate-card" data-ordinary="${item.channels.ordinary.qualified}" data-hot="${item.channels.hot.qualified}">
@@ -270,7 +278,7 @@ function candidateCard(item) {
         <div><h3 class="stock-name">${escapeHtml(item.name)}</h3><div class="stock-meta">${item.code} · ${escapeHtml(item.sector)} · #${item.rank}</div></div>
         <div class="price">${item.price.toFixed(2)}<br><span class="${pctClass(item.change_pct)}">${fmtPct(item.change_pct)}</span></div>
       </div>
-      <div class="channel-row">${poolBadge}${channelBadge(item,"ordinary","普通隔夜")}${channelBadge(item,"hot","热点波段")}${confidenceBadge}<span class="badge">${escapeHtml(item.level)}</span>${planState}${risks}</div>
+      <div class="channel-row">${poolBadge}${channelBadge(item,"ordinary","普通隔夜")}${channelBadge(item,"hot","热点波段")}${confidenceBadge}${valueBadge}<span class="badge">${escapeHtml(item.level)}</span>${planState}${risks}</div>
       <div class="module-grid" aria-label="六模块评分">${modules}</div>
       <div class="trade-plan">
         <div class="plan-cell"><span>承接参考</span><strong>${item.plan.hold_above?.toFixed(2) ?? "—"}</strong></div>
@@ -278,7 +286,7 @@ function candidateCard(item) {
         <div class="plan-cell"><span>不追高</span><strong>${item.plan.no_chase_above?.toFixed(2) ?? "—"}</strong></div>
         <div class="plan-cell"><span>失效参考</span><strong>${item.plan.invalid_below?.toFixed(2) ?? "—"}</strong></div>
       </div>
-      <details class="evidence"><summary>查看逐项证据与数据边界</summary><div class="evidence-list"><div class="evidence-item"><strong>买点结构</strong><p>${escapeHtml(item.plan.message)}</p></div>${provenanceEvidence}${confidenceEvidence}${evidence}</div></details>
+      <details class="evidence"><summary>查看逐项证据与数据边界</summary><div class="evidence-list"><div class="evidence-item"><strong>买点结构</strong><p>${escapeHtml(item.plan.message)}</p></div>${valueEvidence}${provenanceEvidence}${confidenceEvidence}${evidence}</div></details>
     </div>
   </article>`;
 }
@@ -313,7 +321,7 @@ function renderMethod(data) {
   const tdxStatus = !tdx ? "尚无检测结果" : tdx.status === "CONNECTED" ? `${tdx.mode === "shadow" ? "影子验证已连接" : "主源已连接"}${Number.isFinite(tdx.quote_match_ratio) ? `，报价一致率 ${(tdx.quote_match_ratio * 100).toFixed(1)}%` : ""}` : `${tdx.message || tdx.status}`;
   const sourceTrace = trace.quote_sources ? `全市场行情源 ${escapeHtml(JSON.stringify(trace.universe_quote_sources || {}))}；评分行情源 ${escapeHtml(JSON.stringify(trace.quote_sources))}；行情时间 ${escapeHtml(fmtTime(trace.quote_provider_time_max))}；报价最大延迟 ${Number.isFinite(trace.quote_latency_seconds_max) ? `${trace.quote_latency_seconds_max.toFixed(1)}秒` : "未知"}；详细数据源 ${escapeHtml(JSON.stringify(trace.detail_sources || {}))}` : "尚无字段级来源追踪";
   const detailFlow = `全市场 ${prefilter.input ?? "—"} → 预筛选 ${prefilter.passed ?? "—"} → 详细评分 ${expansion.final_limit ?? data.diagnostics?.details_requested ?? "—"}（${expansion.expanded ? `已扩展，${(expansion.steps || []).join("→")}` : "初始范围"}）→ 展示前5`;
-  $("#method-panel").innerHTML = `<strong>四层边界：</strong>评分榜是完整评分前5；观察池是总分达到60分；通道合格要求对应必过模块、风险和买点结构通过；当前可执行还要求价格已触发、行情新鲜且处于执行窗口。四层结果分别展示，评分榜不等于推荐。<br><strong>筛选范围：</strong>${detailFlow}。<br><strong>本次统计：</strong>观察池 ${layers.score_pool_count ?? "—"}只；普通隔夜合格 ${layers.ordinary_qualified_count ?? ordinary?.qualified_count ?? 0}只；热点波段合格 ${layers.hot_qualified_count ?? hot?.qualified_count ?? 0}只；当前可执行 ${Number(layers.ordinary_actionable_count || 0) + Number(layers.hot_actionable_count || 0)}个通道机会。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>TdxAiData：</strong>${escapeHtml(tdxStatus)}。<br><strong>字段级来源：</strong>${sourceTrace}。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
+  $("#method-panel").innerHTML = `<strong>四层边界：</strong>评分榜是完整评分前5；观察池是总分达到60分；通道合格要求对应必过模块、风险和买点结构通过；当前可执行还要求价格已触发、行情新鲜且处于执行窗口。四层结果分别展示，评分榜不等于推荐。<br><strong>V价值观察：</strong>估值与公司经营质量单独展示，不计入100分交易评分，不改变普通隔夜和热点波段门槛；财务数据必须按披露日期进行时点控制。<br><strong>筛选范围：</strong>${detailFlow}。<br><strong>本次统计：</strong>观察池 ${layers.score_pool_count ?? "—"}只；普通隔夜合格 ${layers.ordinary_qualified_count ?? ordinary?.qualified_count ?? 0}只；热点波段合格 ${layers.hot_qualified_count ?? hot?.qualified_count ?? 0}只；当前可执行 ${Number(layers.ordinary_actionable_count || 0) + Number(layers.hot_actionable_count || 0)}个通道机会。<br><strong>通道状态：</strong>普通隔夜 ${ordinary?.open ? "开启" : "关闭"}（${escapeHtml(ordinary?.message || "—")}）；热点波段 ${hot?.open ? "开启" : "关闭"}（${escapeHtml(hot?.message || "—")}）。<br><strong>TdxAiData：</strong>${escapeHtml(tdxStatus)}。<br><strong>字段级来源：</strong>${sourceTrace}。<br><strong>AI解读：</strong>${aiStatus}。<br><strong>参数状态：</strong>${escapeHtml(data.strategy?.note || "")}${sources ? `<ul class="source-list">${sources}</ul>` : ""}<p>${escapeHtml(data.disclaimer || "")}</p>`;
 }
 
 function render(data) {

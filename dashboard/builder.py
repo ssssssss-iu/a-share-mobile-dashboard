@@ -209,7 +209,7 @@ def build(
             "automation_status": cfg["automation_status"],
             "parameter_set_id": cfg.get("parameter_set_id"),
             "weights": cfg["weights"],
-            "note": "V2.3.0规则已部署并进入前向验证；模块权重不变，精确阈值不因早期结果自动调整。",
+            "note": "V2.3.1规则已部署；新增V价值观察层，但不计入A/B/C/D/E/G交易总分，也不改变两条通道门槛。",
         },
         "market": None,
         "indices": [],

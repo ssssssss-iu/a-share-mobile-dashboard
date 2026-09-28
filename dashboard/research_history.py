@@ -167,6 +167,7 @@ def _compact_signal(item: dict, trade_date: str, generated_at: str, phase_code: 
     signal["trade_date"] = trade_date
     signal["generated_at"] = generated_at
     signal["entry_price"] = item.get("price")
+    signal["value_observation"] = deepcopy(item.get("value_observation") or {})
     signal["labels"] = _pending_labels()
     if phase_code == "CLOSED":
         signal["labels"]["same_close"] = _label(
