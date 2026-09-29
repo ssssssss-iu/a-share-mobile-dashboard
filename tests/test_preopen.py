@@ -69,6 +69,14 @@ class PreopenTests(unittest.TestCase):
         )
         self.assertEqual(result["strategy"]["version"], "2.3.1")
 
+    def test_previous_close_rejects_stale_snapshot(self):
+        with self.assertRaises(RuntimeError):
+            previous_close_snapshot(
+                closed_snapshot(),
+                datetime(2026, 10, 1, 8, 30, tzinfo=TZ),
+                max_age_days=10,
+            )
+
     def test_non_trading_day_context_disables_execution(self):
         result = previous_close_snapshot(
             closed_snapshot(),

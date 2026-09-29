@@ -131,13 +131,14 @@ def previous_close_snapshot(
     context_label: str = "上一交易日收盘",
     context_message: str = "9:25竞价节点前展示最近一次成功收盘快照，不执行新筛选。",
     strategy: dict | None = None,
+    max_age_days: int = 10,
 ) -> dict:
     trade_date = snapshot.get("trade_date")
     if not trade_date:
         raise RuntimeError("上一交易日收盘快照缺少交易日期")
     snapshot_date = date.fromisoformat(trade_date)
     age = (now.date() - snapshot_date).days
-    if age <= 0 or age > 20:
+    if age <= 0 or age > int(max_age_days):
         raise RuntimeError(f"上一交易日收盘快照日期异常: {trade_date}")
 
     result = deepcopy(snapshot)
@@ -240,6 +241,7 @@ def build(
                     context_label="非交易日·上一交易日收盘",
                     context_message="周末展示最近一次成功收盘快照，全部执行通道保持关闭。",
                     strategy=base["strategy"],
+                    max_age_days=int((cfg.get("data_quality") or {}).get("max_previous_close_age_days", 10)),
                 )
                 attach_tdxaidata_status(result, tdx_source.smoke())
                 write_json(output, result)
@@ -247,7 +249,12 @@ def build(
         if base["phase"]["code"] == "PREOPEN":
             prior_close = latest_successful_snapshot(previous, history_dir)
             if prior_close:
-                result = previous_close_snapshot(prior_close, now, strategy=base["strategy"])
+                result = previous_close_snapshot(
+                    prior_close,
+                    now,
+                    strategy=base["strategy"],
+                    max_age_days=int((cfg.get("data_quality") or {}).get("max_previous_close_age_days", 10)),
+                )
                 attach_tdxaidata_status(result, tdx_source.smoke())
                 write_json(output, result)
                 return result
