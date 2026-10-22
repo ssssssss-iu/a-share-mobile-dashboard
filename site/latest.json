@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0",
   "status": "FAILED",
-  "generated_at": "2026-10-22T14:51:13+08:00",
+  "generated_at": "2026-10-22T15:06:13+08:00",
   "phase": {
-    "code": "TAIL",
-    "label": "尾盘窗口",
-    "ordinary_open": true,
-    "hot_open": true
+    "code": "CLOSED",
+    "label": "收盘复盘",
+    "ordinary_open": false,
+    "hot_open": false
   },
   "strategy": {
     "id": "a-share-tail-hot-v2",
@@ -50,11 +50,11 @@
   "candidates": [],
   "analysis": {
     "mode": "规则模板",
-    "summary": "本次行情更新未通过完整性检查：RuntimeError: 全市场行情不完整: 4063/5563 (73.0%), 低于 85% 门槛, 失败页 15。系统已经停止筛选，没有沿用旧候选，也不生成盘面方向判断。",
+    "summary": "本次行情更新未通过完整性检查：RuntimeError: 全市场行情不完整: 4663/5563 (83.8%), 低于 85% 门槛, 失败页 9。系统已经停止筛选，没有沿用旧候选，也不生成盘面方向判断。",
     "sections": []
   },
   "diagnostics": {},
   "sources": [],
-  "error": "RuntimeError: 全市场行情不完整: 4063/5563 (73.0%), 低于 85% 门槛, 失败页 15",
+  "error": "RuntimeError: 全市场行情不完整: 4663/5563 (83.8%), 低于 85% 门槛, 失败页 9",
   "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。"
 }
