@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0",
   "status": "FAILED",
-  "generated_at": "2026-10-29T09:26:21+08:00",
+  "generated_at": "2026-10-29T09:41:26+08:00",
   "phase": {
-    "code": "AUCTION",
-    "label": "集合竞价",
+    "code": "MORNING",
+    "label": "上午盘",
     "ordinary_open": false,
-    "hot_open": false
+    "hot_open": true
   },
   "strategy": {
     "id": "a-share-tail-hot-v2",
@@ -50,15 +50,11 @@
   "candidates": [],
   "analysis": {
     "mode": "规则模板",
-    "summary": "本次行情更新未通过完整性检查：RuntimeError: 全市场行情不完整: 4200/5563 (75.5%), 低于 85% 门槛, 失败页 14。系统已经停止筛选，没有沿用旧候选，也不生成盘面方向判断。",
+    "summary": "本次行情更新未通过完整性检查：RuntimeError: 全市场行情不完整: 3600/5563 (64.7%), 低于 85% 门槛, 失败页 20。系统已经停止筛选，没有沿用旧候选，也不生成盘面方向判断。",
     "sections": []
   },
   "diagnostics": {},
   "sources": [],
-  "error": "RuntimeError: 全市场行情不完整: 4200/5563 (75.5%), 低于 85% 门槛, 失败页 14",
-  "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。",
-  "last_successful": {
-    "generated_at": "2026-10-28T15:06:20+08:00",
-    "trade_date": "2026-10-28"
-  }
+  "error": "RuntimeError: 全市场行情不完整: 3600/5563 (64.7%), 低于 85% 门槛, 失败页 20",
+  "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。"
 }
