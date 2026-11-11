@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "status": "SUCCESS",
-  "generated_at": "2026-11-10T15:06:12+08:00",
+  "generated_at": "2026-11-11T09:26:13+08:00",
   "phase": {
-    "code": "CLOSED",
-    "label": "收盘复盘",
+    "code": "AUCTION",
+    "label": "集合竞价",
     "ordinary_open": false,
     "hot_open": false
   },
@@ -25,716 +25,470 @@
     "note": "V2.3.1规则已部署；新增V价值观察层，但不计入A/B/C/D/E/G交易总分，也不改变两条通道门槛。"
   },
   "market": {
-    "regime": "RISK_ON",
-    "environment_score": 1.461,
-    "breadth": 0.7246,
-    "advancers": 2131,
-    "decliners": 810,
-    "flat": 109,
-    "median_pct": 0.94,
-    "limit_up_count": 84,
-    "limit_down_count": 2,
-    "market_amount": 859025154535.5197,
-    "market_time": "2026-11-10T15:06:19+08:00",
+    "regime": "RISK_OFF",
+    "environment_score": -0.269,
+    "breadth": 0.2624,
+    "advancers": 657,
+    "decliners": 1847,
+    "flat": 538,
+    "median_pct": -0.19,
+    "limit_up_count": 11,
+    "limit_down_count": 0,
+    "market_amount": 7848088434.169999,
+    "market_time": "2026-11-11T09:26:21+08:00",
     "sector_coverage": 1.0,
     "continuity_available": true,
-    "strong_sector_count": 35
+    "strong_sector_count": 1
   },
   "indices": [
     {
       "code": "000001.SH",
       "name": "上证指数",
-      "price": 3663.72,
-      "change_pct": 0.08,
-      "market_time": "2026-11-10T15:06:00+08:00",
+      "price": 3655.66,
+      "change_pct": -0.22,
+      "market_time": "2026-11-11T09:26:03+08:00",
       "data_source": "腾讯财经指数行情",
-      "received_at": "2026-11-10T15:06:13+08:00",
-      "source_latency_seconds": 13.899,
+      "received_at": "2026-11-11T09:26:14+08:00",
+      "source_latency_seconds": 11.327,
       "timestamp_source": "provider"
     },
     {
       "code": "399001.SZ",
       "name": "深证成指",
-      "price": 11241.54,
-      "change_pct": 0.86,
-      "market_time": "2026-11-10T15:05:27+08:00",
+      "price": 11205.35,
+      "change_pct": -0.32,
+      "market_time": "2026-11-11T09:25:03+08:00",
       "data_source": "腾讯财经指数行情",
-      "received_at": "2026-11-10T15:06:13+08:00",
-      "source_latency_seconds": 46.899,
+      "received_at": "2026-11-11T09:26:14+08:00",
+      "source_latency_seconds": 71.327,
       "timestamp_source": "provider"
     },
     {
       "code": "000300.SH",
       "name": "沪深300",
-      "price": 4059.11,
-      "change_pct": 0.07,
-      "market_time": "2026-11-10T15:06:00+08:00",
+      "price": 4049.43,
+      "change_pct": -0.24,
+      "market_time": "2026-11-11T09:26:03+08:00",
       "data_source": "腾讯财经指数行情",
-      "received_at": "2026-11-10T15:06:13+08:00",
-      "source_latency_seconds": 13.899,
+      "received_at": "2026-11-11T09:26:14+08:00",
+      "source_latency_seconds": 11.327,
       "timestamp_source": "provider"
     }
   ],
   "sectors": [
     {
-      "sector": "影视院线",
-      "members": 11,
-      "median_pct": 5.54,
-      "breadth": 1.0,
-      "amount": 6835367896.629999,
-      "limit_up_count": 3,
-      "relative_strength": 4.605,
+      "sector": "渔业",
+      "members": 5,
+      "median_pct": 0.6,
+      "breadth": 0.6,
+      "amount": 1734666.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.79,
       "strong": true,
       "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
+      "previous_strong": false,
+      "snapshot_streak": 1,
       "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 5.54,
-      "amount_percentile": 0.675
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 1.36,
+      "amount_percentile": 0.025210084033613446
     },
     {
-      "sector": "广告营销",
-      "members": 17,
-      "median_pct": 4.28,
-      "breadth": 1.0,
-      "amount": 11279901172.31,
-      "limit_up_count": 3,
-      "relative_strength": 3.345,
-      "strong": true,
+      "sector": "教育",
+      "members": 9,
+      "median_pct": 0.0,
+      "breadth": 0.4444444444444444,
+      "amount": 13709076.5,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
       "continuity_available": true,
       "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 4.14,
-      "amount_percentile": 0.8666666666666667
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 1.99,
+      "amount_percentile": 0.2773109243697479
+    },
+    {
+      "sector": "燃气Ⅱ",
+      "members": 25,
+      "median_pct": 0.0,
+      "breadth": 0.44,
+      "amount": 30811945.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": -0.48,
+      "amount_percentile": 0.5630252100840336
+    },
+    {
+      "sector": "房屋建设Ⅱ",
+      "members": 7,
+      "median_pct": 0.0,
+      "breadth": 0.42857142857142855,
+      "amount": 9521958.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": -0.43,
+      "amount_percentile": 0.2184873949579832
+    },
+    {
+      "sector": "摩托车及其他",
+      "members": 12,
+      "median_pct": 0.0,
+      "breadth": 0.4166666666666667,
+      "amount": 2918919.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 1.19,
+      "amount_percentile": 0.06722689075630252
     },
     {
       "sector": "照明设备Ⅱ",
       "members": 10,
-      "median_pct": 4.02,
-      "breadth": 1.0,
-      "amount": 3103882433.54,
+      "median_pct": 0.0,
+      "breadth": 0.4,
+      "amount": 139415876.4,
       "limit_up_count": 1,
-      "relative_strength": 3.0849999999999995,
-      "strong": true,
+      "relative_strength": 0.19,
+      "strong": false,
       "continuity_available": true,
       "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 3.865,
-      "amount_percentile": 0.39166666666666666
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 4.02,
+      "amount_percentile": 0.8907563025210085
     },
     {
-      "sector": "数字媒体",
-      "members": 7,
-      "median_pct": 3.98,
-      "breadth": 1.0,
-      "amount": 4790529705.64,
-      "limit_up_count": 2,
-      "relative_strength": 3.045,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 3.75,
-      "amount_percentile": 0.5916666666666667
-    },
-    {
-      "sector": "消费电子",
-      "members": 37,
-      "median_pct": 3.57,
-      "breadth": 1.0,
-      "amount": 26546947662.120003,
-      "limit_up_count": 4,
-      "relative_strength": 2.635,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 3.49,
-      "amount_percentile": 0.9583333333333334
-    },
-    {
-      "sector": "电视广播Ⅱ",
-      "members": 10,
-      "median_pct": 3.3049999999999997,
-      "breadth": 0.9,
-      "amount": 3085703415.69,
-      "limit_up_count": 1,
-      "relative_strength": 2.3699999999999997,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 3.1799999999999997,
-      "amount_percentile": 0.38333333333333336
-    },
-    {
-      "sector": "光学光电子",
-      "members": 43,
-      "median_pct": 3.24,
-      "breadth": 1.0,
-      "amount": 14326755734.050001,
-      "limit_up_count": 5,
-      "relative_strength": 2.305,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 3.13,
-      "amount_percentile": 0.8833333333333333
-    },
-    {
-      "sector": "自动化设备",
-      "members": 23,
-      "median_pct": 3.01,
-      "breadth": 1.0,
-      "amount": 10573757451.749998,
-      "limit_up_count": 2,
-      "relative_strength": 2.0749999999999997,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.84,
-      "amount_percentile": 0.8333333333333334
-    },
-    {
-      "sector": "航天装备Ⅱ",
-      "members": 5,
-      "median_pct": 2.8,
-      "breadth": 1.0,
-      "amount": 6104099815.54,
+      "sector": "种植业",
+      "members": 15,
+      "median_pct": 0.0,
+      "breadth": 0.4,
+      "amount": 21717658.0,
       "limit_up_count": 0,
-      "relative_strength": 1.8649999999999998,
-      "strong": true,
+      "relative_strength": 0.19,
+      "strong": false,
       "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.6,
-      "amount_percentile": 0.6333333333333333
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 0.68,
+      "amount_percentile": 0.4117647058823529
     },
     {
-      "sector": "出版",
-      "members": 21,
-      "median_pct": 2.73,
-      "breadth": 0.9047619047619048,
-      "amount": 8241430677.5,
-      "limit_up_count": 1,
-      "relative_strength": 1.795,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.82,
-      "amount_percentile": 0.7416666666666667
-    },
-    {
-      "sector": "塑料",
-      "members": 30,
-      "median_pct": 2.625,
-      "breadth": 0.9666666666666667,
-      "amount": 8471886708.610001,
-      "limit_up_count": 2,
-      "relative_strength": 1.69,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.4299999999999997,
-      "amount_percentile": 0.7583333333333333
-    },
-    {
-      "sector": "黑色家电",
-      "members": 6,
-      "median_pct": 2.5,
-      "breadth": 0.8333333333333334,
-      "amount": 1413309564.2599998,
-      "limit_up_count": 1,
-      "relative_strength": 1.565,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.6900000000000004,
-      "amount_percentile": 0.15833333333333333
-    },
-    {
-      "sector": "文娱用品",
-      "members": 14,
-      "median_pct": 2.4699999999999998,
-      "breadth": 0.9285714285714286,
-      "amount": 1890409841.96,
-      "limit_up_count": 0,
-      "relative_strength": 1.5349999999999997,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.255,
-      "amount_percentile": 0.24166666666666667
-    },
-    {
-      "sector": "其他电子Ⅱ",
-      "members": 14,
-      "median_pct": 2.435,
-      "breadth": 1.0,
-      "amount": 4183462519.8,
-      "limit_up_count": 0,
-      "relative_strength": 1.5,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.29,
-      "amount_percentile": 0.5083333333333333
-    },
-    {
-      "sector": "游戏Ⅱ",
-      "members": 14,
-      "median_pct": 2.41,
-      "breadth": 1.0,
-      "amount": 7343624615.35,
-      "limit_up_count": 3,
-      "relative_strength": 1.475,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.41,
-      "amount_percentile": 0.7166666666666667
-    },
-    {
-      "sector": "元件",
-      "members": 36,
-      "median_pct": 2.2750000000000004,
-      "breadth": 0.9444444444444444,
-      "amount": 58997047133.689995,
-      "limit_up_count": 2,
-      "relative_strength": 1.3400000000000003,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 1.995,
-      "amount_percentile": 1.0
-    },
-    {
-      "sector": "电机Ⅱ",
+      "sector": "食品加工",
       "members": 19,
-      "median_pct": 2.23,
-      "breadth": 0.8947368421052632,
-      "amount": 5780391597.7699995,
+      "median_pct": 0.0,
+      "breadth": 0.3684210526315789,
+      "amount": 25999402.0,
+      "limit_up_count": 1,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 0.44,
+      "amount_percentile": 0.4789915966386555
+    },
+    {
+      "sector": "化学纤维",
+      "members": 19,
+      "median_pct": 0.0,
+      "breadth": 0.3684210526315789,
+      "amount": 7234557.0,
       "limit_up_count": 0,
-      "relative_strength": 1.295,
-      "strong": true,
+      "relative_strength": 0.19,
+      "strong": false,
       "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.03,
-      "amount_percentile": 0.6083333333333333
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 0.59,
+      "amount_percentile": 0.17647058823529413
     },
     {
-      "sector": "通用设备",
-      "members": 85,
-      "median_pct": 2.19,
-      "breadth": 0.8941176470588236,
-      "amount": 28341846986.8,
-      "limit_up_count": 5,
-      "relative_strength": 1.255,
-      "strong": true,
+      "sector": "银行Ⅱ",
+      "members": 42,
+      "median_pct": 0.0,
+      "breadth": 0.35714285714285715,
+      "amount": 106856463.52,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
       "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 1.9,
-      "amount_percentile": 0.9666666666666667
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 0.08,
+      "amount_percentile": 0.8403361344537815
     },
     {
-      "sector": "计算机设备",
-      "members": 27,
-      "median_pct": 2.16,
-      "breadth": 0.8518518518518519,
-      "amount": 9689467880.44,
-      "limit_up_count": 2,
-      "relative_strength": 1.225,
-      "strong": true,
+      "sector": "厨卫电器",
+      "members": 6,
+      "median_pct": 0.0,
+      "breadth": 0.3333333333333333,
+      "amount": 21848628.0,
+      "limit_up_count": 1,
+      "relative_strength": 0.19,
+      "strong": false,
       "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.16,
-      "amount_percentile": 0.7916666666666666
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": -0.1,
+      "amount_percentile": 0.42016806722689076
     },
     {
-      "sector": "汽车零部件",
-      "members": 165,
-      "median_pct": 2.14,
-      "breadth": 0.8787878787878788,
-      "amount": 41669504257.08998,
-      "limit_up_count": 11,
-      "relative_strength": 1.205,
-      "strong": true,
+      "sector": "专用设备",
+      "members": 94,
+      "median_pct": 0.0,
+      "breadth": 0.32978723404255317,
+      "amount": 162379620.43,
+      "limit_up_count": 1,
+      "relative_strength": 0.19,
+      "strong": false,
       "continuity_available": true,
       "previous_strong": true,
-      "snapshot_streak": 6,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
       "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-10",
-      "previous_median_pct": 2.05,
-      "amount_percentile": 0.9833333333333333
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 1.565,
+      "amount_percentile": 0.907563025210084
+    },
+    {
+      "sector": "医疗器械",
+      "members": 25,
+      "median_pct": 0.0,
+      "breadth": 0.32,
+      "amount": 47949279.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 0.27,
+      "amount_percentile": 0.680672268907563
+    },
+    {
+      "sector": "物流",
+      "members": 39,
+      "median_pct": 0.0,
+      "breadth": 0.3076923076923077,
+      "amount": 52487675.96,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 0.83,
+      "amount_percentile": 0.7058823529411765
+    },
+    {
+      "sector": "电力",
+      "members": 105,
+      "median_pct": 0.0,
+      "breadth": 0.3047619047619048,
+      "amount": 340407447.13,
+      "limit_up_count": 1,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": -0.43,
+      "amount_percentile": 0.957983193277311
+    },
+    {
+      "sector": "油服工程",
+      "members": 10,
+      "median_pct": 0.0,
+      "breadth": 0.3,
+      "amount": 6100931.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": -1.6749999999999998,
+      "amount_percentile": 0.13445378151260504
+    },
+    {
+      "sector": "铁路公路",
+      "members": 33,
+      "median_pct": 0.0,
+      "breadth": 0.2727272727272727,
+      "amount": 78731369.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": -0.24,
+      "amount_percentile": 0.7815126050420168
+    },
+    {
+      "sector": "基础建设",
+      "members": 30,
+      "median_pct": 0.0,
+      "breadth": 0.26666666666666666,
+      "amount": 55550885.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": -0.035,
+      "amount_percentile": 0.7142857142857143
+    },
+    {
+      "sector": "包装印刷",
+      "members": 31,
+      "median_pct": 0.0,
+      "breadth": 0.25806451612903225,
+      "amount": 68451484.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 1.72,
+      "amount_percentile": 0.7394957983193278
+    },
+    {
+      "sector": "个护用品",
+      "members": 9,
+      "median_pct": 0.0,
+      "breadth": 0.2222222222222222,
+      "amount": 3948269.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.19,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-11",
+      "previous_median_pct": 0.7,
+      "amount_percentile": 0.11764705882352941
     }
   ],
   "leader_board": {
-    "status": "SUCCESS",
-    "sectors": [
-      {
-        "sector": "影视院线",
-        "sector_rank": 1,
-        "sector_strength": 142.1,
-        "relative_strength": 4.61,
-        "breadth": 1.0,
-        "members": 11,
-        "limit_up_count": 3,
-        "confirmed": true,
-        "leaders": [
-          {
-            "code": "601595",
-            "name": "上海电影",
-            "role": "龙头",
-            "leader_score": 93,
-            "change_rank": 3,
-            "amount_rank": 2,
-            "sector_members": 11,
-            "change_pct": 10.0,
-            "amount": 1048369814.0,
-            "turnover_rate": 5.78,
-            "relative_strength": 4.46,
-            "evidence": [
-              "板块内涨幅排名 3/11｜相对板块中位 +4.46个百分点",
-              "成交额排名 2/11｜换手 5.78%"
-            ],
-            "risks": [
-              "接近涨停，追高风险"
-            ]
-          },
-          {
-            "code": "001330",
-            "name": "博纳影业",
-            "role": "容量核心",
-            "leader_score": 81,
-            "change_rank": 4,
-            "amount_rank": 1,
-            "sector_members": 11,
-            "change_pct": 7.06,
-            "amount": 1180650023.69,
-            "turnover_rate": 15.16,
-            "relative_strength": 1.52,
-            "evidence": [
-              "板块内涨幅排名 4/11｜相对板块中位 +1.52个百分点",
-              "成交额排名 1/11｜换手 15.16%"
-            ],
-            "risks": []
-          }
-        ],
-        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
-        "quote_coverage": 1.0,
-        "change_span": 8.16
-      },
-      {
-        "sector": "广告营销",
-        "sector_rank": 2,
-        "sector_strength": 116.9,
-        "relative_strength": 3.35,
-        "breadth": 1.0,
-        "members": 17,
-        "limit_up_count": 3,
-        "confirmed": true,
-        "leaders": [
-          {
-            "code": "600556",
-            "name": "天下秀",
-            "role": "龙头",
-            "leader_score": 92,
-            "change_rank": 4,
-            "amount_rank": 4,
-            "sector_members": 17,
-            "change_pct": 7.04,
-            "amount": 937908834.0,
-            "turnover_rate": 10.02,
-            "relative_strength": 2.76,
-            "evidence": [
-              "板块内涨幅排名 4/17｜相对板块中位 +2.76个百分点",
-              "成交额排名 4/17｜换手 10.02%"
-            ],
-            "risks": []
-          },
-          {
-            "code": "002354",
-            "name": "天娱数科",
-            "role": "容量核心",
-            "leader_score": 66,
-            "change_rank": 8,
-            "amount_rank": 1,
-            "sector_members": 17,
-            "change_pct": 5.07,
-            "amount": 3009738818.88,
-            "turnover_rate": 21.86,
-            "relative_strength": 0.79,
-            "evidence": [
-              "板块内涨幅排名 8/17｜相对板块中位 +0.79个百分点",
-              "成交额排名 1/17｜换手 21.86%"
-            ],
-            "risks": []
-          }
-        ],
-        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
-        "quote_coverage": 1.0,
-        "change_span": 8.87
-      },
-      {
-        "sector": "照明设备Ⅱ",
-        "sector_rank": 3,
-        "sector_strength": 111.7,
-        "relative_strength": 3.08,
-        "breadth": 1.0,
-        "members": 10,
-        "limit_up_count": 1,
-        "confirmed": true,
-        "leaders": [
-          {
-            "code": "600261",
-            "name": "阳光照明",
-            "role": "龙头",
-            "leader_score": 98,
-            "change_rank": 1,
-            "amount_rank": 2,
-            "sector_members": 10,
-            "change_pct": 9.96,
-            "amount": 611885937.0,
-            "turnover_rate": 7.89,
-            "relative_strength": 5.94,
-            "evidence": [
-              "板块内涨幅排名 1/10｜相对板块中位 +5.94个百分点",
-              "成交额排名 2/10｜换手 7.89%"
-            ],
-            "risks": [
-              "接近涨停，追高风险"
-            ]
-          },
-          {
-            "code": "002724",
-            "name": "海洋王",
-            "role": "容量核心",
-            "leader_score": 41,
-            "change_rank": 7,
-            "amount_rank": 1,
-            "sector_members": 10,
-            "change_pct": 2.17,
-            "amount": 1107256386.19,
-            "turnover_rate": 15.0,
-            "relative_strength": -1.85,
-            "evidence": [
-              "板块内涨幅排名 7/10｜相对板块中位 -1.85个百分点",
-              "成交额排名 1/10｜换手 15.00%"
-            ],
-            "risks": []
-          }
-        ],
-        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
-        "quote_coverage": 1.0,
-        "change_span": 9.04
-      },
-      {
-        "sector": "数字媒体",
-        "sector_rank": 4,
-        "sector_strength": 110.9,
-        "relative_strength": 3.04,
-        "breadth": 1.0,
-        "members": 7,
-        "limit_up_count": 2,
-        "confirmed": true,
-        "leaders": [
-          {
-            "code": "603533",
-            "name": "掌阅科技",
-            "role": "龙头",
-            "leader_score": 97,
-            "change_rank": 1,
-            "amount_rank": 1,
-            "sector_members": 7,
-            "change_pct": 9.99,
-            "amount": 2043609659.0,
-            "turnover_rate": 14.51,
-            "relative_strength": 6.01,
-            "evidence": [
-              "板块内涨幅排名 1/7｜相对板块中位 +6.01个百分点",
-              "成交额排名 1/7｜换手 14.51%"
-            ],
-            "risks": [
-              "接近涨停，追高风险"
-            ]
-          }
-        ],
-        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
-        "quote_coverage": 1.0,
-        "change_span": 7.4
-      },
-      {
-        "sector": "消费电子",
-        "sector_rank": 5,
-        "sector_strength": 102.7,
-        "relative_strength": 2.63,
-        "breadth": 1.0,
-        "members": 37,
-        "limit_up_count": 4,
-        "confirmed": true,
-        "leaders": [
-          {
-            "code": "002045",
-            "name": "国光电器",
-            "role": "龙头",
-            "leader_score": 93,
-            "change_rank": 1,
-            "amount_rank": 8,
-            "sector_members": 37,
-            "change_pct": 10.03,
-            "amount": 977917600.42,
-            "turnover_rate": 16.08,
-            "relative_strength": 6.46,
-            "evidence": [
-              "板块内涨幅排名 1/37｜相对板块中位 +6.46个百分点",
-              "成交额排名 8/37｜换手 16.08%"
-            ],
-            "risks": [
-              "接近涨停，追高风险"
-            ]
-          },
-          {
-            "code": "601138",
-            "name": "工业富联",
-            "role": "容量核心",
-            "leader_score": 35,
-            "change_rank": 35,
-            "amount_rank": 1,
-            "sector_members": 37,
-            "change_pct": 1.43,
-            "amount": 4948922612.0,
-            "turnover_rate": 0.57,
-            "relative_strength": -2.14,
-            "evidence": [
-              "板块内涨幅排名 35/37｜相对板块中位 -2.14个百分点",
-              "成交额排名 1/37｜换手 0.57%"
-            ],
-            "risks": []
-          }
-        ],
-        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
-        "quote_coverage": 1.0,
-        "change_span": 9.21
-      }
-    ],
-    "require_confirmed": true,
-    "message": "板块龙头独立展示，不计入A/B/C/D/E/G总评分。"
+    "status": "NO_CONFIRMED_SECTOR",
+    "sectors": [],
+    "message": "当前没有同时满足强度、广度和连续性确认的板块，暂不确认板块龙头。",
+    "require_confirmed": true
   },
   "channels": {
     "ordinary": {
       "name": "普通隔夜",
       "open": false,
       "qualified_count": 0,
-      "message": "仅在尾盘窗口执行"
+      "message": "市场闸门关闭"
     },
     "hot": {
       "name": "热点波段",
@@ -745,30 +499,30 @@
   },
   "rankings": [
     {
-      "code": "002384",
-      "name": "东山精密",
-      "sector": "元件",
-      "price": 83.69,
-      "change_pct": 2.7,
-      "amount": 10537458791.83,
-      "turnover_rate": 8.94,
-      "market_time": "2026-11-10T15:06:15+08:00",
+      "code": "002009",
+      "name": "天奇股份",
+      "sector": "专用设备",
+      "price": 20.16,
+      "change_pct": 4.78,
+      "amount": 37882656.0,
+      "turnover_rate": 0.53,
+      "market_time": "2026-11-11T09:26:12+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-10T15:06:25+08:00",
-        "quote_provider_time": "2026-11-10T15:06:15+08:00",
+        "quote_received_at": "2026-11-11T09:26:24+08:00",
+        "quote_provider_time": "2026-11-11T09:26:12+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 10.817,
+        "quote_latency_seconds": 12.433,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-10T15:06:54+08:00",
+        "detail_received_at": "2026-11-11T09:26:33+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
         "minute_latency_seconds": null,
         "fallback": true
       },
-      "score": 24,
+      "score": 10,
       "level": "排除",
       "modules": [
         {
@@ -784,11 +538,11 @@
         {
           "key": "B",
           "label": "尾盘动能",
-          "score": 8,
+          "score": 0,
           "max": 15,
           "state": "数据不足",
           "evidence": [
-            "当前时点没有至少10根当日分钟线，尾盘确认不可用"
+            "14:20前不评估尾盘动能，等待尾盘窗口确认"
           ]
         },
         {
@@ -804,23 +558,23 @@
         {
           "key": "D",
           "label": "板块持续",
-          "score": 10,
+          "score": 5,
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +2.28%｜相对全市场 +1.34pct",
-            "上涨占比 94%｜涨停 2｜样本 36",
-            "盘中连续 6 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 +0.00%｜相对全市场 +0.19pct",
+            "上涨占比 33%｜涨停 1｜样本 94",
+            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
           "key": "E",
           "label": "公告催化",
-          "score": 6,
+          "score": 5,
           "max": 10,
-          "state": "通过",
+          "state": "数据不足",
           "evidence": [
-            "正式公告：关于公司股份回购事项的公告"
+            "已核验 2 条正式公告，未识别明确正向催化"
           ]
         },
         {
@@ -894,7 +648,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 10.817,
+          "max_latency_seconds": 12.433,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -903,9 +657,9 @@
         "ordinary": {
           "qualified": false,
           "actionable_now": false,
-          "score": 8,
+          "score": 0,
           "max": 70,
-          "normalized_score": 11.4,
+          "normalized_score": 0.0,
           "required_modules": [
             "A",
             "B",
@@ -916,6 +670,7 @@
             "技术数据不完整",
             "触发反转风险",
             "买点区间不可执行",
+            "市场环境为防守",
             "必过模块未通过：A、B、C、G"
           ],
           "holding": "尾盘确认，次日早盘按条件退出",
@@ -925,9 +680,9 @@
         "hot": {
           "qualified": false,
           "actionable_now": false,
-          "score": 10,
+          "score": 5,
           "max": 60,
-          "normalized_score": 16.7,
+          "normalized_score": 8.3,
           "required_modules": [
             "A",
             "D",
@@ -952,15 +707,15 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 85.36,
-        "invalid_below": 82.84
+        "no_chase_above": 20.56,
+        "invalid_below": 19.95
       },
       "execution_data": {
         "ready": false,
         "reasons": [
           "分钟线时间不可核验"
         ],
-        "quote_age_seconds": 0.0,
+        "quote_age_seconds": 1.4,
         "minute_age_seconds": null,
         "alignment_seconds": null
       },
@@ -972,10 +727,10 @@
         "quality_label": "数据不足",
         "overall_label": "估值合理或指标分化",
         "metrics": {
-          "pe": 23.09,
+          "pe": 108.41,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 6.18,
+          "pb": 3.94,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -1000,7 +755,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-10T15:06:15+08:00",
+        "valuation_asof": "2026-11-11T09:26:12+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -1018,22 +773,16 @@
       },
       "announcements": [
         {
-          "title": "H股公告",
-          "published_at": "2026-11-07T00:00+08:00",
+          "title": "关于公司为全资子公司提供担保的进展公告",
+          "published_at": "2026-11-11T00:00+08:00",
           "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-07/1225662600.PDF"
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-11/1225664899.PDF"
         },
         {
-          "title": "第七届董事会第七次会议决议公告",
-          "published_at": "2026-11-06T11:49+08:00",
+          "title": "关于公司为全资子公司提供担保的进展公告",
+          "published_at": "2026-11-09T11:40+08:00",
           "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-06/1225660616.pdf"
-        },
-        {
-          "title": "关于公司股份回购事项的公告",
-          "published_at": "2026-11-06T11:49+08:00",
-          "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-06/1225660615.pdf"
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-09/1225662823.PDF"
         }
       ],
       "rank": 1,
@@ -1041,30 +790,30 @@
       "in_candidate_pool": false
     },
     {
-      "code": "002463",
-      "name": "沪电股份",
-      "sector": "元件",
-      "price": 81.3,
-      "change_pct": 5.45,
-      "amount": 5664218994.49,
-      "turnover_rate": 3.57,
-      "market_time": "2026-11-10T15:06:15+08:00",
+      "code": "002578",
+      "name": "闽发铝业",
+      "sector": "工业金属",
+      "price": 6.27,
+      "change_pct": 3.47,
+      "amount": 120974007.0,
+      "turnover_rate": 2.24,
+      "market_time": "2026-11-11T09:26:09+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-10T15:06:25+08:00",
-        "quote_provider_time": "2026-11-10T15:06:15+08:00",
+        "quote_received_at": "2026-11-11T09:26:24+08:00",
+        "quote_provider_time": "2026-11-11T09:26:09+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 10.817,
+        "quote_latency_seconds": 15.433,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-10T15:06:54+08:00",
+        "detail_received_at": "2026-11-11T09:26:33+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
         "minute_latency_seconds": null,
         "fallback": true
       },
-      "score": 24,
+      "score": 9,
       "level": "排除",
       "modules": [
         {
@@ -1080,11 +829,11 @@
         {
           "key": "B",
           "label": "尾盘动能",
-          "score": 8,
+          "score": 0,
           "max": 15,
           "state": "数据不足",
           "evidence": [
-            "当前时点没有至少10根当日分钟线，尾盘确认不可用"
+            "14:20前不评估尾盘动能，等待尾盘窗口确认"
           ]
         },
         {
@@ -1100,23 +849,23 @@
         {
           "key": "D",
           "label": "板块持续",
-          "score": 10,
+          "score": 4,
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +2.28%｜相对全市场 +1.34pct",
-            "上涨占比 94%｜涨停 2｜样本 36",
-            "盘中连续 6 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 -0.92%｜相对全市场 -0.73pct",
+            "上涨占比 13%｜涨停 1｜样本 52",
+            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
           "key": "E",
           "label": "公告催化",
-          "score": 6,
+          "score": 5,
           "max": 10,
-          "state": "通过",
+          "state": "数据不足",
           "evidence": [
-            "正式公告：关于实际控制人增持股份计划的公告"
+            "已核验 2 条正式公告，未识别明确正向催化"
           ]
         },
         {
@@ -1190,7 +939,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 10.817,
+          "max_latency_seconds": 15.433,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -1199,9 +948,9 @@
         "ordinary": {
           "qualified": false,
           "actionable_now": false,
-          "score": 8,
+          "score": 0,
           "max": 70,
-          "normalized_score": 11.4,
+          "normalized_score": 0.0,
           "required_modules": [
             "A",
             "B",
@@ -1212,6 +961,7 @@
             "技术数据不完整",
             "触发反转风险",
             "买点区间不可执行",
+            "市场环境为防守",
             "必过模块未通过：A、B、C、G"
           ],
           "holding": "尾盘确认，次日早盘按条件退出",
@@ -1221,9 +971,9 @@
         "hot": {
           "qualified": false,
           "actionable_now": false,
-          "score": 10,
+          "score": 4,
           "max": 60,
-          "normalized_score": 16.7,
+          "normalized_score": 6.7,
           "required_modules": [
             "A",
             "D",
@@ -1248,15 +998,15 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 82.93,
-        "invalid_below": 80.48
+        "no_chase_above": 6.4,
+        "invalid_below": 6.2
       },
       "execution_data": {
         "ready": false,
         "reasons": [
           "分钟线时间不可核验"
         ],
-        "quote_age_seconds": 0.0,
+        "quote_age_seconds": 4.4,
         "minute_age_seconds": null,
         "alignment_seconds": null
       },
@@ -1268,10 +1018,10 @@
         "quality_label": "数据不足",
         "overall_label": "估值合理或指标分化",
         "metrics": {
-          "pe": 20.98,
+          "pe": 1646.62,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 7.66,
+          "pb": 3.92,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -1296,7 +1046,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-10T15:06:15+08:00",
+        "valuation_asof": "2026-11-11T09:26:09+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -1314,22 +1064,16 @@
       },
       "announcements": [
         {
-          "title": "第八届董事会第二十三次会议决议公告",
-          "published_at": "2026-11-10T00:00+08:00",
+          "title": "股票交易异常波动公告",
+          "published_at": "2026-11-07T00:00+08:00",
           "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-10/1225664247.PDF"
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-07/1225662241.PDF"
         },
         {
-          "title": "关于实际控制人增持股份计划的公告",
-          "published_at": "2026-11-10T00:00+08:00",
+          "title": "股票交易异常波动公告",
+          "published_at": "2026-11-04T00:00+08:00",
           "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-10/1225664246.PDF"
-        },
-        {
-          "title": "关于以集中竞价交易方式回购公司股份方案暨回购报告书的公告",
-          "published_at": "2026-11-10T00:00+08:00",
-          "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-10/1225664245.PDF"
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-04/1225656062.PDF"
         }
       ],
       "rank": 2,
@@ -1337,30 +1081,30 @@
       "in_candidate_pool": false
     },
     {
-      "code": "600641",
-      "name": "先导基电",
-      "sector": "半导体",
-      "price": 33.47,
-      "change_pct": 2.29,
-      "amount": 3892685863.0,
-      "turnover_rate": 12.43,
-      "market_time": "2026-11-10T15:06:16+08:00",
+      "code": "002425",
+      "name": "凯撒文化",
+      "sector": "游戏Ⅱ",
+      "price": 3.71,
+      "change_pct": 6.61,
+      "amount": 31655204.0,
+      "turnover_rate": 0.93,
+      "market_time": "2026-11-11T09:26:09+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-10T15:06:25+08:00",
-        "quote_provider_time": "2026-11-10T15:06:16+08:00",
+        "quote_received_at": "2026-11-11T09:26:24+08:00",
+        "quote_provider_time": "2026-11-11T09:26:09+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 9.817,
+        "quote_latency_seconds": 15.433,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-10T15:06:54+08:00",
+        "detail_received_at": "2026-11-11T09:26:33+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
         "minute_latency_seconds": null,
         "fallback": true
       },
-      "score": 24,
+      "score": 9,
       "level": "排除",
       "modules": [
         {
@@ -1376,11 +1120,11 @@
         {
           "key": "B",
           "label": "尾盘动能",
-          "score": 8,
+          "score": 0,
           "max": 15,
           "state": "数据不足",
           "evidence": [
-            "当前时点没有至少10根当日分钟线，尾盘确认不可用"
+            "14:20前不评估尾盘动能，等待尾盘窗口确认"
           ]
         },
         {
@@ -1396,23 +1140,23 @@
         {
           "key": "D",
           "label": "板块持续",
-          "score": 10,
+          "score": 4,
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +1.95%｜相对全市场 +1.01pct",
-            "上涨占比 97%｜涨停 1｜样本 33",
-            "盘中连续 6 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 -0.34%｜相对全市场 -0.15pct",
+            "上涨占比 14%｜涨停 1｜样本 14",
+            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
           "key": "E",
           "label": "公告催化",
-          "score": 6,
+          "score": 5,
           "max": 10,
-          "state": "通过",
+          "state": "数据不足",
           "evidence": [
-            "正式公告：上海先导基电科技股份有限公司关于董事、高级管理人员增持股份计划实施完毕暨增持结果公告"
+            "近10日未检索到可作为催化的正式公告"
           ]
         },
         {
@@ -1486,7 +1230,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 9.817,
+          "max_latency_seconds": 15.433,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -1495,9 +1239,9 @@
         "ordinary": {
           "qualified": false,
           "actionable_now": false,
-          "score": 8,
+          "score": 0,
           "max": 70,
-          "normalized_score": 11.4,
+          "normalized_score": 0.0,
           "required_modules": [
             "A",
             "B",
@@ -1508,6 +1252,7 @@
             "技术数据不完整",
             "触发反转风险",
             "买点区间不可执行",
+            "市场环境为防守",
             "必过模块未通过：A、B、C、G"
           ],
           "holding": "尾盘确认，次日早盘按条件退出",
@@ -1517,9 +1262,9 @@
         "hot": {
           "qualified": false,
           "actionable_now": false,
-          "score": 10,
+          "score": 4,
           "max": 60,
-          "normalized_score": 16.7,
+          "normalized_score": 6.7,
           "required_modules": [
             "A",
             "D",
@@ -1544,15 +1289,293 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 34.14,
-        "invalid_below": 33.13
+        "no_chase_above": 3.78,
+        "invalid_below": 3.66
       },
       "execution_data": {
         "ready": false,
         "reasons": [
           "分钟线时间不可核验"
         ],
-        "quote_age_seconds": 0.0,
+        "quote_age_seconds": 4.4,
+        "minute_age_seconds": null,
+        "alignment_seconds": null
+      },
+      "value_observation": {
+        "status": "PARTIAL",
+        "score": null,
+        "score_status": "DATA_INSUFFICIENT",
+        "valuation_label": "PE口径不可用，PB参考",
+        "quality_label": "数据不足",
+        "overall_label": "PE口径不可用，PB参考",
+        "metrics": {
+          "pe": -234.46,
+          "pe_ttm": null,
+          "expected_pe": null,
+          "pb": 1.44,
+          "ev_ebitda": null,
+          "fcf_yield": null,
+          "dividend_yield": null,
+          "historical_percentile": null,
+          "industry_percentile": null,
+          "roe": null,
+          "roic": null,
+          "cashflow_match": null,
+          "debt_ratio": null,
+          "interest_coverage": null
+        },
+        "available_fields": [
+          "pe",
+          "pb"
+        ],
+        "valuation_fields": [
+          "pe",
+          "pb"
+        ],
+        "quality_fields": [],
+        "risk_flags": [],
+        "report_period": null,
+        "notice_date": null,
+        "notice_age_days": null,
+        "valuation_asof": "2026-11-11T09:26:09+08:00",
+        "source": "东方财富沪深A股行情",
+        "source_url": null,
+        "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
+        "not_in_trade_score": true
+      },
+      "features": {
+        "return_5d": null,
+        "volume_ratio": null,
+        "raw_volume_ratio": null,
+        "volume_ratio_method": null,
+        "trading_progress": null,
+        "red_green_body_ratio": null,
+        "limit_up_history_60d": null,
+        "breakout": null
+      },
+      "announcements": [],
+      "rank": 3,
+      "in_score_pool": false,
+      "in_candidate_pool": false
+    },
+    {
+      "code": "002376",
+      "name": "新北洋",
+      "sector": "计算机设备",
+      "price": 8.16,
+      "change_pct": 5.56,
+      "amount": 32833392.0,
+      "turnover_rate": 0.51,
+      "market_time": "2026-11-11T09:25:00+08:00",
+      "data_provenance": {
+        "quote_source": "东方财富沪深A股行情",
+        "quote_received_at": "2026-11-11T09:26:24+08:00",
+        "quote_provider_time": "2026-11-11T09:25:00+08:00",
+        "quote_timestamp_source": "provider",
+        "quote_latency_seconds": 84.433,
+        "daily_source": "原日K回退",
+        "minute_source": "原分钟K回退",
+        "detail_received_at": "2026-11-11T09:26:33+08:00",
+        "daily_provider_time": null,
+        "minute_provider_time": null,
+        "daily_latency_seconds": null,
+        "minute_latency_seconds": null,
+        "fallback": true
+      },
+      "score": 8,
+      "level": "排除",
+      "modules": [
+        {
+          "key": "A",
+          "label": "当日量价",
+          "score": 0,
+          "max": 20,
+          "state": "数据不足",
+          "evidence": [
+            "日K日期与行情日不一致或不足21根"
+          ]
+        },
+        {
+          "key": "B",
+          "label": "尾盘动能",
+          "score": 0,
+          "max": 15,
+          "state": "数据不足",
+          "evidence": [
+            "14:20前不评估尾盘动能，等待尾盘窗口确认"
+          ]
+        },
+        {
+          "key": "C",
+          "label": "隔夜质量",
+          "score": 0,
+          "max": 15,
+          "state": "数据不足",
+          "evidence": [
+            "日K日期与行情日不一致或不足21根"
+          ]
+        },
+        {
+          "key": "D",
+          "label": "板块持续",
+          "score": 3,
+          "max": 20,
+          "state": "数据不足",
+          "evidence": [
+            "板块中位涨幅 -0.18%｜相对全市场 +0.01pct",
+            "上涨占比 26%｜涨停 0｜样本 27",
+            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+          ]
+        },
+        {
+          "key": "E",
+          "label": "公告催化",
+          "score": 5,
+          "max": 10,
+          "state": "数据不足",
+          "evidence": [
+            "已核验 2 条正式公告，未识别明确正向催化"
+          ]
+        },
+        {
+          "key": "G",
+          "label": "反转风险",
+          "score": 0,
+          "max": 20,
+          "state": "数据不足",
+          "evidence": [
+            "日K日期与行情日不一致或不足21根"
+          ]
+        }
+      ],
+      "risks": [
+        "量价风险不可核验"
+      ],
+      "data_confidence": {
+        "score": 50,
+        "max": 100,
+        "level": "低",
+        "components": [
+          {
+            "key": "quote",
+            "label": "行情时间与报价",
+            "score": 15,
+            "max": 15,
+            "detail": "可核验"
+          },
+          {
+            "key": "daily",
+            "label": "当日日K",
+            "score": 0,
+            "max": 25,
+            "detail": "日K日期与行情日不一致或不足21根"
+          },
+          {
+            "key": "minute",
+            "label": "当日分钟线",
+            "score": 0,
+            "max": 20,
+            "detail": "可用0根"
+          },
+          {
+            "key": "sector",
+            "label": "板块数据",
+            "score": 20,
+            "max": 20,
+            "detail": "板块归属与上一快照均可用"
+          },
+          {
+            "key": "announcement",
+            "label": "公告数据",
+            "score": 20,
+            "max": 20,
+            "detail": "已由巨潮资讯正式公告核验"
+          }
+        ],
+        "issues": [
+          "日K日期与行情日不一致或不足21根",
+          "可用0根",
+          "TdxAiData缺少实时快照",
+          "日K或分钟线使用回退来源"
+        ],
+        "completeness_score": 55,
+        "source_quality_score": 40,
+        "source_quality": {
+          "score": 40,
+          "status": "来源质量存在问题",
+          "issues": [
+            "TdxAiData缺少实时快照",
+            "日K或分钟线使用回退来源"
+          ],
+          "fallback": true,
+          "max_latency_seconds": 84.433,
+          "alignment_seconds": null
+        },
+        "source_weight": 0.3
+      },
+      "channels": {
+        "ordinary": {
+          "qualified": false,
+          "actionable_now": false,
+          "score": 0,
+          "max": 70,
+          "normalized_score": 0.0,
+          "required_modules": [
+            "A",
+            "B",
+            "C",
+            "G"
+          ],
+          "reasons": [
+            "技术数据不完整",
+            "触发反转风险",
+            "买点区间不可执行",
+            "市场环境为防守",
+            "必过模块未通过：A、B、C、G"
+          ],
+          "holding": "尾盘确认，次日早盘按条件退出",
+          "action_state": "UNQUALIFIED",
+          "action_message": "通道条件未通过"
+        },
+        "hot": {
+          "qualified": false,
+          "actionable_now": false,
+          "score": 3,
+          "max": 60,
+          "normalized_score": 5.0,
+          "required_modules": [
+            "A",
+            "D",
+            "G"
+          ],
+          "reasons": [
+            "技术数据不完整",
+            "触发反转风险",
+            "买点区间不可执行",
+            "必过模块未通过：A、D、G"
+          ],
+          "holding": "计划2–5个交易日，退潮或失效提前退出",
+          "action_state": "UNQUALIFIED",
+          "action_message": "通道条件未通过"
+        }
+      },
+      "plan": {
+        "feasible": false,
+        "triggered_now": false,
+        "trigger_status": "NO_FEASIBLE_RANGE",
+        "message": "突破确认价高于不追价，当前没有可执行跟随区间",
+        "hold_above": 0.0,
+        "breakout_reference": 0.0,
+        "breakout": 0.01,
+        "no_chase_above": 8.32,
+        "invalid_below": 8.07
+      },
+      "execution_data": {
+        "ready": false,
+        "reasons": [
+          "分钟线时间不可核验"
+        ],
+        "quote_age_seconds": 73.4,
         "minute_age_seconds": null,
         "alignment_seconds": null
       },
@@ -1564,10 +1587,10 @@
         "quality_label": "数据不足",
         "overall_label": "估值合理或指标分化",
         "metrics": {
-          "pe": 12159.74,
+          "pe": 62.33,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 3.76,
+          "pb": 1.78,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -1592,7 +1615,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-10T15:06:16+08:00",
+        "valuation_asof": "2026-11-11T09:25:00+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -1610,312 +1633,16 @@
       },
       "announcements": [
         {
-          "title": "关于《上海先导基电科技股份有限公司股票交易异常波动询证函》的回函",
-          "published_at": "2026-11-07T00:00+08:00",
+          "title": "2026年11月6日投资者关系活动记录表",
+          "published_at": "2026-11-06T17:58+08:00",
           "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-07/1225662303.PDF"
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-06/1225661729.PDF"
         },
         {
-          "title": "上海先导基电科技股份有限公司股票交易异常波动公告",
-          "published_at": "2026-11-07T00:00+08:00",
-          "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-07/1225662302.PDF"
-        },
-        {
-          "title": "上海先导基电科技股份有限公司关于控股股东部分股份解除质押及质押的公告",
+          "title": "关于举行2026年第三季度业绩说明会的公告",
           "published_at": "2026-11-04T00:00+08:00",
           "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-04/1225655460.PDF"
-        }
-      ],
-      "rank": 3,
-      "in_score_pool": false,
-      "in_candidate_pool": false
-    },
-    {
-      "code": "603920",
-      "name": "世运电路",
-      "sector": "元件",
-      "price": 36.37,
-      "change_pct": 8.31,
-      "amount": 2118377100.0,
-      "turnover_rate": 8.13,
-      "market_time": "2026-11-10T15:06:07+08:00",
-      "data_provenance": {
-        "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-10T15:06:25+08:00",
-        "quote_provider_time": "2026-11-10T15:06:07+08:00",
-        "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 18.817,
-        "daily_source": "原日K回退",
-        "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-10T15:06:54+08:00",
-        "daily_provider_time": null,
-        "minute_provider_time": null,
-        "daily_latency_seconds": null,
-        "minute_latency_seconds": null,
-        "fallback": true
-      },
-      "score": 24,
-      "level": "排除",
-      "modules": [
-        {
-          "key": "A",
-          "label": "当日量价",
-          "score": 0,
-          "max": 20,
-          "state": "数据不足",
-          "evidence": [
-            "日K日期与行情日不一致或不足21根"
-          ]
-        },
-        {
-          "key": "B",
-          "label": "尾盘动能",
-          "score": 8,
-          "max": 15,
-          "state": "数据不足",
-          "evidence": [
-            "当前时点没有至少10根当日分钟线，尾盘确认不可用"
-          ]
-        },
-        {
-          "key": "C",
-          "label": "隔夜质量",
-          "score": 0,
-          "max": 15,
-          "state": "数据不足",
-          "evidence": [
-            "日K日期与行情日不一致或不足21根"
-          ]
-        },
-        {
-          "key": "D",
-          "label": "板块持续",
-          "score": 10,
-          "max": 20,
-          "state": "数据不足",
-          "evidence": [
-            "板块中位涨幅 +2.28%｜相对全市场 +1.34pct",
-            "上涨占比 94%｜涨停 2｜样本 36",
-            "盘中连续 6 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
-          ]
-        },
-        {
-          "key": "E",
-          "label": "公告催化",
-          "score": 6,
-          "max": 10,
-          "state": "通过",
-          "evidence": [
-            "正式公告：世运电路关于2026年第二期以集中竞价交易方式回购股份方案的公告"
-          ]
-        },
-        {
-          "key": "G",
-          "label": "反转风险",
-          "score": 0,
-          "max": 20,
-          "state": "数据不足",
-          "evidence": [
-            "日K日期与行情日不一致或不足21根"
-          ]
-        }
-      ],
-      "risks": [
-        "量价风险不可核验"
-      ],
-      "data_confidence": {
-        "score": 50,
-        "max": 100,
-        "level": "低",
-        "components": [
-          {
-            "key": "quote",
-            "label": "行情时间与报价",
-            "score": 15,
-            "max": 15,
-            "detail": "可核验"
-          },
-          {
-            "key": "daily",
-            "label": "当日日K",
-            "score": 0,
-            "max": 25,
-            "detail": "日K日期与行情日不一致或不足21根"
-          },
-          {
-            "key": "minute",
-            "label": "当日分钟线",
-            "score": 0,
-            "max": 20,
-            "detail": "可用0根"
-          },
-          {
-            "key": "sector",
-            "label": "板块数据",
-            "score": 20,
-            "max": 20,
-            "detail": "板块归属与上一快照均可用"
-          },
-          {
-            "key": "announcement",
-            "label": "公告数据",
-            "score": 20,
-            "max": 20,
-            "detail": "已由巨潮资讯正式公告核验"
-          }
-        ],
-        "issues": [
-          "日K日期与行情日不一致或不足21根",
-          "可用0根",
-          "TdxAiData缺少实时快照",
-          "日K或分钟线使用回退来源"
-        ],
-        "completeness_score": 55,
-        "source_quality_score": 40,
-        "source_quality": {
-          "score": 40,
-          "status": "来源质量存在问题",
-          "issues": [
-            "TdxAiData缺少实时快照",
-            "日K或分钟线使用回退来源"
-          ],
-          "fallback": true,
-          "max_latency_seconds": 18.817,
-          "alignment_seconds": null
-        },
-        "source_weight": 0.3
-      },
-      "channels": {
-        "ordinary": {
-          "qualified": false,
-          "actionable_now": false,
-          "score": 8,
-          "max": 70,
-          "normalized_score": 11.4,
-          "required_modules": [
-            "A",
-            "B",
-            "C",
-            "G"
-          ],
-          "reasons": [
-            "技术数据不完整",
-            "触发反转风险",
-            "买点区间不可执行",
-            "必过模块未通过：A、B、C、G"
-          ],
-          "holding": "尾盘确认，次日早盘按条件退出",
-          "action_state": "UNQUALIFIED",
-          "action_message": "通道条件未通过"
-        },
-        "hot": {
-          "qualified": false,
-          "actionable_now": false,
-          "score": 10,
-          "max": 60,
-          "normalized_score": 16.7,
-          "required_modules": [
-            "A",
-            "D",
-            "G"
-          ],
-          "reasons": [
-            "技术数据不完整",
-            "触发反转风险",
-            "买点区间不可执行",
-            "必过模块未通过：A、D、G"
-          ],
-          "holding": "计划2–5个交易日，退潮或失效提前退出",
-          "action_state": "UNQUALIFIED",
-          "action_message": "通道条件未通过"
-        }
-      },
-      "plan": {
-        "feasible": false,
-        "triggered_now": false,
-        "trigger_status": "NO_FEASIBLE_RANGE",
-        "message": "突破确认价高于不追价，当前没有可执行跟随区间",
-        "hold_above": 0.0,
-        "breakout_reference": 0.0,
-        "breakout": 0.01,
-        "no_chase_above": 36.92,
-        "invalid_below": 36.0
-      },
-      "execution_data": {
-        "ready": false,
-        "reasons": [
-          "分钟线时间不可核验"
-        ],
-        "quote_age_seconds": 5.1,
-        "minute_age_seconds": null,
-        "alignment_seconds": null
-      },
-      "value_observation": {
-        "status": "PARTIAL",
-        "score": null,
-        "score_status": "DATA_INSUFFICIENT",
-        "valuation_label": "相对高估",
-        "quality_label": "数据不足",
-        "overall_label": "相对高估",
-        "metrics": {
-          "pe": 61.39,
-          "pe_ttm": null,
-          "expected_pe": null,
-          "pb": 4.2,
-          "ev_ebitda": null,
-          "fcf_yield": null,
-          "dividend_yield": null,
-          "historical_percentile": null,
-          "industry_percentile": null,
-          "roe": null,
-          "roic": null,
-          "cashflow_match": null,
-          "debt_ratio": null,
-          "interest_coverage": null
-        },
-        "available_fields": [
-          "pe",
-          "pb"
-        ],
-        "valuation_fields": [
-          "pe",
-          "pb"
-        ],
-        "quality_fields": [],
-        "risk_flags": [],
-        "report_period": null,
-        "notice_date": null,
-        "notice_age_days": null,
-        "valuation_asof": "2026-11-10T15:06:07+08:00",
-        "source": "东方财富沪深A股行情",
-        "source_url": null,
-        "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
-        "not_in_trade_score": true
-      },
-      "features": {
-        "return_5d": null,
-        "volume_ratio": null,
-        "raw_volume_ratio": null,
-        "volume_ratio_method": null,
-        "trading_progress": null,
-        "red_green_body_ratio": null,
-        "limit_up_history_60d": null,
-        "breakout": null
-      },
-      "announcements": [
-        {
-          "title": "世运电路关于2026年第二期以集中竞价交易方式回购股份方案的公告",
-          "published_at": "2026-11-09T00:00+08:00",
-          "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-09/1225662768.PDF"
-        },
-        {
-          "title": "世运电路第五届董事会第十九次会议决议公告",
-          "published_at": "2026-11-09T00:00+08:00",
-          "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-09/1225662766.PDF"
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-04/1225654708.PDF"
         }
       ],
       "rank": 4,
@@ -1923,30 +1650,30 @@
       "in_candidate_pool": false
     },
     {
-      "code": "002241",
-      "name": "歌尔股份",
-      "sector": "消费电子",
-      "price": 25.69,
-      "change_pct": 3.84,
-      "amount": 4914678291.42,
-      "turnover_rate": 6.12,
-      "market_time": "2026-11-10T15:06:15+08:00",
+      "code": "002708",
+      "name": "光洋股份",
+      "sector": "汽车零部件",
+      "price": 26.0,
+      "change_pct": 7.57,
+      "amount": 131638000.0,
+      "turnover_rate": 0.99,
+      "market_time": "2026-11-11T09:26:00+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-10T15:06:25+08:00",
-        "quote_provider_time": "2026-11-10T15:06:15+08:00",
+        "quote_received_at": "2026-11-11T09:26:24+08:00",
+        "quote_provider_time": "2026-11-11T09:26:00+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 10.817,
+        "quote_latency_seconds": 24.433,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-10T15:06:54+08:00",
+        "detail_received_at": "2026-11-11T09:26:33+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
         "minute_latency_seconds": null,
         "fallback": true
       },
-      "score": 23,
+      "score": 7,
       "level": "排除",
       "modules": [
         {
@@ -1962,11 +1689,11 @@
         {
           "key": "B",
           "label": "尾盘动能",
-          "score": 8,
+          "score": 0,
           "max": 15,
           "state": "数据不足",
           "evidence": [
-            "当前时点没有至少10根当日分钟线，尾盘确认不可用"
+            "14:20前不评估尾盘动能，等待尾盘窗口确认"
           ]
         },
         {
@@ -1982,13 +1709,13 @@
         {
           "key": "D",
           "label": "板块持续",
-          "score": 10,
+          "score": 2,
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +3.57%｜相对全市场 +2.63pct",
-            "上涨占比 100%｜涨停 4｜样本 37",
-            "盘中连续 6 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 -0.21%｜相对全市场 -0.02pct",
+            "上涨占比 23%｜涨停 0｜样本 164",
+            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
@@ -2072,7 +1799,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 10.817,
+          "max_latency_seconds": 24.433,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -2081,9 +1808,9 @@
         "ordinary": {
           "qualified": false,
           "actionable_now": false,
-          "score": 8,
+          "score": 0,
           "max": 70,
-          "normalized_score": 11.4,
+          "normalized_score": 0.0,
           "required_modules": [
             "A",
             "B",
@@ -2094,6 +1821,7 @@
             "技术数据不完整",
             "触发反转风险",
             "买点区间不可执行",
+            "市场环境为防守",
             "必过模块未通过：A、B、C、G"
           ],
           "holding": "尾盘确认，次日早盘按条件退出",
@@ -2103,9 +1831,9 @@
         "hot": {
           "qualified": false,
           "actionable_now": false,
-          "score": 10,
+          "score": 2,
           "max": 60,
-          "normalized_score": 16.7,
+          "normalized_score": 3.3,
           "required_modules": [
             "A",
             "D",
@@ -2130,15 +1858,15 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 26.2,
-        "invalid_below": 25.42
+        "no_chase_above": 26.52,
+        "invalid_below": 25.73
       },
       "execution_data": {
         "ready": false,
         "reasons": [
           "分钟线时间不可核验"
         ],
-        "quote_age_seconds": 0.0,
+        "quote_age_seconds": 13.4,
         "minute_age_seconds": null,
         "alignment_seconds": null
       },
@@ -2146,14 +1874,14 @@
         "status": "PARTIAL",
         "score": null,
         "score_status": "DATA_INSUFFICIENT",
-        "valuation_label": "估值合理或指标分化",
+        "valuation_label": "相对高估",
         "quality_label": "数据不足",
-        "overall_label": "估值合理或指标分化",
+        "overall_label": "相对高估",
         "metrics": {
-          "pe": 26.26,
+          "pe": 188.08,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 2.35,
+          "pb": 8.26,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -2178,7 +1906,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-10T15:06:15+08:00",
+        "valuation_asof": "2026-11-11T09:26:00+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -2196,10 +1924,10 @@
       },
       "announcements": [
         {
-          "title": "关于为子公司提供担保的进展公告",
-          "published_at": "2026-11-03T00:00+08:00",
+          "title": "2026年11月1日投资者关系活动记录表",
+          "published_at": "2026-11-02T08:22+08:00",
           "source": "巨潮资讯正式公告",
-          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-03/1225652487.PDF"
+          "source_url": "https://static.cninfo.com.cn/finalpage/2026-11-02/1225651122.PDF"
         }
       ],
       "rank": 5,
@@ -2210,27 +1938,27 @@
   "candidates": [],
   "analysis": {
     "mode": "规则模板",
-    "summary": "收盘复盘显示市场处于偏进攻状态。主板上涨2131家、下跌810家，上涨占比72.5%；个股涨跌中位数+0.94%。涨停84家、跌停2家，当前统计成交额8590亿元。 连续性已经确认的强势方向为影视院线（相对强度+4.61个百分点、上涨占比100%）、广告营销（相对强度+3.35个百分点、上涨占比100%）、照明设备Ⅱ（相对强度+3.08个百分点、上涨占比100%）。优先观察其中有辨识度且评分通过的核心个股。",
+    "summary": "集合竞价显示市场处于偏防守状态。主板上涨657家、下跌1847家，上涨占比26.2%；个股涨跌中位数-0.19%。涨停11家、跌停0家，当前统计成交额78亿元。 渔业当前相对强度靠前，但缺少上一有效快照的连续确认，暂按单节点异动观察。",
     "sections": [
       {
         "label": "市场环境",
-        "text": "收盘复盘显示市场处于偏进攻状态。主板上涨2131家、下跌810家，上涨占比72.5%；个股涨跌中位数+0.94%。涨停84家、跌停2家，当前统计成交额8590亿元。"
+        "text": "集合竞价显示市场处于偏防守状态。主板上涨657家、下跌1847家，上涨占比26.2%；个股涨跌中位数-0.19%。涨停11家、跌停0家，当前统计成交额78亿元。"
       },
       {
         "label": "资金方向",
-        "text": "连续性已经确认的强势方向为影视院线（相对强度+4.61个百分点、上涨占比100%）、广告营销（相对强度+3.35个百分点、上涨占比100%）、照明设备Ⅱ（相对强度+3.08个百分点、上涨占比100%）。优先观察其中有辨识度且评分通过的核心个股。"
+        "text": "渔业当前相对强度靠前，但缺少上一有效快照的连续确认，暂按单节点异动观察。"
       },
       {
         "label": "策略状态",
-        "text": "普通隔夜通道关闭，合格候选0只：仅在尾盘窗口执行。热点波段通道关闭，合格候选0只：当前不在盘中执行窗口。"
+        "text": "普通隔夜通道关闭，合格候选0只：市场闸门关闭。热点波段通道关闭，合格候选0只：当前不在盘中执行窗口。"
       },
       {
         "label": "候选解读",
-        "text": "本次展示评分前5只，完整评分中有0只达到60分观察线。评分居前的是东山精密（002384）24分。已通过模块：E。仍需确认模块：A、B、C、D、G。其突破确认价与不追价区间不匹配，当前不具备可执行跟随区间。"
+        "text": "本次展示评分前5只，完整评分中有0只达到60分观察线。评分居前的是天奇股份（002009）10分。仍需确认模块：A、B、C、D、E、G。其突破确认价与不追价区间不匹配，当前不具备可执行跟随区间。"
       },
       {
         "label": "风险提示",
-        "text": "当前未触发系统级数据降级，但个股仍须满足板块、量价、买点和风险模块。评分榜、观察池、通道合格与当前可执行含义不同，均不代表确定性收益。"
+        "text": "市场环境处于防守状态，普通隔夜通道维持关闭。评分榜、观察池、通道合格与当前可执行含义不同，均不代表确定性收益。"
       }
     ]
   },
@@ -2238,14 +1966,14 @@
     "market_rows": 3117,
     "prefilter": {
       "input": 3117,
-      "invalid_quote": 67,
-      "liquidity": 2186,
-      "price_move": 171,
-      "passed": 693
+      "invalid_quote": 75,
+      "liquidity": 3020,
+      "price_move": 10,
+      "passed": 12
     },
     "leader_board": {
-      "status": "SUCCESS",
-      "sector_count": 5,
+      "status": "NO_CONFIRMED_SECTOR",
+      "sector_count": 0,
       "require_confirmed": true
     },
     "sector_continuity": [
@@ -2256,8 +1984,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.07,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.42000000000000004,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "专业工程",
@@ -2266,28 +1994,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.65,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.25,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "塑料",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.625,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.12,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "光学光电子",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 3.24,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.56,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "电力",
@@ -2296,18 +2024,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.43,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "出版",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.73,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.46,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "食品加工",
@@ -2316,8 +2044,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.44,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "化学制品",
@@ -2326,8 +2054,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.745,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.16,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "小家电",
@@ -2336,8 +2064,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.03,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.205,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "化学制药",
@@ -2346,8 +2074,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.3,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.29,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "造纸",
@@ -2356,8 +2084,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.28,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.23,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "饮料乳品",
@@ -2366,18 +2094,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.56,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.11,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "IT服务Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.77,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.25,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "工程机械",
@@ -2386,8 +2114,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.845,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.25,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "电池",
@@ -2396,8 +2124,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.04,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.51,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "金属新材料",
@@ -2406,8 +2134,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.41,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.4,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "医疗器械",
@@ -2416,8 +2144,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.27,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "燃气Ⅱ",
@@ -2426,28 +2154,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.48,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "照明设备Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 4.02,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "半导体",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.95,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.56,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "休闲食品",
@@ -2456,18 +2184,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.6,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.3,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "汽车零部件",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.14,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.20500000000000002,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "装修建材",
@@ -2476,8 +2204,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.03,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.31,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "基础建设",
@@ -2486,18 +2214,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.035,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "文娱用品",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.4699999999999998,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.21500000000000002,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "轨交设备Ⅱ",
@@ -2506,8 +2234,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.8099999999999999,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "养殖业",
@@ -2516,48 +2244,48 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.255,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.07,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "自动化设备",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 3.01,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.28,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "装修装饰Ⅱ",
-        "strong": true,
-        "snapshot_streak": 2,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.92,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.21,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "专用设备",
-        "strong": true,
-        "snapshot_streak": 2,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.565,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "消费电子",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 3.57,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.54,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "家居用品",
@@ -2566,8 +2294,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.38,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.06,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "医药商业",
@@ -2576,18 +2304,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.0,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.11,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "元件",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.2750000000000004,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.32,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "电网设备",
@@ -2596,8 +2324,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.995,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.295,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "工业金属",
@@ -2606,8 +2334,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.63,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.915,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "农产品加工",
@@ -2616,8 +2344,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.53,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.14,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "纺织制造",
@@ -2626,8 +2354,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.3900000000000001,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.365,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "一般零售",
@@ -2636,8 +2364,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.5449999999999999,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.13,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "橡胶",
@@ -2646,18 +2374,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.91,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "广告营销",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 4.28,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.69,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "化学纤维",
@@ -2666,18 +2394,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.59,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "服装家纺",
-        "strong": true,
-        "snapshot_streak": 1,
-        "strong_trade_days": 1,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.51,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.14,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "互联网电商",
@@ -2686,8 +2414,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.03,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.37,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "航空装备Ⅱ",
@@ -2696,8 +2424,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.7949999999999999,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.21000000000000002,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "水泥",
@@ -2706,18 +2434,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.51,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.02,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "计算机设备",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.16,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.18,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "光伏设备",
@@ -2726,8 +2454,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.85,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.5,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "酒店餐饮",
@@ -2736,28 +2464,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.66,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.08,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "通用设备",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.19,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.36,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "教育",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.99,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "非金属材料Ⅱ",
@@ -2766,8 +2494,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.82,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.26,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "环境治理",
@@ -2776,8 +2504,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.27,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.165,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "物流",
@@ -2786,8 +2514,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.83,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "农化制品",
@@ -2796,8 +2524,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.425,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.08,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "个护用品",
@@ -2806,8 +2534,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.7,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "玻璃玻纤",
@@ -2816,8 +2544,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.3,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.34,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "中药Ⅱ",
@@ -2826,8 +2554,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.0,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.195,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "特钢Ⅱ",
@@ -2836,28 +2564,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.15,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.41000000000000003,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "软件开发",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.63,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.35,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "电机Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.23,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.53,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "风电设备",
@@ -2866,8 +2594,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.03,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.045,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "化妆品",
@@ -2876,8 +2604,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.5700000000000001,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.04,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "化学原料",
@@ -2886,18 +2614,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.0,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.11,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "其他电子Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.435,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.6599999999999999,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "电子化学品Ⅱ",
@@ -2906,8 +2634,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.15,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.495,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "白酒Ⅱ",
@@ -2916,8 +2644,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.22,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.14,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "工程咨询服务Ⅱ",
@@ -2926,48 +2654,48 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.26,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.07,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "数字媒体",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 3.98,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.24,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "航空机场",
-        "strong": true,
-        "snapshot_streak": 1,
-        "strong_trade_days": 1,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.67,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.38,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "医疗服务",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.045,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.44999999999999996,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "通信服务",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.91,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.065,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "普钢",
@@ -2976,18 +2704,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.105,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "通信设备",
-        "strong": true,
-        "snapshot_streak": 1,
-        "strong_trade_days": 1,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.48,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.13,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "能源金属",
@@ -2996,8 +2724,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.16,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.77,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "炼化及贸易",
@@ -3006,8 +2734,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.425,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.19,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "摩托车及其他",
@@ -3016,8 +2744,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.19,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "非白酒",
@@ -3026,8 +2754,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.17,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.355,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "调味发酵品Ⅱ",
@@ -3036,8 +2764,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.71,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.075,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "油服工程",
@@ -3046,28 +2774,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.6749999999999998,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "家电零部件Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.76,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.265,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "影视院线",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 5.54,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.66,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "军工电子Ⅱ",
@@ -3076,68 +2804,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.31,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "包装印刷",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
-        "confirmed_swing": false,
-        "median_pct": 1.72,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "饲料",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": 0.0,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "生物制品",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.2,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "动物保健Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.43,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "航运港口",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.72,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "厨卫电器",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.1,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.39,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "房地产服务",
@@ -3146,18 +2814,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.29,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.33499999999999996,
+        "last_trade_date": "2026-11-11"
+      },
+      {
+        "sector": "包装印刷",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "游戏Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.41,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.33999999999999997,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "旅游及景区",
@@ -3166,8 +2844,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.425,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.18,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "专业服务",
@@ -3176,8 +2854,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.685,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.21500000000000002,
+        "last_trade_date": "2026-11-11"
+      },
+      {
+        "sector": "厨卫电器",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
+      },
+      {
+        "sector": "饲料",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.125,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "种植业",
@@ -3186,8 +2884,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.68,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "环保设备Ⅱ",
@@ -3196,8 +2894,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.02,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.22,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "银行Ⅱ",
@@ -3206,8 +2904,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.08,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
+      },
+      {
+        "sector": "生物制品",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.33,
+        "last_trade_date": "2026-11-11"
+      },
+      {
+        "sector": "航运港口",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "多元金融",
@@ -3216,8 +2934,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.38,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.17,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "航海装备Ⅱ",
@@ -3226,8 +2944,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.31,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.08,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "证券Ⅱ",
@@ -3236,28 +2954,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.0,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.18,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "小金属",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.6400000000000001,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.79,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "电视广播Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 3.3049999999999997,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.42000000000000004,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "煤炭开采",
@@ -3266,8 +2984,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.26,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.26,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "铁路公路",
@@ -3276,8 +2994,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.24,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "房屋建设Ⅱ",
@@ -3286,8 +3004,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.43,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "其他电源设备Ⅱ",
@@ -3296,18 +3014,18 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.88,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.27,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "航天装备Ⅱ",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 2.8,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.57,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "乘用车",
@@ -3316,8 +3034,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.475,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.345,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "保险Ⅱ",
@@ -3326,8 +3044,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.92,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.03,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "地面兵装Ⅱ",
@@ -3336,8 +3054,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.83,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.16,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "房地产开发",
@@ -3346,8 +3064,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.03,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.11,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "贸易Ⅱ",
@@ -3356,8 +3074,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.375,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.18,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "冶钢原料",
@@ -3366,8 +3084,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.31,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.38,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "贵金属",
@@ -3376,8 +3094,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.9450000000000001,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -2.92,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "焦炭Ⅱ",
@@ -3387,7 +3105,7 @@
         "confirmed_intraday": false,
         "confirmed_swing": false,
         "median_pct": -0.3,
-        "last_trade_date": "2026-11-10"
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "白色家电",
@@ -3396,28 +3114,8 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.195,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "黑色家电",
-        "strong": true,
-        "snapshot_streak": 6,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
-        "confirmed_swing": false,
-        "median_pct": 2.5,
-        "last_trade_date": "2026-11-10"
-      },
-      {
-        "sector": "汽车服务",
-        "strong": true,
-        "snapshot_streak": 2,
-        "strong_trade_days": 1,
-        "confirmed_intraday": true,
-        "confirmed_swing": false,
-        "median_pct": 1.61,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.23,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "综合Ⅱ",
@@ -3426,8 +3124,28 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.89,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-11"
+      },
+      {
+        "sector": "黑色家电",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.56,
+        "last_trade_date": "2026-11-11"
+      },
+      {
+        "sector": "汽车服务",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.26,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "商用车",
@@ -3436,61 +3154,59 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.205,
-        "last_trade_date": "2026-11-10"
+        "median_pct": -0.20500000000000002,
+        "last_trade_date": "2026-11-11"
       },
       {
         "sector": "渔业",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
+        "strong": true,
+        "snapshot_streak": 1,
+        "strong_trade_days": 1,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 1.36,
-        "last_trade_date": "2026-11-10"
+        "median_pct": 0.6,
+        "last_trade_date": "2026-11-11"
       }
     ],
-    "details_requested": 36,
-    "details_succeeded": 36,
+    "details_requested": 12,
+    "details_succeeded": 12,
     "detail_errors": [],
     "detail_expansion": {
       "enabled": true,
       "requested_limits": [
-        36,
-        60,
-        90
+        12
       ],
       "steps": [
-        36
+        12
       ],
       "expanded": false,
       "reasons": [],
       "initial_limit": 36,
-      "final_limit": 36
+      "final_limit": 12
     },
     "announcement_targets": 12,
     "announcement_successes": 12,
     "announcement_failures": 0,
     "announcement_status": "SUCCESS",
     "announcement_sources": {
-      "002463": "巨潮资讯正式公告",
-      "002384": "巨潮资讯正式公告",
-      "002241": "巨潮资讯正式公告",
-      "600641": "巨潮资讯正式公告",
-      "600118": "巨潮资讯正式公告",
-      "002565": "巨潮资讯正式公告",
-      "000657": "巨潮资讯正式公告",
-      "002354": "巨潮资讯正式公告",
-      "000823": "巨潮资讯正式公告",
-      "002747": "巨潮资讯正式公告",
-      "603920": "巨潮资讯正式公告",
-      "002149": "巨潮资讯正式公告"
+      "002009": "巨潮资讯正式公告",
+      "600261": "巨潮资讯正式公告",
+      "002376": "巨潮资讯正式公告",
+      "002425": "巨潮资讯正式公告",
+      "002578": "巨潮资讯正式公告",
+      "000530": "巨潮资讯正式公告",
+      "002708": "巨潮资讯正式公告",
+      "000678": "巨潮资讯正式公告",
+      "002347": "巨潮资讯正式公告",
+      "002086": "巨潮资讯正式公告",
+      "002343": "巨潮资讯正式公告",
+      "001219": "巨潮资讯正式公告"
     },
     "announcement_attempt_errors": {},
     "announcement_errors": {},
     "shortlist_before_limit": 0,
     "ranking_count": 5,
-    "fully_scored_count": 36,
+    "fully_scored_count": 12,
     "tdxaidata": {
       "enabled": true,
       "mode": "primary",
@@ -3502,410 +3218,146 @@
       "affects_scoring": false,
       "primary_quote_count": 0,
       "primary_detail_count": 0,
-      "fallback_quote_count": 36,
-      "fallback_detail_count": 36,
-      "requested_count": 36,
-      "received_at": "2026-11-10T15:06:54+08:00",
+      "fallback_quote_count": 12,
+      "fallback_detail_count": 12,
+      "requested_count": 12,
+      "received_at": "2026-11-11T09:26:33+08:00",
       "provider_time_min": null,
       "provider_time_max": null,
       "timestamp_source_counts": {
         "tdx": 0,
         "tdx_records": 0,
-        "fallback_or_missing": 36
+        "fallback_or_missing": 12
       },
       "provenance": [
         {
-          "code": "002354",
+          "code": "002708",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "001330",
+          "code": "002347",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "600556",
+          "code": "000678",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002241",
+          "code": "002425",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002712",
+          "code": "000530",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002384",
+          "code": "002376",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "000892",
+          "code": "002009",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002565",
+          "code": "002343",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "603626",
+          "code": "002578",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002635",
+          "code": "600261",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "600825",
+          "code": "002086",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002747",
+          "code": "001219",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603920",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "605058",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002979",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002724",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600118",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002463",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600986",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603341",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002181",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603721",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002149",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "000823",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002291",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "601929",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603667",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "000802",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002703",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002655",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600641",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002361",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600977",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "000657",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603131",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "000700",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-10T15:06:54+08:00",
+          "received_at": "2026-11-11T09:26:33+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3917,33 +3369,33 @@
         "东方财富沪深A股行情": 3117
       },
       "quote_sources": {
-        "东方财富沪深A股行情": 36
+        "东方财富沪深A股行情": 12
       },
       "quote_timestamp_sources": {
-        "provider": 36
+        "provider": 12
       },
-      "quote_received_at": "2026-11-10T15:06:25+08:00",
-      "quote_provider_time_min": "2026-11-10T15:06:00+08:00",
-      "quote_provider_time_max": "2026-11-10T15:06:18+08:00",
-      "quote_latency_seconds_max": 25.817,
+      "quote_received_at": "2026-11-11T09:26:24+08:00",
+      "quote_provider_time_min": "2026-11-11T09:25:00+08:00",
+      "quote_provider_time_max": "2026-11-11T09:26:15+08:00",
+      "quote_latency_seconds_max": 84.433,
       "detail_sources": {
-        "原分钟K回退": 36
+        "原分钟K回退": 12
       },
       "detail_timestamp_sources": {
-        "missing": 36
+        "missing": 12
       },
       "detail_latency_seconds_max": null,
       "tdxaidata": {
         "status": "PRIMARY_WITH_FALLBACK",
-        "received_at": "2026-11-10T15:06:54+08:00",
+        "received_at": "2026-11-11T09:26:33+08:00",
         "provider_time_min": null,
         "provider_time_max": null
       }
     },
     "intraday_history_saved": true,
     "research_snapshot_saved": true,
-    "research_outcome_files_updated": 71,
-    "research_snapshot_path": "research/2026-11-10/scheduled-1505.json"
+    "research_outcome_files_updated": 366,
+    "research_snapshot_path": "research/2026-11-11/scheduled-0925.json"
   },
   "sources": [
     {
@@ -3955,23 +3407,23 @@
       "coverage": 1.0,
       "minimum_coverage": 0.85,
       "failed_pages": 0,
-      "request_started_at": "2026-11-10T15:06:12+08:00",
-      "received_at": "2026-11-10T15:06:25+08:00",
-      "provider_time_min": "2026-11-10T08:00:00+08:00",
-      "provider_time_max": "2026-11-10T15:06:19+08:00"
+      "request_started_at": "2026-11-11T09:26:13+08:00",
+      "received_at": "2026-11-11T09:26:24+08:00",
+      "provider_time_min": "2026-11-11T08:00:00+08:00",
+      "provider_time_max": "2026-11-11T09:26:21+08:00"
     },
     {
       "source": "通达信TdxAiData（主源·主源部分回退）",
       "source_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hjbgqpdhv114.html",
       "status": "PRIMARY_WITH_FALLBACK",
       "mode": "primary",
-      "received_at": "2026-11-10T15:06:54+08:00",
+      "received_at": "2026-11-11T09:26:33+08:00",
       "provider_time_min": null,
       "provider_time_max": null,
       "primary_quote_count": 0,
       "primary_detail_count": 0,
-      "fallback_quote_count": 36,
-      "fallback_detail_count": 36
+      "fallback_quote_count": 12,
+      "fallback_detail_count": 12
     },
     {
       "source": "腾讯财经前复权日K与分钟线",
@@ -3992,11 +3444,11 @@
   ],
   "error": null,
   "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。",
-  "trade_date": "2026-11-10",
+  "trade_date": "2026-11-11",
   "data_context": {
     "code": "CURRENT_SESSION",
     "label": "当日盘面",
-    "trade_date": "2026-11-10",
+    "trade_date": "2026-11-11",
     "message": "行情日期已通过当日完整性检查。"
   },
   "score_pool": [],
