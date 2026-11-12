@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "status": "SUCCESS",
-  "generated_at": "2026-11-12T09:56:06+08:00",
+  "generated_at": "2026-11-12T10:11:04+08:00",
   "phase": {
     "code": "MORNING",
     "label": "上午盘",
@@ -25,53 +25,53 @@
     "note": "V2.3.1规则已部署；新增V价值观察层，但不计入A/B/C/D/E/G交易总分，也不改变两条通道门槛。"
   },
   "market": {
-    "regime": "NEUTRAL",
-    "environment_score": 0.153,
-    "breadth": 0.3016,
-    "advancers": 851,
-    "decliners": 1971,
-    "flat": 139,
-    "median_pct": -0.45,
-    "limit_up_count": 28,
+    "regime": "RISK_ON",
+    "environment_score": 0.381,
+    "breadth": 0.3873,
+    "advancers": 1113,
+    "decliners": 1761,
+    "flat": 175,
+    "median_pct": -0.28,
+    "limit_up_count": 37,
     "limit_down_count": 0,
-    "market_amount": 291975194710.7699,
-    "market_time": "2026-11-12T09:56:38+08:00",
+    "market_amount": 402292986329.86,
+    "market_time": "2026-11-12T10:11:33+08:00",
     "sector_coverage": 1.0,
     "continuity_available": true,
-    "strong_sector_count": 9
+    "strong_sector_count": 15
   },
   "indices": [
     {
       "code": "000001.SH",
       "name": "上证指数",
-      "price": 3682.32,
-      "change_pct": 0.05,
-      "market_time": "2026-11-12T09:56:03+08:00",
+      "price": 3692.06,
+      "change_pct": 0.31,
+      "market_time": "2026-11-12T10:11:03+08:00",
       "data_source": "腾讯财经指数行情",
-      "received_at": "2026-11-12T09:56:08+08:00",
-      "source_latency_seconds": 5.146,
+      "received_at": "2026-11-12T10:11:05+08:00",
+      "source_latency_seconds": 2.877,
       "timestamp_source": "provider"
     },
     {
       "code": "399001.SZ",
       "name": "深证成指",
-      "price": 11406.29,
-      "change_pct": 0.15,
-      "market_time": "2026-11-12T09:56:03+08:00",
+      "price": 11462.96,
+      "change_pct": 0.64,
+      "market_time": "2026-11-12T10:11:00+08:00",
       "data_source": "腾讯财经指数行情",
-      "received_at": "2026-11-12T09:56:08+08:00",
-      "source_latency_seconds": 5.146,
+      "received_at": "2026-11-12T10:11:05+08:00",
+      "source_latency_seconds": 5.877,
       "timestamp_source": "provider"
     },
     {
       "code": "000300.SH",
       "name": "沪深300",
-      "price": 4079.91,
-      "change_pct": 0.1,
-      "market_time": "2026-11-12T09:56:03+08:00",
+      "price": 4091.8,
+      "change_pct": 0.39,
+      "market_time": "2026-11-12T10:11:03+08:00",
       "data_source": "腾讯财经指数行情",
-      "received_at": "2026-11-12T09:56:08+08:00",
-      "source_latency_seconds": 5.146,
+      "received_at": "2026-11-12T10:11:05+08:00",
+      "source_latency_seconds": 2.877,
       "timestamp_source": "provider"
     }
   ],
@@ -79,11 +79,311 @@
     {
       "sector": "渔业",
       "members": 5,
-      "median_pct": 2.06,
+      "median_pct": 2.26,
       "breadth": 1.0,
-      "amount": 185521817.0,
+      "amount": 257845962.41,
       "limit_up_count": 0,
-      "relative_strength": 2.5100000000000002,
+      "relative_strength": 2.54,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 2,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 2.06,
+      "amount_percentile": 0.058333333333333334
+    },
+    {
+      "sector": "元件",
+      "members": 36,
+      "median_pct": 2.135,
+      "breadth": 0.8888888888888888,
+      "amount": 38262168911.89,
+      "limit_up_count": 1,
+      "relative_strength": 2.415,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 2,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 1.2,
+      "amount_percentile": 1.0
+    },
+    {
+      "sector": "半导体",
+      "members": 33,
+      "median_pct": 2.1,
+      "breadth": 0.8787878787878788,
+      "amount": 32059632709.83,
+      "limit_up_count": 0,
+      "relative_strength": 2.38,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 3,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 1.145,
+      "amount_percentile": 0.9916666666666667
+    },
+    {
+      "sector": "电子化学品Ⅱ",
+      "members": 8,
+      "median_pct": 1.72,
+      "breadth": 1.0,
+      "amount": 1403713799.98,
+      "limit_up_count": 0,
+      "relative_strength": 2.0,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 3,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 1.195,
+      "amount_percentile": 0.4
+    },
+    {
+      "sector": "其他电子Ⅱ",
+      "members": 14,
+      "median_pct": 1.17,
+      "breadth": 0.7857142857142857,
+      "amount": 1714869825.09,
+      "limit_up_count": 0,
+      "relative_strength": 1.45,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 2,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.76,
+      "amount_percentile": 0.5166666666666667
+    },
+    {
+      "sector": "一般零售",
+      "members": 56,
+      "median_pct": 0.665,
+      "breadth": 0.6964285714285714,
+      "amount": 5971581386.049999,
+      "limit_up_count": 2,
+      "relative_strength": 0.9450000000000001,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 2,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.6499999999999999,
+      "amount_percentile": 0.8916666666666667
+    },
+    {
+      "sector": "种植业",
+      "members": 15,
+      "median_pct": 0.6,
+      "breadth": 0.8666666666666667,
+      "amount": 1542246764.84,
+      "limit_up_count": 0,
+      "relative_strength": 0.88,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 1,
+      "strong_trade_days": 1,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.13,
+      "amount_percentile": 0.45
+    },
+    {
+      "sector": "通信设备",
+      "members": 35,
+      "median_pct": 0.54,
+      "breadth": 0.6,
+      "amount": 22542851851.240005,
+      "limit_up_count": 3,
+      "relative_strength": 0.8200000000000001,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 1,
+      "strong_trade_days": 1,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.09,
+      "amount_percentile": 0.9833333333333333
+    },
+    {
+      "sector": "饮料乳品",
+      "members": 21,
+      "median_pct": 0.52,
+      "breadth": 0.7619047619047619,
+      "amount": 2061311298.72,
+      "limit_up_count": 1,
+      "relative_strength": 0.8,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 3,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.36,
+      "amount_percentile": 0.6
+    },
+    {
+      "sector": "农产品加工",
+      "members": 17,
+      "median_pct": 0.45,
+      "breadth": 0.5882352941176471,
+      "amount": 3272394608.8199997,
+      "limit_up_count": 1,
+      "relative_strength": 0.73,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.39,
+      "amount_percentile": 0.7166666666666667
+    },
+    {
+      "sector": "装修装饰Ⅱ",
+      "members": 15,
+      "median_pct": 0.43,
+      "breadth": 0.6666666666666666,
+      "amount": 1716257007.5,
+      "limit_up_count": 1,
+      "relative_strength": 0.71,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 1,
+      "strong_trade_days": 1,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.18,
+      "amount_percentile": 0.525
+    },
+    {
+      "sector": "水泥",
+      "members": 22,
+      "median_pct": 0.42500000000000004,
+      "breadth": 0.5909090909090909,
+      "amount": 1071671161.71,
+      "limit_up_count": 1,
+      "relative_strength": 0.7050000000000001,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.0,
+      "amount_percentile": 0.325
+    },
+    {
+      "sector": "燃气Ⅱ",
+      "members": 25,
+      "median_pct": 0.42,
+      "breadth": 0.64,
+      "amount": 2271943920.9800005,
+      "limit_up_count": 1,
+      "relative_strength": 0.7,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 2,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.46,
+      "amount_percentile": 0.6416666666666667
+    },
+    {
+      "sector": "航海装备Ⅱ",
+      "members": 5,
+      "median_pct": 0.39,
+      "breadth": 0.6,
+      "amount": 1981084339.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.67,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": true,
+      "snapshot_streak": 3,
+      "strong_trade_days": 1,
+      "confirmed_intraday": true,
+      "confirmed_swing": false,
+      "confirmed": true,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.12,
+      "amount_percentile": 0.575
+    },
+    {
+      "sector": "养殖业",
+      "members": 16,
+      "median_pct": 0.37,
+      "breadth": 0.625,
+      "amount": 990434492.3100001,
+      "limit_up_count": 0,
+      "relative_strength": 0.65,
+      "strong": true,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 1,
+      "strong_trade_days": 1,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": -0.09,
+      "amount_percentile": 0.30833333333333335
+    },
+    {
+      "sector": "航天装备Ⅱ",
+      "members": 5,
+      "median_pct": 0.29,
+      "breadth": 1.0,
+      "amount": 1444740686.0,
+      "limit_up_count": 0,
+      "relative_strength": 0.5700000000000001,
       "strong": true,
       "continuity_available": true,
       "previous_strong": false,
@@ -94,398 +394,217 @@
       "confirmed": false,
       "last_trade_date": "2026-11-12",
       "previous_median_pct": 0.0,
-      "amount_percentile": 0.058333333333333334
-    },
-    {
-      "sector": "元件",
-      "members": 33,
-      "median_pct": 1.2,
-      "breadth": 0.7878787878787878,
-      "amount": 27727686606.7,
-      "limit_up_count": 1,
-      "relative_strength": 1.65,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 1,
-      "strong_trade_days": 1,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.26,
-      "amount_percentile": 1.0
-    },
-    {
-      "sector": "电子化学品Ⅱ",
-      "members": 8,
-      "median_pct": 1.195,
-      "breadth": 0.875,
-      "amount": 1071840377.06,
-      "limit_up_count": 0,
-      "relative_strength": 1.645,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 2,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.5800000000000001,
       "amount_percentile": 0.4166666666666667
-    },
-    {
-      "sector": "半导体",
-      "members": 30,
-      "median_pct": 1.145,
-      "breadth": 0.8,
-      "amount": 18012299701.190002,
-      "limit_up_count": 0,
-      "relative_strength": 1.595,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 2,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.55,
-      "amount_percentile": 0.9916666666666667
-    },
-    {
-      "sector": "其他电子Ⅱ",
-      "members": 13,
-      "median_pct": 0.76,
-      "breadth": 0.7692307692307693,
-      "amount": 1235651207.0900002,
-      "limit_up_count": 0,
-      "relative_strength": 1.21,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 1,
-      "strong_trade_days": 1,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.105,
-      "amount_percentile": 0.5083333333333333
-    },
-    {
-      "sector": "一般零售",
-      "members": 54,
-      "median_pct": 0.6499999999999999,
-      "breadth": 0.6296296296296297,
-      "amount": 4219291938.7000003,
-      "limit_up_count": 0,
-      "relative_strength": 1.0999999999999999,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 1,
-      "strong_trade_days": 1,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.32,
-      "amount_percentile": 0.8666666666666667
-    },
-    {
-      "sector": "燃气Ⅱ",
-      "members": 25,
-      "median_pct": 0.46,
-      "breadth": 0.68,
-      "amount": 1873508342.24,
-      "limit_up_count": 1,
-      "relative_strength": 0.91,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 1,
-      "strong_trade_days": 1,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.5,
-      "amount_percentile": 0.675
-    },
-    {
-      "sector": "农产品加工",
-      "members": 17,
-      "median_pct": 0.39,
-      "breadth": 0.5294117647058824,
-      "amount": 3007134970.7,
-      "limit_up_count": 1,
-      "relative_strength": 0.8400000000000001,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.16,
-      "amount_percentile": 0.7833333333333333
-    },
-    {
-      "sector": "休闲食品",
-      "members": 19,
-      "median_pct": 0.37,
-      "breadth": 0.5789473684210527,
-      "amount": 1130650959.5800002,
-      "limit_up_count": 0,
-      "relative_strength": 0.8200000000000001,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.07,
-      "amount_percentile": 0.45
-    },
-    {
-      "sector": "饮料乳品",
-      "members": 21,
-      "median_pct": 0.36,
-      "breadth": 0.7142857142857143,
-      "amount": 1433795204.64,
-      "limit_up_count": 0,
-      "relative_strength": 0.81,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 2,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.16,
-      "amount_percentile": 0.5583333333333333
-    },
-    {
-      "sector": "小金属",
-      "members": 19,
-      "median_pct": 0.24,
-      "breadth": 0.5789473684210527,
-      "amount": 5059723132.79,
-      "limit_up_count": 0,
-      "relative_strength": 0.69,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.635,
-      "amount_percentile": 0.9083333333333333
-    },
-    {
-      "sector": "装修装饰Ⅱ",
-      "members": 14,
-      "median_pct": 0.18,
-      "breadth": 0.5,
-      "amount": 1403987887.8200002,
-      "limit_up_count": 1,
-      "relative_strength": 0.63,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.14,
-      "amount_percentile": 0.55
-    },
-    {
-      "sector": "种植业",
-      "members": 15,
-      "median_pct": 0.13,
-      "breadth": 0.5333333333333333,
-      "amount": 1200273158.84,
-      "limit_up_count": 0,
-      "relative_strength": 0.5800000000000001,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.23,
-      "amount_percentile": 0.48333333333333334
-    },
-    {
-      "sector": "航海装备Ⅱ",
-      "members": 5,
-      "median_pct": 0.12,
-      "breadth": 0.6,
-      "amount": 1634476753.0,
-      "limit_up_count": 0,
-      "relative_strength": 0.5700000000000001,
-      "strong": true,
-      "continuity_available": true,
-      "previous_strong": true,
-      "snapshot_streak": 2,
-      "strong_trade_days": 1,
-      "confirmed_intraday": true,
-      "confirmed_swing": false,
-      "confirmed": true,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": 0.2,
-      "amount_percentile": 0.6166666666666667
-    },
-    {
-      "sector": "通信设备",
-      "members": 34,
-      "median_pct": 0.09,
-      "breadth": 0.5,
-      "amount": 17510226694.629997,
-      "limit_up_count": 2,
-      "relative_strength": 0.54,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.31,
-      "amount_percentile": 0.9833333333333333
-    },
-    {
-      "sector": "食品加工",
-      "members": 18,
-      "median_pct": 0.025,
-      "breadth": 0.5,
-      "amount": 849119357.61,
-      "limit_up_count": 0,
-      "relative_strength": 0.47500000000000003,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.14,
-      "amount_percentile": 0.35
-    },
-    {
-      "sector": "旅游及景区",
-      "members": 21,
-      "median_pct": 0.0,
-      "breadth": 0.47619047619047616,
-      "amount": 686428788.76,
-      "limit_up_count": 0,
-      "relative_strength": 0.45,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.14500000000000002,
-      "amount_percentile": 0.26666666666666666
-    },
-    {
-      "sector": "其他电源设备Ⅱ",
-      "members": 15,
-      "median_pct": 0.0,
-      "breadth": 0.4666666666666667,
-      "amount": 1184816307.16,
-      "limit_up_count": 0,
-      "relative_strength": 0.45,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.44,
-      "amount_percentile": 0.4583333333333333
-    },
-    {
-      "sector": "水泥",
-      "members": 20,
-      "median_pct": 0.0,
-      "breadth": 0.45,
-      "amount": 729566276.8000001,
-      "limit_up_count": 0,
-      "relative_strength": 0.45,
-      "strong": false,
-      "continuity_available": true,
-      "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
-      "confirmed_intraday": false,
-      "confirmed_swing": false,
-      "confirmed": false,
-      "last_trade_date": "2026-11-12",
-      "previous_median_pct": -0.48,
-      "amount_percentile": 0.3
     },
     {
       "sector": "地面兵装Ⅱ",
       "members": 7,
-      "median_pct": 0.0,
-      "breadth": 0.42857142857142855,
-      "amount": 622657146.61,
+      "median_pct": 0.29,
+      "breadth": 0.7142857142857143,
+      "amount": 765440815.7,
       "limit_up_count": 0,
-      "relative_strength": 0.45,
-      "strong": false,
+      "relative_strength": 0.5700000000000001,
+      "strong": true,
       "continuity_available": true,
       "previous_strong": false,
-      "snapshot_streak": 0,
-      "strong_trade_days": 0,
+      "snapshot_streak": 1,
+      "strong_trade_days": 1,
       "confirmed_intraday": false,
       "confirmed_swing": false,
       "confirmed": false,
       "last_trade_date": "2026-11-12",
       "previous_median_pct": 0.0,
       "amount_percentile": 0.23333333333333334
+    },
+    {
+      "sector": "休闲食品",
+      "members": 19,
+      "median_pct": 0.24,
+      "breadth": 0.5789473684210527,
+      "amount": 1487400905.51,
+      "limit_up_count": 0,
+      "relative_strength": 0.52,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.37,
+      "amount_percentile": 0.44166666666666665
+    },
+    {
+      "sector": "油服工程",
+      "members": 10,
+      "median_pct": 0.24,
+      "breadth": 0.5,
+      "amount": 436709188.3,
+      "limit_up_count": 0,
+      "relative_strength": 0.52,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": -0.08,
+      "amount_percentile": 0.125
+    },
+    {
+      "sector": "小金属",
+      "members": 22,
+      "median_pct": 0.235,
+      "breadth": 0.5454545454545454,
+      "amount": 8157175739.68,
+      "limit_up_count": 0,
+      "relative_strength": 0.515,
+      "strong": false,
+      "continuity_available": true,
+      "previous_strong": false,
+      "snapshot_streak": 0,
+      "strong_trade_days": 0,
+      "confirmed_intraday": false,
+      "confirmed_swing": false,
+      "confirmed": false,
+      "last_trade_date": "2026-11-12",
+      "previous_median_pct": 0.24,
+      "amount_percentile": 0.9333333333333333
     }
   ],
   "leader_board": {
     "status": "SUCCESS",
     "sectors": [
       {
-        "sector": "电子化学品Ⅱ",
+        "sector": "渔业",
         "sector_rank": 1,
-        "sector_strength": 76.65,
-        "relative_strength": 1.65,
-        "breadth": 0.875,
+        "sector_strength": 100.8,
+        "relative_strength": 2.54,
+        "breadth": 1.0,
+        "members": 5,
+        "limit_up_count": 0,
+        "confirmed": true,
+        "leaders": [
+          {
+            "code": "600467",
+            "name": "好当家",
+            "role": "龙头",
+            "leader_score": 100,
+            "change_rank": 1,
+            "amount_rank": 1,
+            "sector_members": 5,
+            "change_pct": 6.22,
+            "amount": 142912307.0,
+            "turnover_rate": 4.2,
+            "relative_strength": 3.96,
+            "evidence": [
+              "板块内涨幅排名 1/5｜相对板块中位 +3.96个百分点",
+              "成交额排名 1/5｜换手 4.20%"
+            ],
+            "risks": []
+          }
+        ],
+        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
+        "quote_coverage": 1.0,
+        "change_span": 4.63
+      },
+      {
+        "sector": "元件",
+        "sector_rank": 2,
+        "sector_strength": 92.74,
+        "relative_strength": 2.42,
+        "breadth": 0.8889,
+        "members": 36,
+        "limit_up_count": 1,
+        "confirmed": true,
+        "leaders": [
+          {
+            "code": "002384",
+            "name": "东山精密",
+            "role": "龙头",
+            "leader_score": 98,
+            "change_rank": 4,
+            "amount_rank": 1,
+            "sector_members": 36,
+            "change_pct": 7.9,
+            "amount": 8856504297.75,
+            "turnover_rate": 6.6,
+            "relative_strength": 5.77,
+            "evidence": [
+              "板块内涨幅排名 4/36｜相对板块中位 +5.77个百分点",
+              "成交额排名 1/36｜换手 6.60%"
+            ],
+            "risks": []
+          }
+        ],
+        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
+        "quote_coverage": 1.0,
+        "change_span": 10.8
+      },
+      {
+        "sector": "半导体",
+        "sector_rank": 3,
+        "sector_strength": 91.54,
+        "relative_strength": 2.38,
+        "breadth": 0.8788,
+        "members": 33,
+        "limit_up_count": 0,
+        "confirmed": true,
+        "leaders": [
+          {
+            "code": "002156",
+            "name": "通富微电",
+            "role": "龙头",
+            "leader_score": 99,
+            "change_rank": 1,
+            "amount_rank": 2,
+            "sector_members": 33,
+            "change_pct": 8.78,
+            "amount": 4648572088.7,
+            "turnover_rate": 6.26,
+            "relative_strength": 6.68,
+            "evidence": [
+              "板块内涨幅排名 1/33｜相对板块中位 +6.68个百分点",
+              "成交额排名 2/33｜换手 6.26%"
+            ],
+            "risks": [
+              "接近涨停，追高风险"
+            ]
+          },
+          {
+            "code": "603986",
+            "name": "兆易创新",
+            "role": "容量核心",
+            "leader_score": 91,
+            "change_rank": 8,
+            "amount_rank": 1,
+            "sector_members": 33,
+            "change_pct": 4.19,
+            "amount": 5342642913.0,
+            "turnover_rate": 2.99,
+            "relative_strength": 2.09,
+            "evidence": [
+              "板块内涨幅排名 8/33｜相对板块中位 +2.09个百分点",
+              "成交额排名 1/33｜换手 2.99%"
+            ],
+            "risks": []
+          }
+        ],
+        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
+        "quote_coverage": 1.0,
+        "change_span": 12.18
+      },
+      {
+        "sector": "电子化学品Ⅱ",
+        "sector_rank": 4,
+        "sector_strength": 90.0,
+        "relative_strength": 2.0,
+        "breadth": 1.0,
         "members": 8,
         "limit_up_count": 0,
         "confirmed": true,
@@ -494,161 +613,57 @@
             "code": "600330",
             "name": "天通股份",
             "role": "龙头",
-            "leader_score": 90,
+            "leader_score": 91,
             "change_rank": 1,
             "amount_rank": 1,
             "sector_members": 8,
-            "change_pct": 2.53,
-            "amount": 518750133.0,
-            "turnover_rate": 2.31,
-            "relative_strength": 1.33,
+            "change_pct": 3.25,
+            "amount": 646653299.0,
+            "turnover_rate": 2.88,
+            "relative_strength": 1.53,
             "evidence": [
-              "板块内涨幅排名 1/8｜相对板块中位 +1.33个百分点",
-              "成交额排名 1/8｜换手 2.31%"
+              "板块内涨幅排名 1/8｜相对板块中位 +1.53个百分点",
+              "成交额排名 1/8｜换手 2.88%"
             ],
             "risks": []
           }
         ],
         "message": "板块已连续确认，展示板块内相对强度与容量核心。",
         "quote_coverage": 1.0,
-        "change_span": 2.53
+        "change_span": 2.85
       },
       {
-        "sector": "半导体",
-        "sector_rank": 2,
-        "sector_strength": 71.9,
-        "relative_strength": 1.59,
-        "breadth": 0.8,
-        "members": 30,
+        "sector": "其他电子Ⅱ",
+        "sector_rank": 5,
+        "sector_strength": 68.29,
+        "relative_strength": 1.45,
+        "breadth": 0.7857,
+        "members": 14,
         "limit_up_count": 0,
         "confirmed": true,
         "leaders": [
           {
-            "code": "002371",
-            "name": "北方华创",
-            "role": "龙头",
-            "leader_score": 98,
-            "change_rank": 2,
-            "amount_rank": 2,
-            "sector_members": 30,
-            "change_pct": 4.64,
-            "amount": 2278260416.71,
-            "turnover_rate": 0.56,
-            "relative_strength": 3.49,
-            "evidence": [
-              "板块内涨幅排名 2/30｜相对板块中位 +3.49个百分点",
-              "成交额排名 2/30｜换手 0.56%"
-            ],
-            "risks": []
-          },
-          {
-            "code": "603986",
-            "name": "兆易创新",
-            "role": "容量核心",
-            "leader_score": 91,
-            "change_rank": 6,
-            "amount_rank": 1,
-            "sector_members": 30,
-            "change_pct": 3.14,
-            "amount": 4220649182.0,
-            "turnover_rate": 2.37,
-            "relative_strength": 2.0,
-            "evidence": [
-              "板块内涨幅排名 6/30｜相对板块中位 +2.00个百分点",
-              "成交额排名 1/30｜换手 2.37%"
-            ],
-            "risks": []
-          }
-        ],
-        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
-        "quote_coverage": 1.0,
-        "change_span": 8.56
-      },
-      {
-        "sector": "饮料乳品",
-        "sector_rank": 3,
-        "sector_strength": 51.91,
-        "relative_strength": 0.81,
-        "breadth": 0.7143,
-        "members": 21,
-        "limit_up_count": 0,
-        "confirmed": true,
-        "leaders": [
-          {
-            "code": "001318",
-            "name": "阳光乳业",
+            "code": "002388",
+            "name": "新亚制程",
             "role": "龙头",
             "leader_score": 100,
             "change_rank": 1,
             "amount_rank": 1,
-            "sector_members": 21,
-            "change_pct": 9.23,
-            "amount": 287023470.0,
-            "turnover_rate": 6.92,
-            "relative_strength": 8.87,
+            "sector_members": 14,
+            "change_pct": 3.65,
+            "amount": 348794888.0,
+            "turnover_rate": 9.59,
+            "relative_strength": 2.48,
             "evidence": [
-              "板块内涨幅排名 1/21｜相对板块中位 +8.87个百分点",
-              "成交额排名 1/21｜换手 6.92%"
-            ],
-            "risks": [
-              "接近涨停，追高风险"
-            ]
-          }
-        ],
-        "message": "板块已连续确认，展示板块内相对强度与容量核心。",
-        "quote_coverage": 1.0,
-        "change_span": 10.72
-      },
-      {
-        "sector": "航海装备Ⅱ",
-        "sector_rank": 4,
-        "sector_strength": 41.4,
-        "relative_strength": 0.57,
-        "breadth": 0.6,
-        "members": 5,
-        "limit_up_count": 0,
-        "confirmed": true,
-        "leaders": [
-          {
-            "code": "603268",
-            "name": "松发股份",
-            "role": "龙头",
-            "leader_score": 95,
-            "change_rank": 1,
-            "amount_rank": 2,
-            "sector_members": 5,
-            "change_pct": 7.87,
-            "amount": 742191816.0,
-            "turnover_rate": 1.91,
-            "relative_strength": 7.75,
-            "evidence": [
-              "板块内涨幅排名 1/5｜相对板块中位 +7.75个百分点",
-              "成交额排名 2/5｜换手 1.91%"
-            ],
-            "risks": []
-          },
-          {
-            "code": "600150",
-            "name": "中国船舶",
-            "role": "容量核心",
-            "leader_score": 76,
-            "change_rank": 2,
-            "amount_rank": 1,
-            "sector_members": 5,
-            "change_pct": 1.03,
-            "amount": 763354090.0,
-            "turnover_rate": 0.29,
-            "relative_strength": 0.91,
-            "evidence": [
-              "板块内涨幅排名 2/5｜相对板块中位 +0.91个百分点",
-              "成交额排名 1/5｜换手 0.29%"
+              "板块内涨幅排名 1/14｜相对板块中位 +2.48个百分点",
+              "成交额排名 1/14｜换手 9.59%"
             ],
             "risks": []
           }
         ],
         "message": "板块已连续确认，展示板块内相对强度与容量核心。",
         "quote_coverage": 1.0,
-        "change_span": 8.71
+        "change_span": 3.97
       }
     ],
     "require_confirmed": true,
@@ -673,20 +688,20 @@
       "code": "002384",
       "name": "东山精密",
       "sector": "元件",
-      "price": 97.73,
-      "change_pct": 6.16,
-      "amount": 6915201424.36,
-      "turnover_rate": 5.19,
-      "market_time": "2026-11-12T09:56:30+08:00",
+      "price": 99.33,
+      "change_pct": 7.9,
+      "amount": 8856504297.75,
+      "turnover_rate": 6.6,
+      "market_time": "2026-11-12T10:11:30+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-12T09:56:42+08:00",
-        "quote_provider_time": "2026-11-12T09:56:30+08:00",
+        "quote_received_at": "2026-11-12T10:11:37+08:00",
+        "quote_provider_time": "2026-11-12T10:11:30+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 12.246,
+        "quote_latency_seconds": 7.046,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-12T09:57:08+08:00",
+        "detail_received_at": "2026-11-12T10:11:59+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
@@ -733,9 +748,9 @@
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +1.20%｜相对全市场 +1.65pct",
-            "上涨占比 79%｜涨停 1｜样本 33",
-            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 +2.13%｜相对全市场 +2.42pct",
+            "上涨占比 89%｜涨停 1｜样本 36",
+            "盘中连续 2 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
@@ -819,7 +834,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 12.246,
+          "max_latency_seconds": 7.046,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -877,8 +892,8 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 99.68,
-        "invalid_below": 96.74
+        "no_chase_above": 101.25,
+        "invalid_below": 98.33
       },
       "execution_data": {
         "ready": false,
@@ -897,10 +912,10 @@
         "quality_label": "数据不足",
         "overall_label": "估值合理或指标分化",
         "metrics": {
-          "pe": 26.96,
+          "pe": 27.4,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 7.22,
+          "pb": 7.34,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -925,7 +940,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-12T09:56:30+08:00",
+        "valuation_asof": "2026-11-12T10:11:30+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -969,20 +984,20 @@
       "code": "603986",
       "name": "兆易创新",
       "sector": "半导体",
-      "price": 267.76,
-      "change_pct": 3.14,
-      "amount": 4220649182.0,
-      "turnover_rate": 2.37,
-      "market_time": "2026-11-12T09:56:09+08:00",
+      "price": 270.51,
+      "change_pct": 4.19,
+      "amount": 5342642913.0,
+      "turnover_rate": 2.99,
+      "market_time": "2026-11-12T10:11:24+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-12T09:56:42+08:00",
-        "quote_provider_time": "2026-11-12T09:56:09+08:00",
+        "quote_received_at": "2026-11-12T10:11:37+08:00",
+        "quote_provider_time": "2026-11-12T10:11:24+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 33.246,
+        "quote_latency_seconds": 13.046,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-12T09:57:08+08:00",
+        "detail_received_at": "2026-11-12T10:11:59+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
@@ -1029,9 +1044,9 @@
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +1.15%｜相对全市场 +1.59pct",
-            "上涨占比 80%｜涨停 0｜样本 30",
-            "盘中连续 2 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 +2.10%｜相对全市场 +2.38pct",
+            "上涨占比 88%｜涨停 0｜样本 33",
+            "盘中连续 3 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
@@ -1115,7 +1130,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 33.246,
+          "max_latency_seconds": 13.046,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -1173,8 +1188,8 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 273.12,
-        "invalid_below": 265.07
+        "no_chase_above": 275.92,
+        "invalid_below": 267.79
       },
       "execution_data": {
         "ready": false,
@@ -1193,10 +1208,10 @@
         "quality_label": "数据不足",
         "overall_label": "估值合理或指标分化",
         "metrics": {
-          "pe": 12.78,
+          "pe": 12.91,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 2.45,
+          "pb": 2.48,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -1221,7 +1236,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-12T09:56:09+08:00",
+        "valuation_asof": "2026-11-12T10:11:24+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -1259,20 +1274,20 @@
       "code": "600183",
       "name": "生益科技",
       "sector": "元件",
-      "price": 79.82,
-      "change_pct": 3.82,
-      "amount": 3239465140.0,
-      "turnover_rate": 1.71,
-      "market_time": "2026-11-12T09:56:20+08:00",
+      "price": 80.97,
+      "change_pct": 5.32,
+      "amount": 4452987594.0,
+      "turnover_rate": 2.34,
+      "market_time": "2026-11-12T10:11:23+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-12T09:56:42+08:00",
-        "quote_provider_time": "2026-11-12T09:56:20+08:00",
+        "quote_received_at": "2026-11-12T10:11:37+08:00",
+        "quote_provider_time": "2026-11-12T10:11:23+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 22.246,
+        "quote_latency_seconds": 14.046,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-12T09:57:08+08:00",
+        "detail_received_at": "2026-11-12T10:11:59+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
@@ -1319,9 +1334,9 @@
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +1.20%｜相对全市场 +1.65pct",
-            "上涨占比 79%｜涨停 1｜样本 33",
-            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 +2.13%｜相对全市场 +2.42pct",
+            "上涨占比 89%｜涨停 1｜样本 36",
+            "盘中连续 2 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
@@ -1405,7 +1420,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 22.246,
+          "max_latency_seconds": 14.046,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -1463,8 +1478,8 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 81.42,
-        "invalid_below": 79.01
+        "no_chase_above": 82.59,
+        "invalid_below": 80.15
       },
       "execution_data": {
         "ready": false,
@@ -1483,10 +1498,10 @@
         "quality_label": "数据不足",
         "overall_label": "估值合理或指标分化",
         "metrics": {
-          "pe": 21.61,
+          "pe": 21.93,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 8.06,
+          "pb": 8.18,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -1511,7 +1526,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-12T09:56:20+08:00",
+        "valuation_asof": "2026-11-12T10:11:23+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -1549,20 +1564,20 @@
       "code": "002463",
       "name": "沪电股份",
       "sector": "元件",
-      "price": 94.46,
-      "change_pct": 5.62,
-      "amount": 3215843515.06,
-      "turnover_rate": 1.8,
-      "market_time": "2026-11-12T09:56:30+08:00",
+      "price": 94.77,
+      "change_pct": 5.97,
+      "amount": 4251207501.51,
+      "turnover_rate": 2.36,
+      "market_time": "2026-11-12T10:11:27+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-12T09:56:42+08:00",
-        "quote_provider_time": "2026-11-12T09:56:30+08:00",
+        "quote_received_at": "2026-11-12T10:11:37+08:00",
+        "quote_provider_time": "2026-11-12T10:11:27+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 12.246,
+        "quote_latency_seconds": 10.046,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-12T09:57:08+08:00",
+        "detail_received_at": "2026-11-12T10:11:59+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
@@ -1609,9 +1624,9 @@
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +1.20%｜相对全市场 +1.65pct",
-            "上涨占比 79%｜涨停 1｜样本 33",
-            "盘中连续 1 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 +2.13%｜相对全市场 +2.42pct",
+            "上涨占比 89%｜涨停 1｜样本 36",
+            "盘中连续 2 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
@@ -1695,7 +1710,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 12.246,
+          "max_latency_seconds": 10.046,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -1753,8 +1768,8 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 96.35,
-        "invalid_below": 93.51
+        "no_chase_above": 96.67,
+        "invalid_below": 93.81
       },
       "execution_data": {
         "ready": false,
@@ -1773,10 +1788,10 @@
         "quality_label": "数据不足",
         "overall_label": "估值合理或指标分化",
         "metrics": {
-          "pe": 24.38,
+          "pe": 24.46,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 8.9,
+          "pb": 8.93,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -1801,7 +1816,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-12T09:56:30+08:00",
+        "valuation_asof": "2026-11-12T10:11:27+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -1845,20 +1860,20 @@
       "code": "600641",
       "name": "先导基电",
       "sector": "半导体",
-      "price": 37.05,
-      "change_pct": 3.15,
-      "amount": 1840827397.0,
-      "turnover_rate": 5.52,
-      "market_time": "2026-11-12T09:56:19+08:00",
+      "price": 37.98,
+      "change_pct": 5.73,
+      "amount": 3007715275.0,
+      "turnover_rate": 8.81,
+      "market_time": "2026-11-12T10:11:25+08:00",
       "data_provenance": {
         "quote_source": "东方财富沪深A股行情",
-        "quote_received_at": "2026-11-12T09:56:42+08:00",
-        "quote_provider_time": "2026-11-12T09:56:19+08:00",
+        "quote_received_at": "2026-11-12T10:11:37+08:00",
+        "quote_provider_time": "2026-11-12T10:11:25+08:00",
         "quote_timestamp_source": "provider",
-        "quote_latency_seconds": 23.246,
+        "quote_latency_seconds": 12.046,
         "daily_source": "原日K回退",
         "minute_source": "原分钟K回退",
-        "detail_received_at": "2026-11-12T09:57:08+08:00",
+        "detail_received_at": "2026-11-12T10:11:59+08:00",
         "daily_provider_time": null,
         "minute_provider_time": null,
         "daily_latency_seconds": null,
@@ -1905,9 +1920,9 @@
           "max": 20,
           "state": "数据不足",
           "evidence": [
-            "板块中位涨幅 +1.15%｜相对全市场 +1.59pct",
-            "上涨占比 80%｜涨停 0｜样本 30",
-            "盘中连续 2 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
+            "板块中位涨幅 +2.10%｜相对全市场 +2.38pct",
+            "上涨占比 88%｜涨停 0｜样本 33",
+            "盘中连续 3 个节点｜跨日强势 1 个交易日，尚未达到热点波段确认"
           ]
         },
         {
@@ -1991,7 +2006,7 @@
             "日K或分钟线使用回退来源"
           ],
           "fallback": true,
-          "max_latency_seconds": 23.246,
+          "max_latency_seconds": 12.046,
           "alignment_seconds": null
         },
         "source_weight": 0.3
@@ -2049,8 +2064,8 @@
         "hold_above": 0.0,
         "breakout_reference": 0.0,
         "breakout": 0.01,
-        "no_chase_above": 37.79,
-        "invalid_below": 36.67
+        "no_chase_above": 38.74,
+        "invalid_below": 37.59
       },
       "execution_data": {
         "ready": false,
@@ -2069,10 +2084,10 @@
         "quality_label": "数据不足",
         "overall_label": "相对高估",
         "metrics": {
-          "pe": 13460.36,
+          "pe": 13798.23,
           "pe_ttm": null,
           "expected_pe": null,
-          "pb": 4.17,
+          "pb": 4.27,
           "ev_ebitda": null,
           "fcf_yield": null,
           "dividend_yield": null,
@@ -2097,7 +2112,7 @@
         "report_period": null,
         "notice_date": null,
         "notice_age_days": null,
-        "valuation_asof": "2026-11-12T09:56:19+08:00",
+        "valuation_asof": "2026-11-12T10:11:25+08:00",
         "source": "东方财富沪深A股行情",
         "source_url": null,
         "message": "已取得部分估值字段，经营质量仍需财务披露数据补充",
@@ -2141,15 +2156,15 @@
   "candidates": [],
   "analysis": {
     "mode": "规则模板",
-    "summary": "上午盘显示市场处于中性震荡状态。主板上涨851家、下跌1971家，上涨占比30.2%；个股涨跌中位数-0.45%。涨停28家、跌停0家，当前统计成交额2920亿元。 连续性已经确认的强势方向为电子化学品Ⅱ（相对强度+1.65个百分点、上涨占比88%）、半导体（相对强度+1.59个百分点、上涨占比80%）、饮料乳品（相对强度+0.81个百分点、上涨占比71%）。优先观察其中有辨识度且评分通过的核心个股。",
+    "summary": "上午盘显示市场处于偏进攻状态。主板上涨1113家、下跌1761家，上涨占比38.7%；个股涨跌中位数-0.28%。涨停37家、跌停0家，当前统计成交额4023亿元。 连续性已经确认的强势方向为渔业（相对强度+2.54个百分点、上涨占比100%）、元件（相对强度+2.42个百分点、上涨占比89%）、半导体（相对强度+2.38个百分点、上涨占比88%）。优先观察其中有辨识度且评分通过的核心个股。",
     "sections": [
       {
         "label": "市场环境",
-        "text": "上午盘显示市场处于中性震荡状态。主板上涨851家、下跌1971家，上涨占比30.2%；个股涨跌中位数-0.45%。涨停28家、跌停0家，当前统计成交额2920亿元。"
+        "text": "上午盘显示市场处于偏进攻状态。主板上涨1113家、下跌1761家，上涨占比38.7%；个股涨跌中位数-0.28%。涨停37家、跌停0家，当前统计成交额4023亿元。"
       },
       {
         "label": "资金方向",
-        "text": "连续性已经确认的强势方向为电子化学品Ⅱ（相对强度+1.65个百分点、上涨占比88%）、半导体（相对强度+1.59个百分点、上涨占比80%）、饮料乳品（相对强度+0.81个百分点、上涨占比71%）。优先观察其中有辨识度且评分通过的核心个股。"
+        "text": "连续性已经确认的强势方向为渔业（相对强度+2.54个百分点、上涨占比100%）、元件（相对强度+2.42个百分点、上涨占比89%）、半导体（相对强度+2.38个百分点、上涨占比88%）。优先观察其中有辨识度且评分通过的核心个股。"
       },
       {
         "label": "策略状态",
@@ -2166,17 +2181,17 @@
     ]
   },
   "diagnostics": {
-    "market_rows": 3029,
+    "market_rows": 3117,
     "prefilter": {
-      "input": 3029,
+      "input": 3117,
       "invalid_quote": 68,
-      "liquidity": 2131,
-      "price_move": 286,
-      "passed": 544
+      "liquidity": 1982,
+      "price_move": 324,
+      "passed": 743
     },
     "leader_board": {
       "status": "SUCCESS",
-      "sector_count": 4,
+      "sector_count": 5,
       "require_confirmed": true
     },
     "sector_continuity": [
@@ -2187,7 +2202,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.25,
+        "median_pct": -0.88,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2197,7 +2212,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.33,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2207,7 +2222,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.06,
+        "median_pct": 0.08,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2217,7 +2232,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.11,
+        "median_pct": 0.06,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2227,7 +2242,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.36,
+        "median_pct": -0.52,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2237,7 +2252,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.14,
+        "median_pct": -0.93,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2247,7 +2262,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.025,
+        "median_pct": 0.2,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2257,7 +2272,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.24,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2267,7 +2282,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.745,
+        "median_pct": -0.875,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2277,7 +2292,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.52,
+        "median_pct": -0.34,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2287,17 +2302,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.23500000000000001,
+        "median_pct": -0.11,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "饮料乳品",
         "strong": true,
-        "snapshot_streak": 2,
+        "snapshot_streak": 3,
         "strong_trade_days": 1,
         "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 0.36,
+        "median_pct": 0.52,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2307,7 +2322,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.69,
+        "median_pct": -0.31,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2317,7 +2332,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.125,
+        "median_pct": -1.3399999999999999,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2327,7 +2342,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.55,
+        "median_pct": -0.36,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2337,7 +2352,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.62,
+        "median_pct": -0.15,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2347,17 +2362,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.69,
+        "median_pct": -0.35,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "燃气Ⅱ",
         "strong": true,
-        "snapshot_streak": 1,
+        "snapshot_streak": 2,
         "strong_trade_days": 1,
-        "confirmed_intraday": false,
+        "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 0.46,
+        "median_pct": 0.42,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2367,17 +2382,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.655,
+        "median_pct": -0.765,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "半导体",
         "strong": true,
-        "snapshot_streak": 2,
+        "snapshot_streak": 3,
         "strong_trade_days": 1,
         "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 1.145,
+        "median_pct": 2.1,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2387,7 +2402,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.37,
+        "median_pct": 0.24,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2397,7 +2412,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.01,
+        "median_pct": -0.89,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2407,7 +2422,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.015,
+        "median_pct": -0.16,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2417,7 +2432,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.44,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2427,7 +2442,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.685,
+        "median_pct": -0.51,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2437,17 +2452,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.45999999999999996,
+        "median_pct": -0.53,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "养殖业",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
+        "strong": true,
+        "snapshot_streak": 1,
+        "strong_trade_days": 1,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.09,
+        "median_pct": 0.37,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2457,17 +2472,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.8400000000000001,
+        "median_pct": -0.21,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "装修装饰Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
+        "strong": true,
+        "snapshot_streak": 1,
+        "strong_trade_days": 1,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.18,
+        "median_pct": 0.43,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2477,7 +2492,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.58,
+        "median_pct": -0.435,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2487,7 +2502,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.355,
+        "median_pct": -0.12,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2497,7 +2512,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.33,
+        "median_pct": -0.27,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2507,17 +2522,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.69,
+        "median_pct": -0.62,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "元件",
         "strong": true,
-        "snapshot_streak": 1,
+        "snapshot_streak": 2,
         "strong_trade_days": 1,
-        "confirmed_intraday": false,
+        "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 1.2,
+        "median_pct": 2.135,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2527,7 +2542,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.44,
+        "median_pct": -0.37,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2537,7 +2552,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.59,
+        "median_pct": -0.44,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2547,7 +2562,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.39,
+        "median_pct": 0.45,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2557,17 +2572,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.6,
+        "median_pct": -0.54,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "一般零售",
         "strong": true,
-        "snapshot_streak": 1,
+        "snapshot_streak": 2,
         "strong_trade_days": 1,
-        "confirmed_intraday": false,
+        "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 0.6499999999999999,
+        "median_pct": 0.665,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2577,7 +2592,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.15,
+        "median_pct": -0.21000000000000002,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2587,7 +2602,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.57,
+        "median_pct": -0.53,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2597,7 +2612,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.485,
+        "median_pct": -0.6,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2607,7 +2622,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.255,
+        "median_pct": -0.16,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2617,7 +2632,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.6799999999999999,
+        "median_pct": -0.26,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2627,7 +2642,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.565,
+        "median_pct": -0.505,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2637,7 +2652,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.0,
+        "median_pct": 0.42500000000000004,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2647,7 +2662,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.29,
+        "median_pct": 0.12,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2657,7 +2672,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.21500000000000002,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2667,7 +2682,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.48,
+        "median_pct": -0.34,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2677,7 +2692,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.38,
+        "median_pct": -0.28,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2687,7 +2702,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.99,
+        "median_pct": -0.12,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2697,7 +2712,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.46,
+        "median_pct": -0.23,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2707,7 +2722,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.49,
+        "median_pct": -0.535,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2717,7 +2732,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.53,
+        "median_pct": -0.42,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2727,7 +2742,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.42,
+        "median_pct": -0.37,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2737,7 +2752,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.5,
+        "median_pct": -0.09,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2747,7 +2762,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.145,
+        "median_pct": -0.29,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2757,7 +2772,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.59,
+        "median_pct": -0.405,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2767,7 +2782,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.42000000000000004,
+        "median_pct": -0.5,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2777,7 +2792,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.63,
+        "median_pct": -0.19,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2787,7 +2802,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.4,
+        "median_pct": -1.2,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2797,7 +2812,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.57,
+        "median_pct": -0.29000000000000004,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2807,7 +2822,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.565,
+        "median_pct": -0.47,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2817,27 +2832,27 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.41,
+        "median_pct": -0.25,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "其他电子Ⅱ",
         "strong": true,
-        "snapshot_streak": 1,
+        "snapshot_streak": 2,
         "strong_trade_days": 1,
-        "confirmed_intraday": false,
+        "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 0.76,
+        "median_pct": 1.17,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "电子化学品Ⅱ",
         "strong": true,
-        "snapshot_streak": 2,
+        "snapshot_streak": 3,
         "strong_trade_days": 1,
         "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 1.195,
+        "median_pct": 1.72,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2847,7 +2862,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.79,
+        "median_pct": -0.35,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2857,7 +2872,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.61,
+        "median_pct": -0.49,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2867,7 +2882,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.27,
+        "median_pct": -0.76,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2877,7 +2892,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.87,
+        "median_pct": -0.56,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2887,7 +2902,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.61,
+        "median_pct": 0.105,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2897,7 +2912,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.6,
+        "median_pct": -0.42000000000000004,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2907,17 +2922,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.505,
+        "median_pct": -0.115,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "通信设备",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
+        "strong": true,
+        "snapshot_streak": 1,
+        "strong_trade_days": 1,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.09,
+        "median_pct": 0.54,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2927,7 +2942,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.64,
+        "median_pct": -0.32,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2937,7 +2952,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.49,
+        "median_pct": -0.47,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2947,7 +2962,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.33,
+        "median_pct": -0.38,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2957,7 +2972,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.08499999999999999,
+        "median_pct": 0.215,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2967,7 +2982,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.915,
+        "median_pct": -0.795,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2977,7 +2992,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.08,
+        "median_pct": 0.24,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2987,7 +3002,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.305,
+        "median_pct": -0.35,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -2997,7 +3012,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.98,
+        "median_pct": -0.76,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3007,67 +3022,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.36,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "包装印刷",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.37,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "饲料",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.21000000000000002,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "生物制品",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.65,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "动物保健Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.65,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "航运港口",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.48,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "厨卫电器",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.685,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3077,7 +3032,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.165,
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "包装印刷",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.355,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3087,7 +3052,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -2.05,
+        "median_pct": -1.475,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3097,7 +3062,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.0,
+        "median_pct": 0.12,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3107,17 +3072,37 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.655,
+        "median_pct": -0.745,
         "last_trade_date": "2026-11-12"
       },
       {
-        "sector": "种植业",
+        "sector": "厨卫电器",
         "strong": false,
         "snapshot_streak": 0,
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.13,
+        "median_pct": -0.97,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "饲料",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.0,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "种植业",
+        "strong": true,
+        "snapshot_streak": 1,
+        "strong_trade_days": 1,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.6,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3127,7 +3112,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.34,
+        "median_pct": -0.32,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3137,7 +3122,37 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.46,
+        "median_pct": -0.74,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "生物制品",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.4,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "动物保健Ⅱ",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.43,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "航运港口",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.2,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3147,17 +3162,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.69,
+        "median_pct": -0.47,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "航海装备Ⅱ",
         "strong": true,
-        "snapshot_streak": 2,
+        "snapshot_streak": 3,
         "strong_trade_days": 1,
         "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 0.12,
+        "median_pct": 0.39,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3167,7 +3182,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.64,
+        "median_pct": -0.275,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3177,7 +3192,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.42,
+        "median_pct": -0.45,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3187,7 +3202,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.47,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3197,7 +3212,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": 0.24,
+        "median_pct": 0.235,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3207,7 +3222,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.89,
+        "median_pct": -0.19,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3217,37 +3232,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.225,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "房屋建设Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.22,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "其他电源设备Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": 0.0,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "航天装备Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": 0.0,
+        "median_pct": -0.905,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3257,27 +3242,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.94,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "保险Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.7,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "地面兵装Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": 0.0,
+        "median_pct": -0.865,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3287,7 +3252,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.51,
+        "median_pct": -0.13,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3297,7 +3262,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.5,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3307,7 +3272,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -3.37,
+        "median_pct": -3.04,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3317,7 +3282,57 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.52,
+        "median_pct": -1.28,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "房屋建设Ⅱ",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.26,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "其他电源设备Ⅱ",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.15,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "航天装备Ⅱ",
+        "strong": true,
+        "snapshot_streak": 1,
+        "strong_trade_days": 1,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.29,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "保险Ⅱ",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": -0.63,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "地面兵装Ⅱ",
+        "strong": true,
+        "snapshot_streak": 1,
+        "strong_trade_days": 1,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.29,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3327,17 +3342,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.41500000000000004,
-        "last_trade_date": "2026-11-12"
-      },
-      {
-        "sector": "综合Ⅱ",
-        "strong": false,
-        "snapshot_streak": 0,
-        "strong_trade_days": 0,
-        "confirmed_intraday": false,
-        "confirmed_swing": false,
-        "median_pct": -0.47,
+        "median_pct": -0.565,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3347,7 +3352,7 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.305,
+        "median_pct": -0.040000000000000036,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3357,7 +3362,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -0.51,
+        "median_pct": -0.39,
+        "last_trade_date": "2026-11-12"
+      },
+      {
+        "sector": "综合Ⅱ",
+        "strong": false,
+        "snapshot_streak": 0,
+        "strong_trade_days": 0,
+        "confirmed_intraday": false,
+        "confirmed_swing": false,
+        "median_pct": 0.0,
         "last_trade_date": "2026-11-12"
       },
       {
@@ -3367,17 +3382,17 @@
         "strong_trade_days": 0,
         "confirmed_intraday": false,
         "confirmed_swing": false,
-        "median_pct": -1.1749999999999998,
+        "median_pct": -1.23,
         "last_trade_date": "2026-11-12"
       },
       {
         "sector": "渔业",
         "strong": true,
-        "snapshot_streak": 1,
+        "snapshot_streak": 2,
         "strong_trade_days": 1,
-        "confirmed_intraday": false,
+        "confirmed_intraday": true,
         "confirmed_swing": false,
-        "median_pct": 2.06,
+        "median_pct": 2.26,
         "last_trade_date": "2026-11-12"
       }
     ],
@@ -3407,15 +3422,15 @@
       "603986": "巨潮资讯正式公告",
       "002384": "巨潮资讯正式公告",
       "600183": "巨潮资讯正式公告",
-      "002371": "巨潮资讯正式公告",
-      "600641": "巨潮资讯正式公告",
-      "001309": "巨潮资讯正式公告",
-      "600584": "巨潮资讯正式公告",
+      "002156": "巨潮资讯正式公告",
       "002463": "巨潮资讯正式公告",
+      "600584": "巨潮资讯正式公告",
+      "600641": "巨潮资讯正式公告",
+      "002281": "巨潮资讯正式公告",
       "603228": "巨潮资讯正式公告",
-      "002916": "巨潮资讯正式公告",
-      "600206": "巨潮资讯正式公告",
-      "600327": "巨潮资讯正式公告"
+      "001309": "巨潮资讯正式公告",
+      "002636": "巨潮资讯正式公告",
+      "002371": "巨潮资讯正式公告"
     },
     "announcement_attempt_errors": {},
     "announcement_errors": {},
@@ -3436,7 +3451,7 @@
       "fallback_quote_count": 36,
       "fallback_detail_count": 36,
       "requested_count": 36,
-      "received_at": "2026-11-12T09:57:08+08:00",
+      "received_at": "2026-11-12T10:11:59+08:00",
       "provider_time_min": null,
       "provider_time_max": null,
       "timestamp_source_counts": {
@@ -3451,18 +3466,18 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "603986",
+          "code": "002156",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3473,18 +3488,7 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "001309",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3495,40 +3499,7 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603228",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002371",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600327",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3539,18 +3510,29 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002409",
+          "code": "603228",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "603986",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3561,29 +3543,29 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002916",
+          "code": "002371",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002931",
+          "code": "001309",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3594,117 +3576,18 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "603268",
+          "code": "002916",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600206",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600127",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002913",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002310",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600330",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603061",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600293",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002506",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002396",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3715,18 +3598,73 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "603706",
+          "code": "002409",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "603936",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002913",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "000823",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "600206",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "600327",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3737,62 +3675,29 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002428",
+          "code": "002185",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "601188",
+          "code": "002636",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "600838",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "002281",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
-          "source_latency_seconds": null,
-          "timestamp_source": "fallback_or_missing",
-          "fallback": true
-        },
-        {
-          "code": "603920",
-          "quote_source": "fallback",
-          "daily_source": "fallback",
-          "minute_source": "fallback",
-          "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3803,18 +3708,18 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
         },
         {
-          "code": "002119",
+          "code": "603061",
           "quote_source": "fallback",
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3825,7 +3730,84 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "603920",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002938",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002281",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002815",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002388",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "603268",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002172",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3836,7 +3818,40 @@
           "daily_source": "fallback",
           "minute_source": "fallback",
           "provider_time": null,
-          "received_at": "2026-11-12T09:57:08+08:00",
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002164",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "600330",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
+          "source_latency_seconds": null,
+          "timestamp_source": "fallback_or_missing",
+          "fallback": true
+        },
+        {
+          "code": "002119",
+          "quote_source": "fallback",
+          "daily_source": "fallback",
+          "minute_source": "fallback",
+          "provider_time": null,
+          "received_at": "2026-11-12T10:11:59+08:00",
           "source_latency_seconds": null,
           "timestamp_source": "fallback_or_missing",
           "fallback": true
@@ -3845,7 +3860,7 @@
     },
     "source_trace": {
       "universe_quote_sources": {
-        "东方财富沪深A股行情": 3029
+        "东方财富沪深A股行情": 3117
       },
       "quote_sources": {
         "东方财富沪深A股行情": 36
@@ -3853,10 +3868,10 @@
       "quote_timestamp_sources": {
         "provider": 36
       },
-      "quote_received_at": "2026-11-12T09:56:42+08:00",
-      "quote_provider_time_min": "2026-11-12T09:56:09+08:00",
-      "quote_provider_time_max": "2026-11-12T09:56:33+08:00",
-      "quote_latency_seconds_max": 33.246,
+      "quote_received_at": "2026-11-12T10:11:37+08:00",
+      "quote_provider_time_min": "2026-11-12T10:11:20+08:00",
+      "quote_provider_time_max": "2026-11-12T10:11:33+08:00",
+      "quote_latency_seconds_max": 17.046,
       "detail_sources": {
         "原分钟K回退": 36
       },
@@ -3866,37 +3881,37 @@
       "detail_latency_seconds_max": null,
       "tdxaidata": {
         "status": "PRIMARY_WITH_FALLBACK",
-        "received_at": "2026-11-12T09:57:08+08:00",
+        "received_at": "2026-11-12T10:11:59+08:00",
         "provider_time_min": null,
         "provider_time_max": null
       }
     },
     "intraday_history_saved": true,
     "research_snapshot_saved": true,
-    "research_outcome_files_updated": 80,
-    "research_snapshot_path": "research/2026-11-12/scheduled-0955.json"
+    "research_outcome_files_updated": 81,
+    "research_snapshot_path": "research/2026-11-12/scheduled-1010.json"
   },
   "sources": [
     {
       "source": "东方财富沪深A股行情",
       "source_url": "https://push2.eastmoney.com/api/qt/clist/get",
       "declared_rows": 5563,
-      "received_rows": 5463,
-      "mainboard_rows": 3029,
-      "coverage": 0.9820240877224519,
+      "received_rows": 5563,
+      "mainboard_rows": 3117,
+      "coverage": 1.0,
       "minimum_coverage": 0.85,
-      "failed_pages": 1,
-      "request_started_at": "2026-11-12T09:56:06+08:00",
-      "received_at": "2026-11-12T09:56:42+08:00",
+      "failed_pages": 0,
+      "request_started_at": "2026-11-12T10:11:04+08:00",
+      "received_at": "2026-11-12T10:11:37+08:00",
       "provider_time_min": "2026-11-12T08:00:00+08:00",
-      "provider_time_max": "2026-11-12T09:56:38+08:00"
+      "provider_time_max": "2026-11-12T10:11:33+08:00"
     },
     {
       "source": "通达信TdxAiData（主源·主源部分回退）",
       "source_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hjbgqpdhv114.html",
       "status": "PRIMARY_WITH_FALLBACK",
       "mode": "primary",
-      "received_at": "2026-11-12T09:57:08+08:00",
+      "received_at": "2026-11-12T10:11:59+08:00",
       "provider_time_min": null,
       "provider_time_max": null,
       "primary_quote_count": 0,
