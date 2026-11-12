@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "status": "FAILED",
-  "generated_at": "2026-11-12T11:26:09+08:00",
+  "generated_at": "2026-11-12T13:06:05+08:00",
   "phase": {
-    "code": "MORNING",
-    "label": "上午盘",
+    "code": "AFTERNOON",
+    "label": "午后盘",
     "ordinary_open": false,
     "hot_open": true
   },
@@ -50,15 +50,11 @@
   "candidates": [],
   "analysis": {
     "mode": "规则模板",
-    "summary": "本次行情更新未通过完整性检查：RuntimeError: 东方财富行情第 1 页失败: HTTPSConnectionPool(host='push2delay.eastmoney.com', port=443): Read timed out. (read timeout=15)。系统已经停止筛选，没有沿用旧候选，也不生成盘面方向判断。",
+    "summary": "本次行情更新未通过完整性检查：RuntimeError: 全市场行情不完整: 1200/5563 (21.6%), 低于 85% 门槛, 失败页 44。系统已经停止筛选，没有沿用旧候选，也不生成盘面方向判断。",
     "sections": []
   },
   "diagnostics": {},
   "sources": [],
-  "error": "RuntimeError: 东方财富行情第 1 页失败: HTTPSConnectionPool(host='push2delay.eastmoney.com', port=443): Read timed out. (read timeout=15)",
-  "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。",
-  "last_successful": {
-    "generated_at": "2026-11-12T11:11:02+08:00",
-    "trade_date": "2026-11-12"
-  }
+  "error": "RuntimeError: 全市场行情不完整: 1200/5563 (21.6%), 低于 85% 门槛, 失败页 44",
+  "disclaimer": "仅供A股条件化研究，不构成投资建议，不连接券商，不自动下单，也不保证收益。"
 }
